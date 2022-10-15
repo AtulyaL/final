@@ -4,10 +4,6 @@ open Game
 open Pieces
 open Board
 
-let play_white = 
-
-
-
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
