@@ -1,6 +1,6 @@
-module type PIECES = sig
-(** The chess pieces and their respective moves*)
+exception Invalid of string
 
+<<<<<<< Updated upstream
 type name = string
 (** The type [name] is the name of the piece*)
 
@@ -35,3 +35,6 @@ exception Invalid
 
  
 end
+=======
+type pawn = {name = "pawn"; value = 1 ; loc = (1,1)  ; captured = false}
+>>>>>>> Stashed changes
