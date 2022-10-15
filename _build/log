@@ -1,0 +1,5 @@
+# dune build
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Workspace root: /Users/alohani/Desktop/FA22/CS3110/final
+# Auto-detected concurrency: 8
