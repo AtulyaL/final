@@ -1,3 +1,4 @@
+module type PIECES = sig
 (** The chess pieces and their respective moves*)
 
 type name = string
@@ -14,3 +15,6 @@ exception Invalid
 
 type moves = string list
 (** The type [moves] is a string list that lists the valid types of moves the piece can make *)
+
+end
+
