@@ -1,10 +1,14 @@
-open Pieces
-open Game
+type tile 
+(** The type of a singular tile of the board, which is either empty or a tuple
+ of two integers *)
 
-(** Initiates the chess board and maintains it as the two players play*)
+type board
+(** The type of the board, which is represented a list of tiles *)
 
-type board = Node of (int * int)
-(** The type of the board, which is represented by a series of a node with tuple
-  of two ints*)
+val is_occupied : board -> tile -> bool
+(** Determines if a space is occupied or not based off of the given board and 
+  current tile*)
 
-(** *)
+val update_board : board -> move -> piece -> board
+(** Updates the board given an old board, move , and a piece*)
+
