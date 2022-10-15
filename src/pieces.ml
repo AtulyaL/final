@@ -22,6 +22,8 @@ type moves = string list
 (** The type [moves] is a string list that lists the valid types of moves the piece can make *)
 
 end
+
+
 module Pawn : PIECES = struct
 let name = "Pawn"
 let value = 1
