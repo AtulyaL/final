@@ -1,1 +1,3 @@
-val valid_moves : Pieces.Pawn -> Pieces.Pawn
+open Pieces
+
+val check_move : t -> bool
