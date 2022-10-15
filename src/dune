@@ -1,2 +1,4 @@
 (executable
- (name pieces))
+ (name pieces)
+ (name game)
+ (name board))

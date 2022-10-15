@@ -1,0 +1,1 @@
+(** Initiates the chess board and maintains it as the two players play*)
