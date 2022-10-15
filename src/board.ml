@@ -9,4 +9,6 @@ type tile =
  
 type board = tile list
  
+let is_occupied board tile (result : bool) = Raise ("not implemented yet")
 
+let update_board board move piece = Raise ("not implemented yet")
