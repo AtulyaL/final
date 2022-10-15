@@ -1,9 +1,9 @@
+type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
+
 module type PIECE = sig
 
-type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
 (** The type that represents the piece. [name] is the name of the piece. [value] is the amount of points the piece is worth
     [loc] is the location of the piece. [captured] is whether the piece is captured or not *)
-
 val name : t -> string
 (** Returns the name of the piece*)
 
@@ -23,7 +23,6 @@ end
 
 
 module Pawn : PIECE = struct
-  type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
   let info = {name = "pawn"; value = 1; loc = (1, 1); captured = false; moves = []; color = "black"}
 
   let name info = info.name
@@ -41,7 +40,6 @@ module Pawn : PIECE = struct
 end
 
 module Bishop : PIECE = struct
-  type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
   let info = {name = "bishop"; value= 3 ; loc = (1, 1) ; captured= false; moves = []; color = "black"}
 (** The type that represents the piece. [name] is the name of the piece. [value] is the amount of points the piece is worth
     [loc] is the location of the piece. [captured] is whether the piece is captured or not *)
@@ -59,7 +57,6 @@ module Bishop : PIECE = struct
 end
 
 module Knight : PIECE = struct
-  type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
   let info = {name = "knight"; value= 3 ; loc = (1, 1) ; captured= false; moves = []; color = "black"}
 (** The type that represents the piece. [name] is the name of the piece. [value] is the amount of points the piece is worth
     [loc] is the location of the piece. [captured] is whether the piece is captured or not *)
@@ -75,8 +72,7 @@ module Knight : PIECE = struct
 end
 
 module Rook : PIECE = struct
-  type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
-  let t = {name = "rook"; value = 5 ; loc = (1, 1) ; captured = false; moves = []; color = "black"}
+  let info = {name = "rook"; value = 5 ; loc = (1, 1) ; captured = false; moves = []; color = "black"}
 (** The type that represents the piece. [name] is the name of the piece. [value] is the amount of points the piece is worth
     [loc] is the location of the piece. [captured] is whether the piece is captured or not *)
 
@@ -92,7 +88,6 @@ module Rook : PIECE = struct
 end
 
 module Queen : PIECE = struct
-  type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
   let info = {name = "queen"; value= 9 ; loc = (1, 1) ; captured= false; moves = []; color = "black"}
 (** The type that represents the piece. [name] is the name of the piece. [value] is the amount of points the piece is worth
     [loc] is the location of the piece. [captured] is whether the piece is captured or not *)
@@ -108,8 +103,7 @@ module Queen : PIECE = struct
 end
 
 module King : PIECE = struct
-  type t = {name : string; value: int ; loc : (int * int) ; captured : bool; moves : (int * int) list; color : string}
-  let t = {name = "king"; value= int_of_float infinity ; loc = (1, 1) ; captured= false; moves = []; color = "black"}
+  let info = {name = "king"; value= int_of_float infinity ; loc = (1, 1) ; captured= false; moves = []; color = "black"}
   let name info = info.name
 
   let value info = info.value
