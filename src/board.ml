@@ -32,4 +32,15 @@ let valid_move board (move : int * int) (color : string) =
     | _ -> false
   with Not_found -> true
 
-let update_board board move piece = Raise "not implemented yet"
+let update_board board move piece =
+  let others =
+    List.filter
+      (fun x ->
+        match (x, move) with
+        | Empty (x1, y1), (x2, y2) -> x1 <> x2 && y1 <> y2
+        | Full (x1, y1, _), (x2, y2) -> x1 <> x2 && y1 <> y2)
+      board
+  in
+  match (piece.loc, move) with
+  | (x1, y1), (x2, y2) ->
+      Empty (x1, y1) :: Full (x2, y2, update_location piece (x2, y2)) :: others

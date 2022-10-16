@@ -13,4 +13,4 @@ val valid_move : board -> int * int -> string -> bool
     current tile*)
 
 val update_board : board -> int * int -> Pieces.t -> board
-(** Updates the board given an old board, move, and a piece*)
+(** Updates the board given an old board, move, and a piece *)

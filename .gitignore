@@ -28,6 +28,7 @@ _build
 ######################
 .DS_Store
 .DS_Store?
+_build/.digest-db
 ._*
 .Spotlight-V100
 .Trashes
