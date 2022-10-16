@@ -8,8 +8,6 @@ type tile =
 
 type board = tile list
 
-let rec init = []
-
 let rec pawn_init_white (x : int) : board =
   match x <= 8 with
   | false -> []
@@ -21,6 +19,8 @@ let rec pawn_init_black (x : int) : board =
   | false -> []
   | true ->
       Full (x, 7, Pieces.init "pawn" "black" (x, 7)) :: pawn_init_black (x + 1)
+
+let rec init = pawn_init_black 1 @ pawn_init_white 1
 
 let valid_move board (move : int * int) (color : string) =
   let occupied =
