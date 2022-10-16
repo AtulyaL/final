@@ -5,7 +5,7 @@ value, current location, information on whether it's captured, a list of possibl
 color, and whether it has moved or not 
     *)
 
-val init_val : t
+val init : string -> string -> (int*int) -> t
 (** init is the intial state of the piece *)
 
 val move : t -> (int*int) -> t
