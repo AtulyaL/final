@@ -19,3 +19,6 @@ let init_val name = match name with
 
 let init name color loc : t = {name = name; value = name |> init_val ; loc = loc;
  captured = false; color = color; moves=[]; moved = false}
+
+let move ( t : t ) ( new_loc : (int * int ) ) =  { t with loc = new_loc ; moved=true}
+
