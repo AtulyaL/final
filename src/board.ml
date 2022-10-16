@@ -9,6 +9,8 @@ type tile =
 
 type board = tile list
 
+let rec init = []
+
 let valid_move board (move : int * int) (color : string) =
   let occupied =
     List.filter
