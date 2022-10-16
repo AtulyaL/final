@@ -29,4 +29,5 @@ let init name color loc : t =
     moved = false;
   }
 
-let move (t : t) (new_loc : int * int) = { t with loc = new_loc; moved = true }
+let update_location (t : t) (new_loc : int * int) =
+  { t with loc = new_loc; moved = true }
