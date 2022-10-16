@@ -1,5 +1,4 @@
 open Pieces
-open Logic
 
 (** Initiates the chess board and maintains it as the two players play*)
 
@@ -10,6 +9,11 @@ type tile =
 type board = tile list
 
 let rec init = []
+
+let rec pawn_init (x : int) : board =
+  match x <= 8 with
+  | false -> []
+  | true -> Full (1, x, Pieces.init "pawn" "white" (1, x)) :: pawn_init (x + 1)
 
 let valid_move board (move : int * int) (color : string) =
   let occupied =
