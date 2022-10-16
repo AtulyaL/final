@@ -4,7 +4,7 @@ type t
     of possible moves, color, and whether it has moved or not *)
 
 val init_val : string -> int
-(** init_val takes a name of a pawn and assigns it to a integer number*)
+(** init_val takes a name of a piece and assigns it to a integer number*)
 
 val init : string -> string -> int * int -> t
 (** init initializes a piece given its name, color, and location *)
