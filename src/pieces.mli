@@ -1,13 +1,10 @@
 type t
-(** 
-Type t is the abstract type that represents a piece. A piece should have a name,
-value, current location, information on whether it's captured, a list of possible moves,
-color, and whether it has moved or not 
-    *)
+(** Type t is the abstract type that represents a piece. A piece should have a
+    name, value, current location, information on whether it's captured, a list
+    of possible moves, color, and whether it has moved or not *)
 
-val init : string -> string -> (int*int) -> t
-(** init is the intial state of the piece *)
+val init : string -> string -> int * int -> t
+(** init initializes a piece given its name, color, and location *)
 
-val move : t -> (int*int) -> t
-(** move is the state of the piece after moving to the given valid location *)
-
+val update_location : t -> int * int -> t
+(** updates the location of the piece after making a move*)

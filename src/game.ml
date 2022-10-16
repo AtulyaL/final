@@ -3,10 +3,10 @@ open Board
 
 (**first horizontal, then vertical for moves*)
 
-
+(** checks if pawn move is valid; returns a bool*)
 let pawn_move move info board = match move, info.loc with 
-| (u1, u2), (t1, t2) -> if u1 = t1 then (if u2 = t2 + 1 then (if is_occupied board 
-  (u1, u2) then update_board board move pawn else board) else if u2 = t2 + 2 then (if is_occupied board (u1, u2) then update_board board move pawn else board ) and info.moved = false) else board
+| (u1, u2), (t1, t2) -> if u1 = t1 then (if u2 = t2 + 1 then is_occupied board move else if u2 = t2 + 2 then is_occupied board move && not info.moved) else
+  if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 + 1 then 
 
 let knight_move move info board = match move with 
 | (u1, u2) -> "x"
