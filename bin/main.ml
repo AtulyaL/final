@@ -1,6 +1,6 @@
 open Pieces
 open Board
-open Game
+open Logic
 
 let game_over = raise (Failure "Unimplemented")
 
