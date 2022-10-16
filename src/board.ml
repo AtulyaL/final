@@ -20,7 +20,32 @@ let rec pawn_init_black (x : int) : board =
   | true ->
       Full (x, 7, Pieces.init "pawn" "black" (x, 7)) :: pawn_init_black (x + 1)
 
-let rec init = pawn_init_black 1 @ pawn_init_white 1
+let pieces (color : string) : board =
+  if color = "white" then
+    [
+      Full (1, 1, Pieces.init "rook" "white" (1, 1));
+      Full (8, 1, Pieces.init "rook" "white" (8, 1));
+      Full (2, 1, Pieces.init "knight" "white" (2, 1));
+      Full (7, 1, Pieces.init "knight" "white" (7, 1));
+      Full (3, 1, Pieces.init "bishop" "white" (3, 1));
+      Full (6, 1, Pieces.init "bishop" "white" (6, 1));
+      Full (4, 1, Pieces.init "queen" "white" (4, 1));
+      Full (5, 1, Pieces.init "king" "white" (5, 1));
+    ]
+  else
+    [
+      Full (1, 1, Pieces.init "rook" "black" (1, 8));
+      Full (8, 1, Pieces.init "rook" "black" (8, 8));
+      Full (2, 1, Pieces.init "knight" "black" (2, 8));
+      Full (7, 1, Pieces.init "knight" "black" (7, 8));
+      Full (3, 1, Pieces.init "bishop" "black" (3, 8));
+      Full (6, 1, Pieces.init "bishop" "black" (6, 8));
+      Full (4, 1, Pieces.init "queen" "black" (4, 8));
+      Full (5, 1, Pieces.init "king" "black" (5, 8));
+    ]
+
+let rec init =
+  pawn_init_black 1 @ pawn_init_white 1 @ pieces "black" @ pieces "white"
 
 let valid_move board (move : int * int) (color : string) =
   let occupied =
