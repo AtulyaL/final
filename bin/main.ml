@@ -4,6 +4,11 @@ open Game
 open Pieces
 open Board
 
+let game_over = raise (Failure "Unimplemented")
+
+let rec white_move = raise (Failure "Unimplemented")
+and black_move = raise (Failure "Unimplemented")
+
 let singleplayer = raise (Failure "Unimplemented")
 let multiplayer = raise (Failure "Unimplemented")
 
