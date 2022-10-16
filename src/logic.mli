@@ -14,6 +14,6 @@ val checkmate : Board.board -> bool
 (**checkmate takes in a board and returns whether or not any side is in
    checkmate*)
 
-val update_status : Board.status -> status
+val update_status : status -> status
 (**update_status takes in the status of the game and returns the new status of
    the game*)
