@@ -23,11 +23,13 @@ let valid_move board (move : int * int) (color : string) =
       List.find
         (fun x ->
           match (x, move) with
-          | (u1, u2, _), (v1, v2) -> u1 = v1 && u2 = v2)
+          | Full (u1, u2, _), (v1, v2) -> u1 = v1 && u2 = v2
+          | _ -> false)
         occupied
     in
     match found with
-    | _, _, t -> t.color <> color
+    | Full (_, _, t) -> t.color <> color
+    | _ -> false
   with Not_found -> true
 
 let update_board board move piece = Raise "not implemented yet"
