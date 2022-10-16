@@ -20,7 +20,7 @@ let rec pawn_init_black (x : int) : board =
   match x <= 8 with
   | false -> []
   | true ->
-      Full (x, 7, Pieces.init "pawn" "white" (x, 7)) :: pawn_init_white (x + 1)
+      Full (x, 7, Pieces.init "pawn" "black" (x, 7)) :: pawn_init_black (x + 1)
 
 let valid_move board (move : int * int) (color : string) =
   let occupied =
