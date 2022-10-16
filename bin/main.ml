@@ -1,8 +1,6 @@
-open Game
-(** Import necessary modules*)
-
 open Pieces
 open Board
+open Game
 
 let game_over = raise (Failure "Unimplemented")
 
@@ -12,14 +10,14 @@ and black_move = raise (Failure "Unimplemented")
 let singleplayer = raise (Failure "Unimplemented")
 let multiplayer = raise (Failure "Unimplemented")
 
-let rec choose_gamemode =
+let choose_gamemode =
   print_endline "Please choose a gamemode: singleplayer or multiplayer:\n";
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
   | "singleplayer" -> singleplayer
   | "multiplayer" -> multiplayer
-  | _ -> choose_gamemode
+  | _ -> ()
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
