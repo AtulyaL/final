@@ -1,2 +1,2 @@
 (executables
- (names pieces game board))
+ (names pieces logic board))
