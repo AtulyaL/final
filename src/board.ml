@@ -14,7 +14,7 @@ let rec empty_init_row (x : int) (y : int) : board =
   | true -> Empty (x, y) :: empty_init_row (x + 1) y
 
 let rec empty_init_col (y : int) : board =
-  match y <= 8 with
+  match y <= 6 with
   | false -> []
   | true -> empty_init_row 1 y @ empty_init_col (y + 1)
 
