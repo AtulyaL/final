@@ -8,6 +8,16 @@ type tile =
 
 type board = tile list
 
+let rec empty_init_row (x : int) (y : int) : board =
+  match x <= 8 with
+  | false -> []
+  | true -> Empty (x, y) :: empty_init_row (x + 1) y
+
+let rec empty_init_col (y : int) : board =
+  match y <= 8 with
+  | false -> []
+  | true -> empty_init_row 1 y @ empty_init_col (y + 1)
+
 let rec pawn_init_white (x : int) : board =
   match x <= 8 with
   | false -> []
