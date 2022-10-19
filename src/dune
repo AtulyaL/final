@@ -1,2 +1,3 @@
-(executables
- (names pieces logic board))
+(library
+ (name game)
+ (public_name Game))
