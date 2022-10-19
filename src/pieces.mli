@@ -19,3 +19,4 @@ val name : t -> string
 (**returns name*)
 
 val moved : t -> bool
+val color : t -> string

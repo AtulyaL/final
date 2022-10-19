@@ -35,3 +35,4 @@ let update_location (t : t) (new_loc : int * int) =
 let location t = t.loc
 let name t = t.name
 let moved t = t.moved
+let color t = t.color

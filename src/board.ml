@@ -76,7 +76,7 @@ let valid_move board (move : int * int) (color : string) =
         occupied
     in
     match found with
-    | Full (_, _, t) -> t.color <> color
+    | Full (_, _, t) -> Pieces.color t <> color
     | _ -> false
   with Not_found -> true
 
@@ -89,6 +89,6 @@ let update_board board move piece =
         | Full (x1, y1, _), (x2, y2) -> x1 <> x2 && y1 <> y2)
       board
   in
-  match (piece.loc, move) with
+  match (location piece, move) with
   | (x1, y1), (x2, y2) ->
       Empty (x1, y1) :: Full (x2, y2, update_location piece (x2, y2)) :: others
