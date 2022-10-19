@@ -1,3 +1,4 @@
+open Game
 open Pieces
 open Board
 open Logic
