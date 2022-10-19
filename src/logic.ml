@@ -5,9 +5,11 @@ open Board
 
 (** checks if pawn move is valid; returns a bool*)
 
-type status =
-  | Color of string
-  | Turn of bool
+type status = {
+  white : bool;
+  black : bool;
+  turn : string;
+}
 
 let pawn_move move info board color =
   let loc = location info in
