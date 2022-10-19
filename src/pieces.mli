@@ -11,3 +11,6 @@ val init : string -> string -> int * int -> t
 
 val update_location : t -> int * int -> t
 (** updates the location of the piece after making a move*)
+
+val location : t -> int * int
+(** returns the current location of the piece*)
