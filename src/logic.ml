@@ -10,19 +10,19 @@ else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 + 1 then (valid_move board move 
 else false
 
 let knight_move move info board = match move with 
-| (u1, u2) -> "x"
+raise (Failure "Unimplemented")
 
 let rook_move move info board = match move with 
-| (u1, u2) -> "x"
+raise (Failure "Unimplemented")
 
 let bishop_move move info board = match move with 
-| (u1, u2) -> "x"
+raise (Failure "Unimplemented")
 
 let queen_move move info board = match move with 
-| (u1, u2) -> "x"
+raise (Failure "Unimplemented")
 
 let king_move move info board = match move with 
-| (u1, u2) -> "x"
+raise (Failure "Unimplemented")
 
 
 let check_move move info board color = match info.name with 
@@ -32,4 +32,4 @@ let check_move move info board color = match info.name with
 | "bishop" -> bishop_move move info board
 | "queen" -> queen_move move info board
 | "king" -> king_move move info board
-| _ -> 
+| _ -> raise (Failure "Unimplemented")
