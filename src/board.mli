@@ -5,7 +5,7 @@ type tile
 type board
 (** The type of the board, which is represented a list of tiles *)
 
-val initialize : board
+val init : board
 (** Creates a starting board*)
 
 val valid_move : board -> int * int -> string -> bool
