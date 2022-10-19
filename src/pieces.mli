@@ -14,3 +14,8 @@ val update_location : t -> int * int -> t
 
 val location : t -> int * int
 (** returns the current location of the piece*)
+
+val name : t -> string
+(**returns name*)
+
+val moved : t -> bool
