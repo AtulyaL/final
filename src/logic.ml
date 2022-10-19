@@ -9,7 +9,7 @@ type status =
 | Color of string
 | Turn of bool
 
-let pawn_move move info board color = match move, info.loc with 
+let pawn_move move info board color = let loc = location info in match move, loc with 
 | (u1, u2), (t1, t2) -> if u1 = t1 then (if u2 = t2 + 1 then (valid_move board move color) else if u2 = t2 + 2 then (valid_move board move color && not info.moved) else false) 
 else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 + 1 then (valid_move board move color)
 else false
