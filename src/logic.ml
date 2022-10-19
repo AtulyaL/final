@@ -27,6 +27,15 @@ let bishop_move move info board = raise (Failure "Unimplemented")
 let queen_move move info board = raise (Failure "Unimplemented")
 let king_move move info board = raise (Failure "Unimplemented")
 
+let check board =
+  raise (Failure "Unimplemented, Atulya are you doing any work?")
+
+let checkmate board =
+  raise (Failure "Unimplemented, Atulya are you doing any work?")
+
+let update_status status =
+  raise (Failure "Unimplemented, Atulya are you doing any work?")
+
 let check_move move info board color =
   match name info with
   | "pawn" -> pawn_move move info board color
