@@ -11,14 +11,20 @@ let print_board board = print_string (to_string board)
 
 let rec white_move move board =
   try
-    let new_move = Command.parse move in
-    let new_board = update_board board (move new_move) (piece new_move) in
-    black_move (update_board new_board new_move.move new_move.piece)
+    let new_move = parse move in
+    let new_board =
+      update_board board (Command.move new_move) (piece new_move)
+    in
+    match read_line () with
+    | exception End_of_file -> ()
+    | "print" -> print_board new_board
+    | move -> black_move move board
   with Invalid -> (
     print_endline "Please enter a valid command";
     print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
+    | "print" -> print_board board
     | move -> white_move move board)
 
 and black_move move board = raise (Failure "Unimplemented")
@@ -34,7 +40,7 @@ let multiplayer =
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
-  | move -> white_move move Board.init
+  | move -> white_move move init
 
 let rec choose_gamemode gamemode =
   match gamemode with

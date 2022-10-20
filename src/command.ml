@@ -1,8 +1,9 @@
 open Game
 open Board
+open Pieces
 
 type object_phrase = {
-  piece : string;
+  piece : t;
   move : int * int;
 }
 
