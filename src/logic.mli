@@ -2,6 +2,7 @@ type status
 (** type status is a record containing the status of the game; its fields are
     "white", "black", and "turn", which is whether or not each side is in check
     and whose turn it is*)
+
 val check_move : int * int -> Pieces.t -> Board.board -> string -> status
 
 val check : Board.board -> bool

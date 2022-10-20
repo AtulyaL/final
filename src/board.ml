@@ -56,6 +56,7 @@ let pieces (color : string) : board =
 
 let init =
   pawn_init_black 1 @ pawn_init_white 1 @ pieces "black" @ pieces "white"
+  @ empty_init_col 6
 
 let valid_move board (move : int * int) (color : string) =
   let occupied =

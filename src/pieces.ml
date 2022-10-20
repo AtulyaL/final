@@ -36,3 +36,6 @@ let location t = t.loc
 let name t = t.name
 let moved t = t.moved
 let color t = t.color
+let value t = t.value
+let captured t = t.captured
+let moves t = t.moves
