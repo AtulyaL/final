@@ -93,3 +93,18 @@ let update_board board move piece =
   match (location piece, move) with
   | (x1, y1), (x2, y2) ->
       Empty (x1, y1) :: Full (x2, y2, update_location piece (x2, y2)) :: others
+
+let find (coord : int * int) board : string =
+  let tile =
+    List.find
+      (fun a ->
+        match (a, coord) with
+        | Empty (x1, x2), (c1, c2) | Full (x1, x2, _), (c1, c2) ->
+            x1 = c1 && x2 = c2)
+      board
+  in
+  match tile with
+  | Empty (_, _) -> "_"
+  | Full (_, _, p) -> p |> name
+
+(* let to_string board = *)
