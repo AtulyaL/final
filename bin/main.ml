@@ -1,6 +1,11 @@
-(* open Game open Pieces open Board open Logic *)
-(* let game_over = raise (Failure "Unimplemented") let white_move = raise
-   (Failure "Unimplemented") let black_move = raise (Failure "Unimplemented") *)
+open Game
+open Pieces
+open Board
+open Logic
+
+let game_over = raise (Failure "Unimplemented")
+let white_move = raise (Failure "Unimplemented")
+let black_move = raise (Failure "Unimplemented")
 let singleplayer = raise (Failure "Unimplemented")
 let multiplayer = raise (Failure "Unimplemented")
 
