@@ -18,9 +18,8 @@ let parse str =
   let lst = List.filter (fun y -> y <> "") x in
   match lst with
   | [] -> raise Invalid
-  | u1 :: u2 ->
-      if
-        u1 = "pawn" || u1 = "knight" || u1 = "rook" || u1 = "queen"
-        || u1 = "king" || u1 = "bishop"
-      then Piece { piece = u1; move = parse_helper u2 }
-      else raise Invalid
+  | u1 :: u2 :: u3 :: u4 :: u5 -> raise Invalid
+  | _ -> raise Invalid
+
+let move command = command.move
+let piece command = command.piece
