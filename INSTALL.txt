@@ -1,5 +1,5 @@
-1) unzip this file and store it in the directory of your choice
+1) Unzip this file and store it in the directory of your choice
 2) Install OPAM on your computer following the directions found at: 
 https://cs3110.github.io/textbook/chapters/preface/install.html
-3) run dune build in the command line
-4) run make play in the command line
+3) Run dune build in the command line
+4) Run make play in the command line
