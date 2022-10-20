@@ -15,5 +15,9 @@ val valid_move : board -> int * int -> string -> bool
 val update_board : board -> int * int -> Pieces.t -> board
 (** Updates the board given an old board, move, and a piece *)
 
+val find_piece : int * int -> board -> Pieces.t
+(** find_piece finds the piece on the board given the location and particular
+    board*)
+
 val to_string : board -> string
 (** Converts a board to a string for the command line*)

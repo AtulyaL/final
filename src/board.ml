@@ -117,7 +117,7 @@ let find_piece (coord : int * int) board : t =
       board
   in
   match tile with
-  | Empty (_, _) -> raise (Failure "This can't be...")
+  | Empty (_, _) -> raise (Failure "No, but this can't be...")
   | Full (_, _, p) -> p
 
 let rec to_string_heavy_lifter (r : int) (c : int) board : string =
