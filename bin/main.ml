@@ -2,12 +2,26 @@ open Game
 open Pieces
 open Board
 open Logic
+open Command
 
 (* let game_over = raise (Failure "Unimplemented") let white_move = raise
    (Failure "Unimplemented") let black_move = raise (Failure "Unimplemented")
    let singleplayer = raise (Failure "Unimplemented") *)
 let print_board board = Board.to_string board
-let white_move move board = raise (Failure "Unimplemented")
+
+let rec white_move move board =
+  try
+    let new_move = Command.parse move in
+    let new_board = update_board board new_move.move new_move.piece in
+    black_move (update_board new_Board new_move.move new_move.piece)
+  with Invalid -> (
+    print_endline "Please enter a valid command";
+    print_string "> ";
+    match read_line () with
+    | exception End_of_file -> ()
+    | move -> white_move move board)
+
+and black_move move board = raise (Failure "Unimplemented")
 
 let multiplayer =
   print_endline "Here is your current board. It is white's move.";
