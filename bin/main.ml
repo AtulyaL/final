@@ -1,26 +1,46 @@
-(* open Game open Pieces open Board open Logic *)
+open Game
+open Pieces
+open Board
+open Logic
 
 (* let game_over = raise (Failure "Unimplemented") let white_move = raise
    (Failure "Unimplemented") let black_move = raise (Failure "Unimplemented")
    let singleplayer = raise (Failure "Unimplemented") *)
-let multiplayer =
-  print_endline "Here is the current board: ";
-  ()
+let print_board board = Board.to_string board
+let white_move move board = raise (Failure "Unimplemented")
 
-let choose_gamemode =
-  print_endline "Please choose a gamemode: singleplayer or multiplayer:\n";
+let multiplayer =
+  print_endline "Here is your current board. It is white's move.";
+  print_board Board.init;
+  print_endline
+    {|Please type "print" any time you want to view the board again|};
+  print_endline
+    {|To make a move, type the name of the piece, the location of the piece, and 
+    where you want to move it, such as "pawn 22 23"|};
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
-  (* | "singleplayer" -> singleplayer *)
+  | move -> white_move move Board.init
+
+let rec choose_gamemode gamemode =
+  match gamemode with
   | "multiplayer" -> multiplayer
-  | _ -> raise (Failure "Please enter a valid gamemode")
+  | _ -> (
+      print_endline "Please enter a valid file name!";
+      print_string "> ";
+      match read_line () with
+      | exception End_of_file -> ()
+      | gamemode -> choose_gamemode gamemode)
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
   ANSITerminal.print_string [ ANSITerminal.red ]
     "\n\nWelcome to our chess command line interface!\n";
-  choose_gamemode
+  print_endline "Please choose a gamemode: multiplayer.\n";
+  print_string "> ";
+  match read_line () with
+  | exception End_of_file -> ()
+  | gamemode -> choose_gamemode gamemode
 
 (* Execute the game engine. *)
 let () = main ()
