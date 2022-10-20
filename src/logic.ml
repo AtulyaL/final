@@ -23,27 +23,22 @@ let pawn_move move info board color =
         valid_move board move color
       else false
 
-let knight_move move info board = raise (Failure "Unimplemented")
-let rook_move move info board = raise (Failure "Unimplemented")
-let bishop_move move info board = raise (Failure "Unimplemented")
-let queen_move move info board = raise (Failure "Unimplemented")
-let king_move move info board = raise (Failure "Unimplemented")
+(* let knight_move move info board = raise (Failure "Unimplemented") let
+   rook_move move info board = raise (Failure "Unimplemented") let bishop_move
+   move info board = raise (Failure "Unimplemented") let queen_move move info
+   board = raise (Failure "Unimplemented") let king_move move info board = raise
+   (Failure "Unimplemented") *)
 
-let check board =
-  raise (Failure "Unimplemented, Atulya are you doing any work?")
+let check = raise (Failure "Unimplemented, Atulya are you doing any work?")
+let checkmate = raise (Failure "Unimplemented, Atulya are you doing any work?")
 
-let checkmate board =
-  raise (Failure "Unimplemented, Atulya are you doing any work?")
-
-let update_status status =
+let update_status =
   raise (Failure "Unimplemented, Atulya are you doing any work?")
 
 let check_move move info board color =
   match name info with
   | "pawn" -> pawn_move move info board color
-  | "knight" -> knight_move move info board
-  | "rook" -> rook_move move info board
-  | "bishop" -> bishop_move move info board
-  | "queen" -> queen_move move info board
-  | "king" -> king_move move info board
+  (* | "knight" -> knight_move move info board | "rook" -> rook_move move info
+     board | "bishop" -> bishop_move move info board | "queen" -> queen_move
+     move info board | "king" -> king_move move info board *)
   | _ -> raise (Failure "Unimplemented")

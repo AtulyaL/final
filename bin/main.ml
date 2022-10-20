@@ -1,12 +1,8 @@
-open Game
-open Pieces
-open Board
-open Logic
+(* open Game open Pieces open Board open Logic *)
 
-let game_over = raise (Failure "Unimplemented")
-let white_move = raise (Failure "Unimplemented")
-let black_move = raise (Failure "Unimplemented")
-let singleplayer = raise (Failure "Unimplemented")
+(* let game_over = raise (Failure "Unimplemented") let white_move = raise
+   (Failure "Unimplemented") let black_move = raise (Failure "Unimplemented")
+   let singleplayer = raise (Failure "Unimplemented") *)
 let multiplayer = raise (Failure "Unimplemented")
 
 let choose_gamemode =
@@ -14,7 +10,7 @@ let choose_gamemode =
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
-  | "singleplayer" -> singleplayer
+  (* | "singleplayer" -> singleplayer *)
   | "multiplayer" -> multiplayer
   | _ -> ()
 
