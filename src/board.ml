@@ -107,6 +107,19 @@ let find (coord : int * int) board : string =
   | Empty (_, _) -> "_"
   | Full (_, _, p) -> p |> name
 
+let find_piece (coord : int * int) board : t =
+  let tile =
+    List.find
+      (fun a ->
+        match (a, coord) with
+        | Empty (x1, x2), (c1, c2) | Full (x1, x2, _), (c1, c2) ->
+            x1 = c1 && x2 = c2)
+      board
+  in
+  match tile with
+  | Empty (_, _) -> raise (Failure "This can't be...")
+  | Full (_, _, p) -> p
+
 let rec to_string_heavy_lifter (r : int) (c : int) board : string =
   if r > 8 && c > 8 then ""
   else if c = 8 then "\n" ^ to_string_heavy_lifter (r + 1) 0 board
