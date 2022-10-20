@@ -3,10 +3,8 @@ type object_phrase = {
   move : int * int;
 }
 
-type command = Piece of object_phrase
-
-val parse : string -> command
-val move : command -> int * int
-val piece : command -> Pieces.t
+val parse : string -> Board.board -> object_phrase
+val move : object_phrase -> int * int
+val piece : object_phrase -> Pieces.t
 
 exception Invalid

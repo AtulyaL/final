@@ -1,4 +1,3 @@
-open Game
 open Board
 open Pieces
 
