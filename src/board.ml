@@ -9,12 +9,12 @@ type tile =
 type board = tile list
 
 let rec empty_init_row (x : int) (y : int) : board =
-  match x <= 8 with
+  match x <= 6 with
   | false -> []
   | true -> Empty (x, y) :: empty_init_row (x + 1) y
 
 let rec empty_init_col (y : int) : board =
-  match y <= 6 with
+  match y <= 8 with
   | false -> []
   | true -> empty_init_row 1 y @ empty_init_col (y + 1)
 
@@ -22,36 +22,36 @@ let rec pawn_init_white (x : int) : board =
   match x <= 8 with
   | false -> []
   | true ->
-      Full (x, 2, Pieces.init "pawn" "white" (x, 2)) :: pawn_init_white (x + 1)
+      Full (2, x, Pieces.init "pawn" "white" (2, x)) :: pawn_init_white (x + 1)
 
 let rec pawn_init_black (x : int) : board =
   match x <= 8 with
   | false -> []
   | true ->
-      Full (x, 7, Pieces.init "pawn" "black" (x, 7)) :: pawn_init_black (x + 1)
+      Full (7, x, Pieces.init "pawn" "black" (7, x)) :: pawn_init_black (x + 1)
 
 let pieces (color : string) : board =
   if color = "white" then
     [
       Full (1, 1, Pieces.init "rook" "white" (1, 1));
-      Full (8, 1, Pieces.init "rook" "white" (8, 1));
-      Full (2, 1, Pieces.init "knight" "white" (2, 1));
-      Full (7, 1, Pieces.init "knight" "white" (7, 1));
-      Full (3, 1, Pieces.init "bishop" "white" (3, 1));
-      Full (6, 1, Pieces.init "bishop" "white" (6, 1));
-      Full (4, 1, Pieces.init "queen" "white" (4, 1));
-      Full (5, 1, Pieces.init "king" "white" (5, 1));
+      Full (1, 8, Pieces.init "rook" "white" (1, 8));
+      Full (1, 2, Pieces.init "knight" "white" (1, 2));
+      Full (1, 7, Pieces.init "knight" "white" (1, 7));
+      Full (1, 3, Pieces.init "bishop" "white" (1, 3));
+      Full (1, 6, Pieces.init "bishop" "white" (1, 6));
+      Full (1, 4, Pieces.init "queen" "white" (1, 4));
+      Full (1, 5, Pieces.init "king" "white" (1, 5));
     ]
   else
     [
-      Full (1, 1, Pieces.init "rook" "black" (1, 8));
-      Full (8, 1, Pieces.init "rook" "black" (8, 8));
-      Full (2, 1, Pieces.init "knight" "black" (2, 8));
-      Full (7, 1, Pieces.init "knight" "black" (7, 8));
-      Full (3, 1, Pieces.init "bishop" "black" (3, 8));
-      Full (6, 1, Pieces.init "bishop" "black" (6, 8));
-      Full (4, 1, Pieces.init "queen" "black" (4, 8));
-      Full (5, 1, Pieces.init "king" "black" (5, 8));
+      Full (8, 1, Pieces.init "rook" "black" (8, 1));
+      Full (8, 8, Pieces.init "rook" "black" (8, 8));
+      Full (8, 2, Pieces.init "knight" "black" (8, 2));
+      Full (8, 7, Pieces.init "knight" "black" (8, 7));
+      Full (8, 3, Pieces.init "bishop" "black" (8, 3));
+      Full (8, 6, Pieces.init "bishop" "black" (8, 6));
+      Full (8, 4, Pieces.init "queen" "black" (8, 4));
+      Full (8, 5, Pieces.init "king" "black" (8, 5));
     ]
 
 let init =
