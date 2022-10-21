@@ -4,12 +4,18 @@ open Pieces
 open Board
 open Logic
 
-(** [init name] constructs an OUnit test in [board_tests] that asserts the
-    quality of [expected_output] with [init]. *)
-let init_test (name : string) (expected_output : board) : test =
-  name >:: fun _ -> assert_equal expected_output init
+(** [valid_move_test name] constructs an OUnit test in [board_tests] that
+    asserts the quality of [expected_output] with [valid_move board move color]. *)
+let valid_move_test (name : string) (board : board) (move : int * int)
+    (color : string) (expected_output : bool) : test =
+  name >:: fun _ -> assert_equal expected_output (valid_move board move color)
 
-let board_tests = []
+let board_tests =
+  [
+    valid_move_test "test for if a piece can move to a place" init (1, 1)
+      "white" true;
+  ]
+
 let logic_tests = []
 let pieces_tests = []
 
