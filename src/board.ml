@@ -130,4 +130,17 @@ let rec to_string_heavy_lifter (r : int) (c : int) board accum : string =
     to_string_heavy_lifter (r + 1) 1 board ("\n" ^ accum)
   else to_string_heavy_lifter r (c + 1) board (find (r, c) board ^ accum)
 
+let rec to_string_list (r : int) (c : int) (board : board) =
+  match c > 8 with
+  | true -> []
+  | false -> find (r, c) board :: to_string_list r (c + 1) board
+
+let rec to_string_rows r board =
+  match r > 8 with
+  | true -> []
+  | false -> to_string_list r 1 board @ to_string_rows (r + 1) board
+
+let rec to_string_list : (string list list) =
+
+
 let to_string (board : board) = to_string_heavy_lifter 1 1 board ""
