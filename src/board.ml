@@ -8,15 +8,15 @@ type tile =
 
 type board = tile list
 
-let rec empty_init_row (x : int) (y : int) : board =
-  match x <= 6 with
-  | false -> []
-  | true -> Empty (x, y) :: empty_init_row (x + 1) y
-
-let rec empty_init_col (y : int) : board =
+let rec empty_init_col (x : int) (y : int) : board =
   match y <= 8 with
   | false -> []
-  | true -> empty_init_row 1 y @ empty_init_col (y + 1)
+  | true -> Empty (x, y) :: empty_init_col x (y + 1)
+
+let rec empty_init_row (x : int) : board =
+  match x <= 6 with
+  | false -> []
+  | true -> empty_init_col x 1 @ empty_init_row (x + 1)
 
 let rec pawn_init_white (x : int) : board =
   match x <= 8 with
@@ -56,7 +56,7 @@ let pieces (color : string) : board =
 
 let init =
   pawn_init_black 1 @ pawn_init_white 1 @ pieces "black" @ pieces "white"
-  @ empty_init_col 6
+  @ empty_init_row 2
 
 let valid_move board (move : int * int) (color : string) =
   let occupied =
@@ -94,10 +94,6 @@ let update_board board move piece =
   | (x1, y1), (x2, y2) ->
       Empty (x1, y1) :: Full (x2, y2, update_location piece (x2, y2)) :: others
 
-let find_print_name p =
-  let nom = p |> name in
-  if nom = "knight" then "n" else String.get nom 0 |> Char.escaped
-
 let find (coord : int * int) board : string =
   try
     let tile =
@@ -110,7 +106,7 @@ let find (coord : int * int) board : string =
     in
     match tile with
     | Empty (_, _) -> "_"
-    | Full (_, _, p) -> p |> find_print_name
+    | Full (_, _, p) -> p |> name
   with Not_found -> (
     match coord with
     | a, b -> string_of_int a ^ string_of_int b)
