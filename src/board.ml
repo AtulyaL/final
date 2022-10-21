@@ -120,9 +120,10 @@ let find_piece (coord : int * int) board : t =
   | Empty (_, _) -> raise (Failure "No, but this can't be...")
   | Full (_, _, p) -> p
 
-let rec to_string_heavy_lifter (r : int) (c : int) board : string =
+let rec to_string_heavy_lifter (r : int) (c : int) board accum : string =
   if r > 8 && c > 8 then ""
-  else if c = 8 then "\n" ^ to_string_heavy_lifter (r + 1) 1 board
-  else find (r, c) board ^ to_string_heavy_lifter r (c + 1) board
+  else if c = 8 && r <> 8 then
+    to_string_heavy_lifter (r + 1) 1 board ("\n" ^ accum)
+  else to_string_heavy_lifter r (c + 1) board (find (r, c) board ^ accum)
 
 let to_string board = to_string_heavy_lifter 1 1 board

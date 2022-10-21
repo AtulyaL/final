@@ -5,7 +5,7 @@ open Command
 (* let game_over = raise (Failure "Unimplemented") let white_move = raise
    (Failure "Unimplemented") let black_move = raise (Failure "Unimplemented")
    let singleplayer = raise (Failure "Unimplemented") *)
-let print_board board = print_string (to_string board)
+let print_board board = print_string (to_string board "")
 
 let rec white_move move board =
   try
