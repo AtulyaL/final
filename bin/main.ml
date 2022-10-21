@@ -27,7 +27,7 @@ let rec white_move move board =
 
 and black_move move board =
   try
-    let new_move = parse move in
+    let new_move = parse move board in
     let new_board =
       update_board board (Command.move new_move) (piece new_move)
     in
