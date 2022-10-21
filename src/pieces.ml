@@ -7,6 +7,8 @@ type t = {
   moved : bool;
 }
 
+exception Color
+
 let init name color loc : t = { name; loc; color; moved = false }
 
 let update_location (t : t) (new_loc : int * int) =
@@ -16,4 +18,6 @@ let location t = t.loc
 let name t = t.name
 let moved t = t.moved
 let color t = t.color
+let check_color t color = if t.color <> color then raise Color
+
 (* let update_status t = { t with captured = true } *)

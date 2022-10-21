@@ -24,52 +24,70 @@ let rec white_move move board =
       update_board board (Command.move new_move) (piece new_move)
     in
     print new_board;
+    print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
+    | "quit" ->
+        print_endline "Goodbye! Thanks for playing!";
+        exit 0
     | move -> black_move move new_board
   with Invalid -> (
     print_endline "Please enter a valid command";
     print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
-    | "print" -> print board
+    | "quit" ->
+        print_endline "Goodbye! Thanks for playing!";
+        exit 0
     | move -> white_move move board)
 
 and black_move move board =
   try
-    print board;
     let new_move = parse move board in
     let new_board =
       update_board board (Command.move new_move) (piece new_move)
     in
+    print new_board;
+    print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
+    | "quit" ->
+        print_endline "Goodbye! Thanks for playing!";
+        exit 0
     | move -> white_move move new_board
   with Invalid -> (
     print_endline "Please enter a valid command";
     print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
+    | "quit" ->
+        print_endline "Goodbye! Thanks for playing!";
+        exit 0
     | move -> black_move move board)
 
-let multiplayer =
+let multiplayer board =
   print_endline "Here is your current board. It is white's move.";
-  print Board.init;
+  print board;
   print_endline
     {|To make a move, type the location of the piece and where you want to move it, with row first then column, such as "2 2 3 2"|};
+  print_endline "To quit during any part of the game, type quit";
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
-  | move -> white_move move init
+  | "quit" ->
+      print_endline "Goodbye! Thanks for playing!";
+      exit 0
+  | move -> white_move move board
 
-let singleplayer =
+let singleplayer board =
   print_endline "not implemented yet lol";
+  print board;
   raise (Failure "Unimplemented")
 
 let rec choose_gamemode gamemode =
   match gamemode with
-  | "multiplayer" -> multiplayer
-  | "singleplayer" -> singleplayer
+  | "multiplayer" -> multiplayer init
+  | "singleplayer" -> singleplayer init
   | _ -> (
       print_endline "Please enter a valid gamemode (multiplayer)!";
       print_string "> ";

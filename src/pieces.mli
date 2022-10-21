@@ -6,6 +6,8 @@ type t
 val init : string -> string -> int * int -> t
 (** init initializes a piece given its name, color, and location *)
 
+exception Color
+
 val update_location : t -> int * int -> t
 (** updates the location of the piece after making a move*)
 
@@ -17,3 +19,4 @@ val name : t -> string
 
 val moved : t -> bool
 val color : t -> string
+val check_color : t -> string -> unit
