@@ -14,3 +14,7 @@ test:
 
 cloc:
 	cloc --by-file --include-lang=OCaml .
+
+zip:
+	rm -f final.zip
+	zip -r final.zip . -x@exclude.lst
