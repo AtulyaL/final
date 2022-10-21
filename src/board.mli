@@ -19,5 +19,5 @@ val find_piece : int * int -> board -> Pieces.t
 (** find_piece finds the piece on the board given the location and particular
     board*)
 
-val to_string : board -> string -> string
+val to_string : board -> string
 (** Converts a board to a string for the command line*)
