@@ -94,6 +94,10 @@ let update_board board move piece =
   | (x1, y1), (x2, y2) ->
       Empty (x1, y1) :: Full (x2, y2, update_location piece (x2, y2)) :: others
 
+let find_print_name p =
+  let nom = p |> name in
+  if nom = "knight" then "n" else String.get nom 0 |> Char.escaped
+
 let find (coord : int * int) board : string =
   try
     let tile =
@@ -106,7 +110,7 @@ let find (coord : int * int) board : string =
     in
     match tile with
     | Empty (_, _) -> "_"
-    | Full (_, _, p) -> p |> name
+    | Full (_, _, p) -> p |> find_print_name
   with Not_found -> (
     match coord with
     | a, b -> string_of_int a ^ string_of_int b)
