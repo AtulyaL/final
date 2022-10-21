@@ -125,4 +125,4 @@ let rec to_string_heavy_lifter (r : int) (c : int) board : string =
   else if c = 8 then "\n" ^ to_string_heavy_lifter (r + 1) 0 board
   else find (r, c) board ^ to_string_heavy_lifter r (c + 1) board
 
-let to_string board = to_string_heavy_lifter 0 0 board
+let to_string board = to_string_heavy_lifter 1 1 board
