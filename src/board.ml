@@ -86,8 +86,8 @@ let update_board board move piece =
     List.filter
       (fun x ->
         match (x, move) with
-        | Empty (x1, y1), (x2, y2) -> x1 <> x2 && y1 <> y2
-        | Full (x1, y1, _), (x2, y2) -> x1 <> x2 && y1 <> y2)
+        | Empty (x1, y1), (x2, y2) -> x1 <> x2 || y1 <> y2
+        | Full (x1, y1, _), (x2, y2) -> x1 <> x2 || y1 <> y2)
       board
   in
   match (location piece, move) with
