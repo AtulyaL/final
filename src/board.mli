@@ -21,3 +21,5 @@ val find_piece : int * int -> board -> Pieces.t
 
 val to_string : board -> string
 (** Converts a board to a string for the command line*)
+
+val to_lst : board -> string list list

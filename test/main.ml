@@ -1,8 +1,9 @@
 open OUnit2
 open Game
-open Pieces
+
+(* open Pieces *)
 open Board
-open Logic
+(* open Logic *)
 
 (** [valid_move_test name] constructs an OUnit test in [board_tests] that
     asserts the quality of [expected_output] with [valid_move board move color]. *)

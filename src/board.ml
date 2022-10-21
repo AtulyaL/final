@@ -136,11 +136,9 @@ let rec to_string_list (r : int) (c : int) (board : board) =
   | false -> find (r, c) board :: to_string_list r (c + 1) board
 
 let rec to_string_rows r board =
-  match r > 8 with
+  match r = 0 with
   | true -> []
-  | false -> to_string_list r 1 board @ to_string_rows (r + 1) board
+  | false -> to_string_list r 1 board :: to_string_rows (r - 1) board
 
-let rec to_string_list : (string list list) =
-
-
+let to_lst board = to_string_rows 8 board
 let to_string (board : board) = to_string_heavy_lifter 1 1 board ""

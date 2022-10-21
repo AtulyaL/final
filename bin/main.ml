@@ -5,7 +5,21 @@ open Command
 (* let game_over = raise (Failure "Unimplemented") let white_move = raise
    (Failure "Unimplemented") let black_move = raise (Failure "Unimplemented")
    let singleplayer = raise (Failure "Unimplemented") *)
-let print_board board = print_string (to_string board)
+
+let rec print_helper = function
+  | [] -> print_string ""
+  | u1 :: u2 ->
+      print_string (u1 ^ " ");
+      print_helper u2
+
+let rec print_board = function
+  | [] -> print_endline ""
+  | u1 :: u2 ->
+      print_endline "";
+      print_helper u1;
+      print_board u2
+
+let print board = print_board (to_lst board)
 
 let rec white_move move board =
   try
@@ -15,14 +29,14 @@ let rec white_move move board =
     in
     match read_line () with
     | exception End_of_file -> ()
-    | "print" -> print_board new_board
+    | "print" -> print new_board
     | move -> black_move move board
   with Invalid -> (
     print_endline "Please enter a valid command";
     print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
-    | "print" -> print_board board
+    | "print" -> print board
     | move -> white_move move board)
 
 and black_move move board =
@@ -33,19 +47,19 @@ and black_move move board =
     in
     match read_line () with
     | exception End_of_file -> ()
-    | "print" -> print_board new_board
+    | "print" -> print new_board
     | move -> white_move move board
   with Invalid -> (
     print_endline "Please enter a valid command";
     print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
-    | "print" -> print_board board
+    | "print" -> print board
     | move -> black_move move board)
 
 let multiplayer =
   print_endline "Here is your current board. It is white's move.";
-  print_board Board.init;
+  print Board.init;
   print_endline
     {|Please type "print" any time you want to view the board again|};
   print_endline
