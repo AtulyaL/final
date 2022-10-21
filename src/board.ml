@@ -99,21 +99,17 @@ let find_print_name p =
   if nom = "knight" then "n" else String.get nom 0 |> Char.escaped
 
 let find (coord : int * int) board : string =
-  try
-    let tile =
-      List.find
-        (fun a ->
-          match (a, coord) with
-          | Empty (x1, x2), (c1, c2) | Full (x1, x2, _), (c1, c2) ->
-              x1 = c1 && x2 = c2)
-        board
-    in
-    match tile with
-    | Empty (_, _) -> "_"
-    | Full (_, _, p) -> p |> find_print_name
-  with Not_found -> (
-    match coord with
-    | a, b -> string_of_int a ^ string_of_int b)
+  let tile =
+    List.find
+      (fun a ->
+        match (a, coord) with
+        | Empty (x1, x2), (c1, c2) | Full (x1, x2, _), (c1, c2) ->
+            x1 = c1 && x2 = c2)
+      board
+  in
+  match tile with
+  | Empty (_, _) -> "_"
+  | Full (_, _, p) -> p |> find_print_name
 
 let find_piece (coord : int * int) board : t =
   let tile =
