@@ -21,44 +21,42 @@ let rec empty_init_row (x : int) : board =
 let rec pawn_init_white (x : int) : board =
   match x <= 8 with
   | false -> []
-  | true ->
-      Full (2, x, Pieces.init "pawn" "white" (2, x)) :: pawn_init_white (x + 1)
+  | true -> Full (2, x, Pieces.init Pawn White (2, x)) :: pawn_init_white (x + 1)
 
 let rec pawn_init_black (x : int) : board =
   match x <= 8 with
   | false -> []
-  | true ->
-      Full (7, x, Pieces.init "pawn" "black" (7, x)) :: pawn_init_black (x + 1)
+  | true -> Full (7, x, Pieces.init Pawn Black (7, x)) :: pawn_init_black (x + 1)
 
-let pieces (color : string) : board =
-  if color = "white" then
+let pieces (color : color) : board =
+  if color = White then
     [
-      Full (1, 1, Pieces.init "rook" "white" (1, 1));
-      Full (1, 8, Pieces.init "rook" "white" (1, 8));
-      Full (1, 2, Pieces.init "knight" "white" (1, 2));
-      Full (1, 7, Pieces.init "knight" "white" (1, 7));
-      Full (1, 3, Pieces.init "bishop" "white" (1, 3));
-      Full (1, 6, Pieces.init "bishop" "white" (1, 6));
-      Full (1, 4, Pieces.init "queen" "white" (1, 4));
-      Full (1, 5, Pieces.init "king" "white" (1, 5));
+      Full (1, 1, Pieces.init Rook White (1, 1));
+      Full (1, 8, Pieces.init Rook White (1, 8));
+      Full (1, 2, Pieces.init Knight White (1, 2));
+      Full (1, 7, Pieces.init Knight White (1, 7));
+      Full (1, 3, Pieces.init Bishop White (1, 3));
+      Full (1, 6, Pieces.init Bishop White (1, 6));
+      Full (1, 4, Pieces.init Queen White (1, 4));
+      Full (1, 5, Pieces.init King White (1, 5));
     ]
   else
     [
-      Full (8, 1, Pieces.init "rook" "black" (8, 1));
-      Full (8, 8, Pieces.init "rook" "black" (8, 8));
-      Full (8, 2, Pieces.init "knight" "black" (8, 2));
-      Full (8, 7, Pieces.init "knight" "black" (8, 7));
-      Full (8, 3, Pieces.init "bishop" "black" (8, 3));
-      Full (8, 6, Pieces.init "bishop" "black" (8, 6));
-      Full (8, 4, Pieces.init "queen" "black" (8, 4));
-      Full (8, 5, Pieces.init "king" "black" (8, 5));
+      Full (8, 1, Pieces.init Rook Black (8, 1));
+      Full (8, 8, Pieces.init Rook Black (8, 8));
+      Full (8, 2, Pieces.init Knight Black (8, 2));
+      Full (8, 7, Pieces.init Knight Black (8, 7));
+      Full (8, 3, Pieces.init Bishop Black (8, 3));
+      Full (8, 6, Pieces.init Bishop Black (8, 6));
+      Full (8, 4, Pieces.init Queen Black (8, 4));
+      Full (8, 5, Pieces.init King Black (8, 5));
     ]
 
 let init =
-  pawn_init_black 1 @ pawn_init_white 1 @ pieces "black" @ pieces "white"
+  pawn_init_black 1 @ pawn_init_white 1 @ pieces Black @ pieces White
   @ empty_init_row 2
 
-let valid_move board (move : int * int) (color : string) =
+let valid_move board (move : int * int) (color : color) =
   let occupied =
     List.filter
       (fun x ->
@@ -95,7 +93,7 @@ let update_board board move piece =
       Empty (x1, y1) :: Full (x2, y2, update_location piece (x2, y2)) :: others
 
 let find_print_name p =
-  let nom = p |> name in
+  let nom = p |> to_string in
   if nom = "knight" then "n" else String.get nom 0 |> Char.escaped
 
 let find (coord : int * int) board : string =

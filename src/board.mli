@@ -8,7 +8,7 @@ type board
 val init : board
 (** Creates a starting board*)
 
-val valid_move : board -> int * int -> string -> bool
+val valid_move : board -> int * int -> Pieces.color -> bool
 (** Determines if a space is occupied or not based off of the given board and
     current tile*)
 

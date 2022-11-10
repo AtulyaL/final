@@ -1,9 +1,21 @@
+type name =
+  | Pawn
+  | Knight
+  | Bishop
+  | Rook
+  | Queen
+  | King
+
+type color =
+  | Black
+  | White
+
 type t = {
-  name : string;
+  name : name;
   loc : int * int;
   (* captured : bool; *)
   (* moves : (int * int) list; *)
-  color : string;
+  color : color;
   moved : bool;
 }
 
@@ -16,6 +28,16 @@ let update_location (t : t) (new_loc : int * int) =
 
 let location t = t.loc
 let name t = t.name
+
+let to_string t =
+  match name t with
+  | Pawn -> "pawn"
+  | Knight -> "knight"
+  | Bishop -> "bishop"
+  | Rook -> "rook"
+  | Queen -> "queen"
+  | King -> "king"
+
 let moved t = t.moved
 let color t = t.color
 let check_color t color = if t.color <> color then raise Color
