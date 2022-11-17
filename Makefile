@@ -18,3 +18,10 @@ cloc:
 zip:
 	rm -f final.zip
 	zip -r final.zip . -x@exclude.lst
+
+bisect: bisect-clean
+	-dune exec --instrument-with bisect_ppx --force test/main.exe
+	bisect-ppx-report html
+
+bisect-clean:
+	rm -rf _coverage bisect*.coverage
