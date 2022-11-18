@@ -141,6 +141,10 @@ let rec to_string_rows r board =
 let to_lst board = to_string_rows 8 board
 let to_string (board : board) = to_string_heavy_lifter 1 1 board ""
 
+let is_empty board coord =
+  let output = find coord board in
+  if output = "_" then true else false
+
 let isolate_black (brd : board) : board =
   List.filter
     (fun ti ->

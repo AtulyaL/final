@@ -4,6 +4,7 @@ open Command
 open Logic
 open Pieces
 
+(*kcheck is empty when mvoing a piekce*)
 let rec print_helper = function
   | [] -> print_string ""
   | u1 :: u2 ->

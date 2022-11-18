@@ -23,3 +23,6 @@ val to_string : board -> string
 (** Converts a board to a string for the command line*)
 
 val to_lst : board -> string list list
+
+val is_empty : board -> int * int -> bool
+(**states whether or not that position is empty*)

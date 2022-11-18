@@ -50,11 +50,36 @@ let knight_move move info board color =
         else false
       else false
 
+(*if u2 = t2 then if u1 < t1 loop from u1 to t1 and check that it's empty*)
 let rook_move move info board color =
   let loc = location info in
+  let output = ref (valid_move board move color) in
   match (move, loc) with
   | (u1, u2), (t1, t2) ->
-      if u2 = t2 || u1 = t1 then valid_move board move color else false
+      if u2 = t2 then
+        if u1 < t1 then
+          for x = u1 + 1 to t1 - 1 do
+            if !output && is_empty board (x, u2) then output := true
+            else output := false
+          done
+        else
+          for x = t1 + 1 to u1 - 1 do
+            if !output && is_empty board (x, u2) then output := true
+            else output := false
+          done
+      else if u1 = t1 then
+        if u2 < t2 then
+          for x = u2 + 1 to t2 - 1 do
+            if !output && is_empty board (u1, x) then output := true
+            else output := false
+          done
+        else
+          for x = t2 + 1 to u2 - 1 do
+            if !output && is_empty board (u1, x) then output := true
+            else output := false
+          done
+      else output := false;
+      !output
 
 let bishop_move move info board color =
   let loc = location info in
