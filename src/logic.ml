@@ -8,10 +8,14 @@ open Board
 
    checks if pawn move is valid; returns a bool *)
 
-(* type status = { (* white : bool; black : bool; *) turn : color } *)
+type status = {
+  white : bool;
+  black : bool;
+  turn : color;
+}
 
-(*so turn would be of type Color*)
-(* let beg = { (* white = false; black = false; *) turn = Black } *)
+let beg = { white = false; black = false; turn = White }
+let check_turn stat = stat.turn
 
 let pawn_move (move : int * int) info board color =
   let loc = location info in
