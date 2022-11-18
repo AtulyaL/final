@@ -192,19 +192,51 @@ let check_check pos tile =
       | King -> king_reachable pos piece)
   | _ -> raise Not_found
 
+(*returns true iff the king is in check*)
 let rec check_helper (board : board) pos : bool =
   match board with
-  | [] -> true
-  | h :: t -> check_check pos h && check_helper t pos
+  | [] -> false
+  | h :: t -> check_check pos h || check_helper t pos
 
 let check (board : tile list) color =
   let king = List.find (find_king color) board in
   match king with
   | Full (_, _, k) ->
       let king_position = location k in
-      if color = Black then check_helper (isolate_black board) king_position
-      else check_helper (isolate_white board) king_position
+      if color = Black then check_helper (isolate_white board) king_position
+      else check_helper (isolate_black board) king_position
   | _ -> raise Not_found
+
+(*returns true iff the king is in check*)
+let rec check_king_moves move_lst info board color =
+  match move_lst with
+  | [] -> false
+  | h :: t ->
+      not (check_move h info board color || check_king_moves t info board color)
+
+let check_mate board color =
+  let king_info =
+    match List.find (find_king color) board with
+    | Full (_, _, info) -> info
+    | Empty (_, _) -> raise Not_found
+  in
+  let king_postion = location king_info in
+  let possible_king_position =
+    match king_postion with
+    | x, y ->
+        [
+          (x + 1, y);
+          (x, y + 1);
+          (x + 1, y + 1);
+          (x - 1, y);
+          (x, y - 1);
+          (x - 1, y - 1);
+          (x + 1, y - 1);
+          (x - 1, y + 1);
+        ]
+  in
+  check_king_moves possible_king_position king_info board color
+  && check board color
 
 (*Psuedocode: store the position of the king in a variable named king_position.
   Then, using king_position as a parameter call
