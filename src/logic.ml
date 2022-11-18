@@ -187,7 +187,7 @@ let rec check_helper board pos : bool =
   | [] -> true
   | h :: t -> check_check pos h && check_helper t pos
 
-let check board color =
+let check (board : board) color =
   let king = List.find (find_king color) board in
   let king_position = location king in
   if color = Black then check_helper (isolate_black board) king_position

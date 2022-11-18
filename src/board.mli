@@ -26,3 +26,6 @@ val to_lst : board -> string list list
 
 val is_empty : board -> int * int -> bool
 (**states whether or not that position is empty*)
+
+val isolate_black : board -> board
+val isolate_white : tile list -> board
