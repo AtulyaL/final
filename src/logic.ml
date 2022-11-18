@@ -95,11 +95,85 @@ let check_move move info board color =
   | Queen -> queen_move move info board color
   | King -> king_move move info board color
 
-(* let check = raise (Failure "Unimplemented, Atulya are you doing any work?")
+let pawn_reachable pos tile =
+  let loc = location tile in
+  match (pos, loc) with
+  | (u1, u2), (t1, t2) ->
+      if u2 = t2 then
+        if u1 = t1 + 1 then true
+        else if u1 = t1 + 2 then true && not (moved tile)
+        else false
+      else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 + 1 then true
+      else false
 
-   let checkmate = raise (Failure "Unimplemented, Atulya are you doing any\n
-   work?")
+let knight_reachable pos tile =
+  let loc = location tile in
+  match (pos, loc) with
+  | (u1, u2), (t1, t2) ->
+      if u2 = t2 + 1 || u2 = t2 - 1 then
+        if u1 = t1 + 2 || u1 = t1 - 2 then true else false
+      else if u2 = t2 + 2 || u2 = t2 - 2 then
+        if u1 = t1 + 1 || u1 = t1 - 1 then true else false
+      else false
 
-   let update_status = raise (Failure "Unimplemented, Atulya are you doing any\n
-   work?") *)
+let rook_reachable pos tile =
+  let loc = location tile in
+  match (pos, loc) with
+  | (u1, u2), (t1, t2) -> if u2 = t2 || u1 = t1 then true else false
+
+let bishop_reachable pos tile =
+  let loc = location tile in
+  match (pos, loc) with
+  | (u1, u2), (t1, t2) ->
+      if t2 - u2 = t1 - u1 || t2 - u2 = u1 - t1 then true else false
+
+let queen_reachable pos tile =
+  let loc = location tile in
+  match (pos, loc) with
+  | (u1, u2), (t1, t2) ->
+      if t2 - u2 = t1 - u1 || u1 = t1 || u2 = t2 then true else false
+
+let king_reachable pos tile =
+  let loc = location tile in
+  match (pos, loc) with
+  | (u1, u2), (t1, t2) ->
+      if u1 = t1 then if u2 = t2 + 1 || u2 = t2 - 1 then true else false
+      else if u2 = t2 then if u1 = t1 + 1 || u1 = t1 - 1 then true else false
+      else if u2 = t2 + 1 || u2 = t2 - 1 then
+        if u1 = t1 + 1 || u1 = t1 - 1 then true else false
+      else false
+
+let find_king c ti =
+  match name ti with
+  | King -> if color ti = c then true else false
+  | _ -> false
+
+let check_check pos tile =
+  match name tile with
+  | Pawn -> pawn_reachable pos tile
+  | Knight -> knight_reachable pos tile
+  | Rook -> rook_reachable pos tile
+  | Bishop -> bishop_reachable pos tile
+  | Queen -> queen_reachable pos tile
+  | King -> king_reachable pos tile
+
+let rec check_helper board pos : bool =
+  match board with
+  | [] -> true
+  | h :: t -> check_check pos h && check_helper t pos
+
+let check board color =
+  let king = List.find (find_king color) board in
+  let king_position = location king in
+  if color = Black then check_helper (isolate_black board) king_position
+  else check_helper (isolate_white board) king_position
+
+(*Psuedocode: store the position of the king in a variable named king_position.
+  Then, using king_position as a parameter call
+
+  let checkmate = raise (Failure "Unimplemented, Atulya are you doing any\n
+  work?")
+
+  let update_status = raise (Failure "Unimplemented, Atulya are you doing any\n
+  work?") *)
 (*let check_jumps*)

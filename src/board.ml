@@ -140,3 +140,27 @@ let rec to_string_rows r board =
 
 let to_lst board = to_string_rows 8 board
 let to_string (board : board) = to_string_heavy_lifter 1 1 board ""
+
+let isolate_black (brd : board) : board =
+  List.filter
+    (fun ti ->
+      match ti with
+      | Full (_, _, z) -> begin
+          match color z with
+          | Black -> true
+          | White -> false
+        end
+      | _ -> false)
+    brd
+
+let isolate_white brd : board =
+  List.filter
+    (fun ti ->
+      match ti with
+      | Full (_, _, z) -> begin
+          match color z with
+          | Black -> false
+          | White -> true
+        end
+      | _ -> false)
+    brd
