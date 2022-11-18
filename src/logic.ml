@@ -169,29 +169,38 @@ let king_reachable pos tile =
       else false
 
 let find_king c ti =
-  match name ti with
-  | King -> if color ti = c then true else false
+  match ti with
+  | Full (_, _, z) -> (
+      match name z with
+      | King -> if color z = c then true else false
+      | _ -> false)
   | _ -> false
 
 let check_check pos tile =
-  match name tile with
-  | Pawn -> pawn_reachable pos tile
-  | Knight -> knight_reachable pos tile
-  | Rook -> rook_reachable pos tile
-  | Bishop -> bishop_reachable pos tile
-  | Queen -> queen_reachable pos tile
-  | King -> king_reachable pos tile
+  match tile with
+  | Full (_, _, piece) -> (
+      match name piece with
+      | Pawn -> pawn_reachable pos piece
+      | Knight -> knight_reachable pos piece
+      | Rook -> rook_reachable pos piece
+      | Bishop -> bishop_reachable pos piece
+      | Queen -> queen_reachable pos piece
+      | King -> king_reachable pos piece)
+  | _ -> raise Not_found
 
 let rec check_helper (board : board) pos : bool =
   match board with
   | [] -> true
   | h :: t -> check_check pos h && check_helper t pos
 
-let check board color =
+let check (board : tile list) color =
   let king = List.find (find_king color) board in
-  let king_position = location king in
-  if color = Black then check_helper (isolate_black board) king_position
-  else check_helper (isolate_white board) king_position
+  match king with
+  | Full (_, _, k) ->
+      let king_position = location k in
+      if color = Black then check_helper (isolate_black board) king_position
+      else check_helper (isolate_white board) king_position
+  | _ -> raise Not_found
 
 (*Psuedocode: store the position of the king in a variable named king_position.
   Then, using king_position as a parameter call
