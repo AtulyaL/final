@@ -1,8 +1,11 @@
-type tile
+type tile =
+  | Empty of int * int
+  | Full of int * int * Pieces.t
+
 (** The type of a singular tile of the board, which is either empty or a tuple
     of two integers *)
 
-type board
+type board = tile list
 (** The type of the board, which is represented a list of tiles *)
 
 val init : board

@@ -182,7 +182,7 @@ let check_check pos tile =
   | Queen -> queen_reachable pos tile
   | King -> king_reachable pos tile
 
-let rec check_helper board pos : bool =
+let rec check_helper (board : board) pos : bool =
   match board with
   | [] -> true
   | h :: t -> check_check pos h && check_helper t pos
