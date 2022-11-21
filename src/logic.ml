@@ -239,11 +239,10 @@ let check_mate board color =
   && check board color
 
 (*Psuedocode: store the position of the king in a variable named king_position.
-  Then, using king_position as a parameter call
+  Then, using king_position as a parameter call*)
 
-  let checkmate = raise (Failure "Unimplemented, Atulya are you doing any\n
-  work?")
+let update_status =
+  raise (Failure "Unimplemented, Atulya are you doing any\n\n  work?")
 
-  let update_status = raise (Failure "Unimplemented, Atulya are you doing any\n
-  work?") *)
-(*let check_jumps*)
+let check_jumps =
+  raise (Failure "Unimplemented, Atulya are you doing any\n\n  work?")
