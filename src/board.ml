@@ -92,6 +92,19 @@ let update_board board move piece =
   | (x1, y1), (x2, y2) ->
       Empty (x1, y1) :: Full (x2, y2, update_location piece (x2, y2)) :: others
 
+let find_piece (coord : int * int) board : t =
+  let tile =
+    List.find
+      (fun a ->
+        match (a, coord) with
+        | Empty (x1, x2), (c1, c2) | Full (x1, x2, _), (c1, c2) ->
+            x1 = c1 && x2 = c2)
+      board
+  in
+  match tile with
+  | Empty (_, _) -> raise (Failure "No, but this can't be...")
+  | Full (_, _, p) -> p
+
 let find_print_name p =
   let nom = p |> to_string in
   if nom = "knight" then "n" else String.get nom 0 |> Char.escaped
@@ -108,19 +121,6 @@ let find (coord : int * int) board : string =
   match tile with
   | Empty (_, _) -> "_"
   | Full (_, _, p) -> p |> find_print_name
-
-let find_piece (coord : int * int) board : t =
-  let tile =
-    List.find
-      (fun a ->
-        match (a, coord) with
-        | Empty (x1, x2), (c1, c2) | Full (x1, x2, _), (c1, c2) ->
-            x1 = c1 && x2 = c2)
-      board
-  in
-  match tile with
-  | Empty (_, _) -> raise (Failure "No, but this can't be...")
-  | Full (_, _, p) -> p
 
 let rec to_string_heavy_lifter (r : int) (c : int) board accum : string =
   if r > 8 && c > 8 then ""

@@ -26,9 +26,14 @@ val to_string : board -> string
 (** Converts a board to a string for the command line*)
 
 val to_lst : board -> string list list
+(** Converts a board into a list of string lists which is printed to the
+    terminal command interface*)
 
 val is_empty : board -> int * int -> bool
-(**states whether or not that position is empty*)
+(** States whether or not that position is empty*)
 
 val isolate_black : board -> board
+(** Converts a board to a board with only the black pieces*)
+
 val isolate_white : tile list -> board
+(** Converts a board to a board with only the white pieces*)
