@@ -100,8 +100,8 @@ let update_status_test (name : string) (status : status)
 (*****************************************************************)
 let board_tests =
   [
-    valid_move_test "test for if a piece can move to a place" init (1, 1)
-      "white" true;
+    valid_move_test "test for if a piece can move to a place" init (1, 1) White
+      true;
   ]
 
 let command_tests = []
