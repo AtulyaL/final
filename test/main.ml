@@ -20,10 +20,16 @@ let valid_move_test (name : string) (board : board) (move : int * int)
   name >:: fun _ -> assert_equal expected_output (valid_move board move color)
 
 (** [update_board_test name] constructs an OUnit test in [board_tests] that
-    asserts the quality of [expected_output] with [update_board move piece]. *)
+    asserts the quality of [expected_output] with [update_board move piece].
+    Requires that move must be valid.*)
 let update_board_test (name : string) (board : board) (move : int * int)
-    (piece : Pieces.t) (expected_output : board) : test =
-  name >:: fun _ -> assert_equal expected_output (update_board board move piece)
+    (piece : Pieces.t) : test =
+  let old_loc = Pieces.(location piece) in
+  let updated_board = update_board board move piece in
+  name >:: fun _ ->
+  assert_equal (is_empty updated_board old_loc) true;
+  assert_equal (is_empty updated_board move) false;
+  assert_equal (find_piece move updated_board) piece
 
 (** [find_piece_test name] constructs an OUnit test in [board_tests] that
     asserts the quality of [expected_output] with [find_piece coord board]. *)
@@ -101,7 +107,13 @@ let update_status_test (name : string) (status : status)
 let board_tests =
   [
     valid_move_test "test for if a piece can move to a place" init (1, 1) White
-      true;
+      false;
+    valid_move_test "an empty spot should be valid to move to as black" init
+      (5, 5) Black true;
+    valid_move_test "moving to an unoccupied space as white should be true" init
+      (5, 5) White true;
+    valid_move_test "cannot move to an occupied test as black" init (8, 8) Black
+      false;
   ]
 
 let command_tests = []
