@@ -10,10 +10,10 @@ val check_move : int * int -> Pieces.t -> Board.board -> Pieces.color -> bool
 (* check_move takes in a move, a piece, a board, and a color and then returns a
    bool called status which checks if the piece can move *)
 
-val check : Board.board -> bool
+val check : Board.board -> Pieces.color -> bool
 (* check takes in a board and returns whether or not any side is in check *)
 
-val checkmate : Board.board -> bool
+val check_mate : Board.board -> Pieces.color -> bool
 (* checkmate takes in a board and returns whether or not any side is in
    checkmate *)
 

@@ -69,6 +69,32 @@ let isolate_white_test (name : string) (board : board) (expected_output : board)
 (* Helper Functions for Logic *)
 (*****************************************************************)
 
+(** [check_move_test name] constructs an OUnit test in [logic_tests] that
+    asserts the quality of [expected_output] with
+    [check_move move info board color]. *)
+let check_move_test (name : string) (move : int * int) (info : Pieces.t)
+    (board : board) (color : Pieces.color) (expected_output : bool) : test =
+  name >:: fun _ ->
+  assert_equal expected_output (check_move move info board color)
+
+(** [check_test name] constructs an OUnit test in [logic_tests] that asserts the
+    quality of [expected_output] with [check board color]. *)
+let check_test (name : string) (board : board) (color : Pieces.color)
+    (expected_output : bool) : test =
+  name >:: fun _ -> assert_equal expected_output (check board color)
+
+(** [check_mate_test name] constructs an OUnit test in [logic_tests] that
+    asserts the quality of [expected_output] with [check_mate board color]. *)
+let check_mate_test (name : string) (board : board) (color : Pieces.color)
+    (expected_output : bool) : test =
+  name >:: fun _ -> assert_equal expected_output (check_mate board color)
+
+(** [update_status_test name] constructs an OUnit test in [logic_tests] that
+    asserts the quality of [expected_output] with [update_status status]. *)
+let update_status_test (name : string) (status : status)
+    (expected_output : status) : test =
+  name >:: fun _ -> assert_equal expected_output (update_status status)
+
 (*****************************************************************)
 (* Helper Functions for Pieces *)
 (*****************************************************************)
@@ -78,11 +104,12 @@ let board_tests =
       "white" true;
   ]
 
+let command_tests = []
 let logic_tests = []
 let pieces_tests = []
 
 let suite =
   "test suite for Chess Game"
-  >::: List.flatten [ board_tests; logic_tests; pieces_tests ]
+  >::: List.flatten [ board_tests; command_tests; logic_tests; pieces_tests ]
 
 let _ = run_test_tt_main suite
