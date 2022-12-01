@@ -78,7 +78,7 @@ let multiplayer board =
   print_endline "Here is your current board. It is white's move.";
   print board;
   print_endline
-    {|To make a move, type the location of the piece and where you want to move it, with column first then row, such as "2 2 3 2"|};
+    {|To make a move, type the location of the piece and where you want to move it, with row first then column, such as "2 2 3 2"|};
   print_endline "To quit during any part of the game, type quit";
   print_string "> ";
   match read_line () with

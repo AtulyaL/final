@@ -8,14 +8,10 @@ open Board
 
    checks if pawn move is valid; returns a bool *)
 
-type status = {
-  white : bool;
-  black : bool;
-  turn : color;
-}
+(* type status = { white : bool; black : bool; turn : color; } *)
 
-let beg = { white = false; black = false; turn = White }
-let check_turn stat = stat.turn
+(* let beg = { white = false; black = false; turn = White } *)
+(* let check_turn stat = stat.turn *)
 
 let pawn_move (move : int * int) info board color =
   let loc = location info in
@@ -96,8 +92,10 @@ let queen_move move info board color =
   let loc = location info in
   match (move, loc) with
   | (u1, u2), (t1, t2) ->
-      if t2 - u2 = t1 - u1 || u1 = t1 || u2 = t2 then
-        valid_move board move color
+      if t2 - u2 = t1 - u1 || t2 - u2 = u1 - t1 then
+        valid_move board move color && bishop_move move info board color
+      else if u1 = t1 || u2 = t2 then
+        valid_move board move color && rook_move move info board color
       else false
 
 let king_move move info board color =
@@ -241,8 +239,7 @@ let check_mate board color =
 (*Psuedocode: store the position of the king in a variable named king_position.
   Then, using king_position as a parameter call*)
 
-let update_status =
-  raise (Failure "Unimplemented, Atulya are you doing any\n\n  work?")
-
-let check_jumps =
-  raise (Failure "Unimplemented, Atulya are you doing any\n\n  work?")
+(* let update_status = raise (Failure "Unimplemented, Atulya are you doing
+   any\n\n work?") *)
+(* let check_jumps = raise (Failure "Unimplemented, Atulya are you doing any\n\n
+   work?") *)
