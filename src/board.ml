@@ -8,6 +8,13 @@ type tile =
 
 type board = tile list
 
+let empty_board lst =
+  for r = 1 to 8 do
+    for c = 1 to 8 do
+      lst := Empty (r, c) :: !lst
+    done
+  done
+
 let rec empty_init_col (x : int) (y : int) : board =
   match y <= 8 with
   | false -> []

@@ -67,6 +67,14 @@ let find_piece_test (name : string) (coord : int * int) (board : board)
 
 (*****************************************************************)
 (* Helper Functions for Logic *)
+let check_mate_two_rooks : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = update_board !res (1, 4) (Pieces.init King White (1, 4)) in
+  let r1 = update_board k1 (2, 1) (Pieces.init Rook Black (2, 1)) in
+  let k2 = update_board r1 (8, 1) (Pieces.init King Black (8, 1)) in
+  update_board k2 (1, 1) (Pieces.init Rook Black (1, 1))
+
 (*****************************************************************)
 
 (* * [check_move_test name] constructs an OUnit test in [logic_tests] that
@@ -85,9 +93,9 @@ let check_move_test (name : string) (move : int * int) (info : Pieces.t)
 
 (** [check_mate_test name] constructs an OUnit test in [logic_tests] that
     asserts the quality of [expected_output] with [check_mate board color]. *)
-(* let check_mate_test (name : string) (board : board) (color : Pieces.color)
-   (expected_output : bool) : test = name >:: fun _ -> assert_equal
-   expected_output (check_mate board color) *)
+let check_mate_test (name : string) (board : board) (color : Pieces.color)
+    (expected_output : bool) : test =
+  name >:: fun _ -> assert_equal expected_output (check_mate board color)
 
 (* (** [update_status_test name] constructs an OUnit test in [logic_tests] that
    asserts the quality of [expected_output] with [update_status status]. *) let
@@ -446,6 +454,40 @@ let logic_tests =
      check_move_test "king can move 1 diagonal bottom right" (4, 5)
        (Pieces.init King White (5, 4))
        free_king White true);
+    check_move_test "queen moving unaturally" (3, 5)
+      (Pieces.init Queen White (1, 4))
+      init White false;
+    (let free_queen =
+       update_board init (4, 4) (Pieces.init Queen White (1, 4))
+     in
+     check_move_test "Queen moving diagonally bottom left" (3, 3)
+       (Pieces.init Queen White (4, 4))
+       free_queen White true);
+    (let free_queen =
+       update_board init (4, 4) (Pieces.init Queen White (1, 4))
+     in
+     check_move_test "Queen moving diagonally bottom right" (3, 5)
+       (Pieces.init Queen White (4, 4))
+       free_queen White true);
+    (let free_queen =
+       update_board init (4, 4) (Pieces.init Queen White (1, 4))
+     in
+     check_move_test "Queen moving forwards " (5, 4)
+       (Pieces.init Queen White (4, 4))
+       free_queen White true);
+    (let free_queen =
+       update_board init (4, 4) (Pieces.init Queen White (1, 4))
+     in
+     check_move_test "Queen moving backwards " (3, 4)
+       (Pieces.init Queen White (4, 4))
+       free_queen White true);
+    (let free_queen =
+       update_board init (4, 4) (Pieces.init Queen White (1, 4))
+     in
+     check_move_test "Queen moving right " (4, 5)
+       (Pieces.init Queen White (4, 4))
+       free_queen White true);
+    check_mate_test "checkmate with two rooks" check_mate_two_rooks White true;
   ]
 
 let pieces_tests = []
