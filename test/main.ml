@@ -351,6 +351,101 @@ let logic_tests =
     check_move_test "rook can only move straight" (2, 2)
       (Pieces.init Rook White (5, 1))
       init White false;
+    check_move_test "bishop can only move diagonal" (1, 1)
+      (Pieces.init Bishop White (1, 3))
+      init White false;
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally NE" (6, 5)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White true);
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally NE until blocked" (8, 6)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White false);
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally SE until blocked" (2, 1)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White false);
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally SE " (3, 2)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White true);
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally NW " (6, 3)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White true);
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally NW until it's blocked" (8, 1)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White false);
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally SW " (3, 2)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White true);
+    check_move_test "king cant move 2 forward" (3, 5)
+      (Pieces.init King White (1, 5))
+      init White false;
+    check_move_test "king cant move 2 diagonal right" (3, 6)
+      (Pieces.init King White (1, 5))
+      init White false;
+    check_move_test "king cant move 2 left" (1, 1)
+      (Pieces.init King White (1, 5))
+      init White false;
+    check_move_test "king cant move 2 left" (1, 6)
+      (Pieces.init King White (1, 5))
+      init White false;
+    check_move_test "king cant move 2 diagonal left" (3, 6)
+      (Pieces.init King White (1, 5))
+      init White false;
+    check_move_test "king cant teleport to a random place" (5, 1)
+      (Pieces.init King White (1, 4))
+      init White false;
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 forward" (6, 4)
+       (Pieces.init King White (5, 4))
+       free_king White true);
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 backward" (4, 4)
+       (Pieces.init King White (5, 4))
+       free_king White true);
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 right" (5, 5)
+       (Pieces.init King White (5, 4))
+       free_king White true);
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 left" (5, 3)
+       (Pieces.init King White (5, 4))
+       free_king White true);
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 diagonal top right" (6, 5)
+       (Pieces.init King White (5, 4))
+       free_king White true);
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 diagonal top left" (6, 3)
+       (Pieces.init King White (5, 4))
+       free_king White true);
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 diagonal bottom left" (4, 3)
+       (Pieces.init King White (5, 4))
+       free_king White true);
+    (let free_king = update_board init (5, 4) (Pieces.init King White (1, 5)) in
+     check_move_test "king can move 1 diagonal bottom right" (4, 5)
+       (Pieces.init King White (5, 4))
+       free_king White true);
   ]
 
 let pieces_tests = []
