@@ -319,9 +319,38 @@ let logic_tests =
     (let middle_rook =
        update_board init (4, 4) (Pieces.init Rook White (1, 1))
      in
-     check_move_test "rook can move straight down as long as free" (3, 4)
+     check_move_test "rook can move straight down 1 as long as free" (3, 4)
        (Pieces.init Rook White (4, 4))
        middle_rook White true);
+    (let obstr = update_board init (4, 4) (Pieces.init Rook White (1, 1)) in
+     let middle_rook_obstructed =
+       update_board obstr (4, 2) (Pieces.init Pawn White (2, 2))
+     in
+     check_move_test "rook can move straight left as long as free" (4, 1)
+       (Pieces.init Rook White (4, 4))
+       middle_rook_obstructed White false);
+    (let obstr = update_board init (5, 4) (Pieces.init Rook White (1, 1)) in
+     let middle_rook_obstructed =
+       update_board obstr (4, 4) (Pieces.init Pawn White (2, 4))
+     in
+     check_move_test "rook can move straight left as long as free" (3, 4)
+       (Pieces.init Rook White (5, 4))
+       middle_rook_obstructed White false);
+    (let free_down = update_board init (5, 4) (Pieces.init Rook White (1, 1)) in
+     check_move_test "rook can move straight down many steps as long as free"
+       (3, 4)
+       (Pieces.init Rook White (5, 4))
+       free_down White true);
+    (let free_rook = update_board init (5, 1) (Pieces.init Rook White (1, 1)) in
+     let obstr =
+       update_board free_rook (5, 3) (Pieces.init Pawn White (2, 3))
+     in
+     check_move_test "rook can move straight right as long as free" (5, 5)
+       (Pieces.init Rook White (5, 1))
+       obstr White false);
+    check_move_test "rook can only move straight" (2, 2)
+      (Pieces.init Rook White (5, 1))
+      init White false;
   ]
 
 let pieces_tests = []
