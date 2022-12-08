@@ -771,14 +771,14 @@ let queen_move move info board color =
       else <span data-count="1">f</span>alse
 
 let king_move move info board color =
-  <span data-count="23">l</span>et loc = location info in
-  <span data-count="23">m</span>atch (move, loc) with
-  | <span data-count="23">(</span>u1, u2), (t1, t2) -&gt;
+  <span data-count="24">l</span>et loc = location info in
+  <span data-count="24">m</span>atch (move, loc) with
+  | <span data-count="24">(</span>u1, u2), (t1, t2) -&gt;
       if u1 = t1 then
         <span data-count="5">i</span>f u2 = t2 + <span data-count="3">1</span> || u2 = t2 - <span data-count="1">1</span> then <span data-count="4">v</span>alid_move board move color
         else <span data-count="1">f</span>alse
-      else <span data-count="18">i</span>f u2 = t2 then
-        <span data-count="10">i</span>f u1 = t1 + <span data-count="7">1</span> || u1 = t1 - <span data-count="2">1</span> then <span data-count="9">v</span>alid_move board move color
+      else <span data-count="19">i</span>f u2 = t2 then
+        <span data-count="11">i</span>f u1 = t1 + <span data-count="8">1</span> || u1 = t1 - <span data-count="2">1</span> then <span data-count="10">v</span>alid_move board move color
         else <span data-count="1">f</span>alse
       else <span data-count="8">i</span>f u2 = t2 + <span data-count="5">1</span> || u2 = t2 - <span data-count="2">1</span> then
         <span data-count="7">i</span>f u1 = t1 + <span data-count="3">1</span> || u1 = t1 - <span data-count="2">1</span> then <span data-count="5">v</span>alid_move board move color
@@ -786,13 +786,13 @@ let king_move move info board color =
       else <span data-count="1">f</span>alse
 
 let check_move move info board color =
-  <span data-count="72">m</span>atch name info with
+  <span data-count="73">m</span>atch name info with
   | <span data-count="15">P</span>awn -&gt; pawn_move move info board color
   | <span data-count="10">K</span>night -&gt; knight_move move info board color
   | <span data-count="10">R</span>ook -&gt; rook_move move info board color
   | <span data-count="8">B</span>ishop -&gt; bishop_move move info board color
   | <span data-count="6">Q</span>ueen -&gt; queen_move move info board color
-  | <span data-count="23">K</span>ing -&gt; king_move move info board color
+  | <span data-count="24">K</span>ing -&gt; king_move move info board color
 
 let pawn_reachable pos tile =
   <span data-count="0">l</span>et loc = location tile in
@@ -843,11 +843,11 @@ let king_reachable pos tile =
       else <span data-count="0">f</span>alse
 
 let find_king c ti =
-  <span data-count="98">m</span>atch ti with
-  | <span data-count="90">F</span>ull (_, _, z) -&gt; (
+  <span data-count="102">m</span>atch ti with
+  | <span data-count="94">F</span>ull (_, _, z) -&gt; (
       match name z with
-      | <span data-count="14">K</span>ing -&gt; if colo<span data-count="14">r</span> z = c then <span data-count="7">t</span>rue else <span data-count="7">f</span>alse
-      | <span data-count="76">_</span> -&gt; false)
+      | <span data-count="16">K</span>ing -&gt; if colo<span data-count="16">r</span> z = c then <span data-count="8">t</span>rue else <span data-count="8">f</span>alse
+      | <span data-count="78">_</span> -&gt; false)
   | <span data-count="8">_</span> -&gt; false
 
 let check_check pos tile =
@@ -879,21 +879,21 @@ let check (board : tile list) color =
 
 (*returns true iff the king is in check*)
 let rec check_king_moves move_lst info board color =
-  <span data-count="9">m</span>atch move_lst with
+  <span data-count="10">m</span>atch move_lst with
   | <span data-count="0">[</span>] -&gt; false
-  | <span data-count="9">h</span> :: t -&gt;
-      not (check_mov<span data-count="9">e</span> h info board colo<span data-count="6">r</span> || check_king_move<span data-count="3">s</span> t info board colo<span data-count="1">r</span>)
+  | <span data-count="10">h</span> :: t -&gt;
+      not (check_mov<span data-count="10">e</span> h info board colo<span data-count="7">r</span> || check_king_move<span data-count="3">s</span> t info board colo<span data-count="1">r</span>)
 
 let check_mate board color =
-  <span data-count="6">l</span>et king_info =
-    match List.find (find_kin<span data-count="6">g</span> color) board with
-    | <span data-count="6">F</span>ull (_, _, info) -&gt; info
+  <span data-count="7">l</span>et king_info =
+    match List.find (find_kin<span data-count="7">g</span> color) board with
+    | <span data-count="7">F</span>ull (_, _, info) -&gt; info
     | <span data-count="0">E</span>mpty (_, _) -&gt; raise Not_found
   in
   let king_postion = location king_info in
-  <span data-count="6">l</span>et possible_king_position =
+  <span data-count="7">l</span>et possible_king_position =
     match king_postion with
-    | <span data-count="6">x</span>, y -&gt;
+    | <span data-count="7">x</span>, y -&gt;
         [
           (x + 1, y);
           (x, y + 1);
@@ -905,7 +905,7 @@ let check_mate board color =
           (x - 1, y + 1);
         ]
   in
-  check_king_move<span data-count="6">s</span> possible_king_position king_info board color
+  check_king_move<span data-count="7">s</span> possible_king_position king_info board color
   &amp;&amp; <span data-count="1">c</span>heck board color
 
 (*Psuedocode: store the position of the king in a variable named king_position.

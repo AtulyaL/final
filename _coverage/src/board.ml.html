@@ -407,9 +407,9 @@ type tile =
 type board = tile list
 
 let empty_board lst =
-  <span data-count="15">f</span>or r = 1 to 8 do
-    <span data-count="120">f</span>or c = 1 to 8 do
-      <span data-count="960">l</span>st := Empty (r, c) :: !lst
+  <span data-count="18">f</span>or r = 1 to 8 do
+    <span data-count="144">f</span>or c = 1 to 8 do
+      <span data-count="1152">l</span>st := Empty (r, c) :: !lst
     done
   done
 
@@ -462,27 +462,27 @@ let init =
   @ empty_init_ro<span data-count="3">w</span> 2
 
 let valid_move board (move : int * int) (color : color) =
-  <span data-count="65">l</span>et occupied =
+  <span data-count="66">l</span>et occupied =
     List.filter
       (fun x -&gt;
-        <span data-count="4699">m</span>atch x with
-        | <span data-count="2700">E</span>mpty (_, _) -&gt; false
-        | <span data-count="1999">F</span>ull (_, _, _) -&gt; true)
+        <span data-count="4763">m</span>atch x with
+        | <span data-count="2760">E</span>mpty (_, _) -&gt; false
+        | <span data-count="2003">F</span>ull (_, _, _) -&gt; true)
       board
   in
-  <span data-count="65">t</span>ry
+  <span data-count="66">t</span>ry
     let found =
       List.find
         (fun x -&gt;
-          <span data-count="1693">m</span>atch (x, move) with
-          | <span data-count="1693">F</span>ull (u1, u2, _), (v1, v2) -&gt; u1 = v1 &amp;&amp; <span data-count="62">u</span>2 = v2
+          <span data-count="1697">m</span>atch (x, move) with
+          | <span data-count="1697">F</span>ull (u1, u2, _), (v1, v2) -&gt; u1 = v1 &amp;&amp; <span data-count="63">u</span>2 = v2
           | <span data-count="0">_</span> -&gt; false)
         occupied
     in
     <span data-count="17">m</span>atch found with
     | <span data-count="17">F</span>ull (_, _, t) -&gt; Pieces.colo<span data-count="17">r</span> t &lt;&gt; color
     | <span data-count="0">_</span> -&gt; false
-  with <span data-count="48">N</span>ot_found -&gt; true
+  with <span data-count="49">N</span>ot_found -&gt; true
 
 let update_board board move piece =
   <span data-count="135">l</span>et others =
@@ -511,21 +511,21 @@ let find_piece (coord : int * int) board : t =
   | <span data-count="32">F</span>ull (_, _, p) -&gt; p
 
 let find_print_name p =
-  <span data-count="162">l</span>et nom = p |&gt; to_string in
-  <span data-count="162">i</span>f nom = "knight" then <span data-count="18">"</span>n" else <span data-count="144">S</span>tring.get nom 0 |&gt; <span data-count="144">C</span>har.escaped
+  <span data-count="174">l</span>et nom = p |&gt; to_string in
+  <span data-count="174">i</span>f nom = "knight" then <span data-count="18">"</span>n" else <span data-count="156">S</span>tring.get nom 0 |&gt; <span data-count="156">C</span>har.escaped
 
 let find (coord : int * int) board : string =
-  <span data-count="1169">l</span>et tile =
+  <span data-count="1361">l</span>et tile =
     List.find
       (fun a -&gt;
-        <span data-count="39219">m</span>atch (a, coord) with
-        | <span data-count="30257">E</span>mpty (x1, x2), (c1, c2) | <span data-count="8962">F</span>ull (x1, x2, _), (c1, c2) -&gt;
-            x1 = c1 &amp;&amp; <span data-count="5241">x</span>2 = c2)
+        <span data-count="45459">m</span>atch (a, coord) with
+        | <span data-count="35747">E</span>mpty (x1, x2), (c1, c2) | <span data-count="9712">F</span>ull (x1, x2, _), (c1, c2) -&gt;
+            x1 = c1 &amp;&amp; <span data-count="6105">x</span>2 = c2)
       board
   in
-  <span data-count="1169">m</span>atch tile with
-  | <span data-count="1007">E</span>mpty (_, _) -&gt; "_"
-  | <span data-count="162">F</span>ull (_, _, p) -&gt; p |&gt; find_print_name
+  <span data-count="1361">m</span>atch tile with
+  | <span data-count="1187">E</span>mpty (_, _) -&gt; "_"
+  | <span data-count="174">F</span>ull (_, _, p) -&gt; p |&gt; find_print_name
 
 let rec to_string_heavy_lifter (r : int) (c : int) board accum : string =
   <span data-count="0">i</span>f r &gt; 8 &amp;&amp; <span data-count="0">c</span> &gt; 8 then <span data-count="0">"</span>"
@@ -534,16 +534,16 @@ let rec to_string_heavy_lifter (r : int) (c : int) board accum : string =
   else <span data-count="0">t</span>o_string_heavy_lifter r (c + 1) board (fin<span data-count="0">d</span> (r, c) board ^ accum)
 
 let rec to_string_list (r : int) (c : int) (board : board) =
-  <span data-count="1296">m</span>atch c &gt; 8 with
-  | <span data-count="144">t</span>rue -&gt; []
-  | <span data-count="1152">f</span>alse -&gt; fin<span data-count="1152">d</span> (r, c) board :: to_string_lis<span data-count="1152">t</span> r (c + 1) board
+  <span data-count="1512">m</span>atch c &gt; 8 with
+  | <span data-count="168">t</span>rue -&gt; []
+  | <span data-count="1344">f</span>alse -&gt; fin<span data-count="1344">d</span> (r, c) board :: to_string_lis<span data-count="1344">t</span> r (c + 1) board
 
 let rec to_string_rows r board =
-  <span data-count="162">m</span>atch r = 0 with
-  | <span data-count="18">t</span>rue -&gt; []
-  | <span data-count="144">f</span>alse -&gt; to_string_lis<span data-count="144">t</span> r 1 board :: to_string_row<span data-count="144">s</span> (r - 1) board
+  <span data-count="189">m</span>atch r = 0 with
+  | <span data-count="21">t</span>rue -&gt; []
+  | <span data-count="168">f</span>alse -&gt; to_string_lis<span data-count="168">t</span> r 1 board :: to_string_row<span data-count="168">s</span> (r - 1) board
 
-let to_lst board = <span data-count="18">t</span>o_string_rows 8 board
+let to_lst board = <span data-count="21">t</span>o_string_rows 8 board
 let to_string (board : board) = <span data-count="0">t</span>o_string_heavy_lifter 1 1 board ""
 
 let is_empty board coord =
