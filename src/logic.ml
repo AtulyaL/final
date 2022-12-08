@@ -88,35 +88,31 @@ let bishop_move move info board color =
   | (u1, u2), (t1, t2) ->
       let x1 = ref u1 in
       let x2 = ref t1 in
-      (* let y1 = ref u2 in let y2 = ref t2 in *)
+      (*positive slope diagonal*)
       if t2 - u2 = t1 - u1 then
         if t2 > u2 then (
           x1 := !x1 + 1;
           for x = u2 + 1 to t2 - 1 do
-            if !output && is_empty board (x, !x1) then output := true
-            else output := false;
+            if not (is_empty board (!x1, x)) then output := false;
             x1 := !x1 + 1
           done)
         else (
           x2 := !x2 + 1;
           for x = t2 + 1 to u2 - 1 do
-            if !output && is_empty board (x, !x2) then output := true
-            else output := false;
+            if not (is_empty board (!x2, x)) then output := false;
             x2 := !x2 + 1
           done)
-      else if t2 - u2 = t1 - u1 then
+      else if t2 - u2 = u1 - t1 then
         if t2 > u2 then (
           x1 := !x1 - 1;
           for x = u2 + 1 to t2 - 1 do
-            if !output && is_empty board (!x1, x) then output := true
-            else output := false;
+            if not (is_empty board (!x1, x)) then output := false;
             x1 := !x1 - 1
           done)
         else (
           x2 := !x2 - 1;
           for x = t2 + 1 to u2 - 1 do
-            if !output && is_empty board (!x2, x) then output := true
-            else output := false;
+            if not (is_empty board (!x2, x)) then output := false;
             x2 := !x2 - 1
           done)
       else output := false;
