@@ -460,6 +460,15 @@ let logic_tests =
     check_move_test "bishop can only move diagonal" (1, 1)
       (Pieces.init Bishop White (1, 3))
       init White false;
+    check_move_test "bishop cannot move NE if blocked" (3, 8)
+      (Pieces.init Bishop White (1, 6))
+      init White false;
+    (let free_bishop =
+       update_board init (3, 5) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop cannot move SE if blocked" (1, 3)
+       (Pieces.init Bishop White (3, 5))
+       free_bishop White false);
     (let free_bishop =
        update_board init (5, 4) (Pieces.init Bishop White (1, 3))
      in
@@ -472,11 +481,26 @@ let logic_tests =
      check_move_test "bishop can move diagonally NE until blocked" (8, 6)
        (Pieces.init Bishop White (5, 4))
        free_bishop White false);
+    check_move_test "bishop cannot move NE if blocked" (2, 5)
+      (Pieces.init Bishop White (1, 6))
+      init White false;
     (let free_bishop =
        update_board init (5, 4) (Pieces.init Bishop White (1, 3))
      in
      check_move_test "bishop can move diagonally SE until blocked" (2, 1)
        (Pieces.init Bishop White (5, 4))
+       free_bishop White false);
+    (let free_bishop =
+       update_board init (3, 5) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop cannot move diagonally SW if blocked" (3, 1)
+       (Pieces.init Bishop White (3, 5))
+       free_bishop White false);
+    (let free_bishop =
+       update_board init (3, 5) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop cannot move diagonally SE if blocked" (2, 6)
+       (Pieces.init Bishop White (3, 5))
        free_bishop White false);
     (let free_bishop =
        update_board init (5, 4) (Pieces.init Bishop White (1, 3))
@@ -488,6 +512,12 @@ let logic_tests =
        update_board init (5, 4) (Pieces.init Bishop White (1, 3))
      in
      check_move_test "bishop can move diagonally NW " (6, 3)
+       (Pieces.init Bishop White (5, 4))
+       free_bishop White true);
+    (let free_bishop =
+       update_board init (5, 4) (Pieces.init Bishop White (1, 3))
+     in
+     check_move_test "bishop can move diagonally NW " (7, 2)
        (Pieces.init Bishop White (5, 4))
        free_bishop White true);
     (let free_bishop =
