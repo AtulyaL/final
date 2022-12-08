@@ -15,7 +15,8 @@ test:
 	OCAMLRUNPARAM=b dune exec test/main.exe
 
 cloc:
-	cloc --by-file --include-lang=OCaml .
+	cloc --by-file --include-lang=OCaml ./src
+	cloc --by-file --include-lang=OCaml ./test
 
 zip:
 	rm -f final.zip
