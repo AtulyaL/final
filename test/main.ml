@@ -140,6 +140,13 @@ let fools_checkmate : board =
   (*Black Queen from D8 to H4 CHECKMATE*)
   update_board white_pawn_2 (4, 8) (Pieces.init Queen Black (8, 4))
 
+let knight_check : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (8, 4)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
 let smothered_checkmate : board =
   let res = ref [] in
   empty_board res;
@@ -178,9 +185,9 @@ let check_move_test (name : string) (move : int * int) (info : Pieces.t)
 
 (** [check_test name] constructs an OUnit test in [logic_tests] that asserts the
     quality of [expected_output] with [check board color]. *)
-(* let check_test (name : string) (board : board) (color : Pieces.color)
-   (expected_output : bool) : test = name >:: fun _ -> assert_equal
-   expected_output (check board color) *)
+let check_test (name : string) (board : board) (color : Pieces.color)
+    (expected_output : bool) : test =
+  name >:: fun _ -> assert_equal expected_output (check board color)
 
 (** [check_mate_test name] constructs an OUnit test in [logic_tests] that
     asserts the quality of [expected_output] with [check_mate board color]. *)
@@ -636,6 +643,7 @@ let logic_tests =
       bishop_knight_checkmate Black true;
     check_mate_test "pawn bishop king checkmate. White loses"
       pawn_bishop_checkmate White true;
+    check_test "White knight checking black king" knight_check Black true;
   ]
 
 let pieces_tests =
