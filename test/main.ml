@@ -287,9 +287,9 @@ let board_tests =
     find_piece_test "Black rook should be at (8,1)" (8, 1) init
       (Pieces.init Rook Black (8, 1));
     find_piece_test "White pawn should be at (2,1)" (2, 1) init
-      (Pieces.init Rook White (2, 1));
-    find_piece_test "Black pawn should be at (7,1)" (2, 1) init
-      (Pieces.init Rook White (2, 1));
+      (Pieces.init Pawn White (2, 1));
+    find_piece_test "Black pawn should be at (7,1)" (7, 1) init
+      (Pieces.init Pawn Black (7, 1));
   ]
   (*Check pawns are initialized at the right places*)
   @ pawn_init_check
