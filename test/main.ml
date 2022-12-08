@@ -275,6 +275,14 @@ let board_tests =
     is_empty_test "(1,1) is initally occupied" init (1, 1) false;
     update_board_test "moving pawn at (2,1) to (3,1)" init (3, 1)
       (Pieces.init Pawn White (2, 1));
+    find_piece_test "White rook should be at (1,1)" (1, 1) init
+      (Pieces.init Rook White (1, 1));
+    find_piece_test "Black rook should be at (8,1)" (8, 1) init
+      (Pieces.init Rook Black (8, 1));
+    find_piece_test "White pawn should be at (2,1)" (2, 1) init
+      (Pieces.init Rook White (2, 1));
+    find_piece_test "Black pawn should be at (7,1)" (2, 1) init
+      (Pieces.init Rook White (2, 1));
   ]
   (*Check pawns are initialized at the right places*)
   @ pawn_init_check
