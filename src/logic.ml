@@ -88,8 +88,7 @@ let bishop_move move info board color =
   | (u1, u2), (t1, t2) ->
       let x1 = ref u1 in
       let x2 = ref t1 in
-      let y1 = ref u2 in
-      let y2 = ref t2 in
+      (* let y1 = ref u2 in let y2 = ref t2 in *)
       if t2 - u2 = t1 - u1 then
         if t2 > u2 then (
           x1 := !x1 + 1;

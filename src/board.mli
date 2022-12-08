@@ -8,6 +8,9 @@ type tile =
 type board = tile list
 (** The type of the board, which is represented a list of tiles *)
 
+val empty_board : tile list ref -> unit
+(** An empty board without any pieces*)
+
 val init : board
 (** Creates a starting board*)
 

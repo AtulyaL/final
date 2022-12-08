@@ -38,6 +38,11 @@ let to_string t =
   | Queen -> "queen"
   | King -> "king"
 
+let color_to_string color =
+  match color with
+  | Black -> "Black"
+  | White -> "White"
+
 let moved t = t.moved
 let color t = t.color
 let check_color t color = if t.color <> color then raise Color

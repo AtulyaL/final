@@ -33,3 +33,4 @@ val to_string : t -> string
 val moved : t -> bool
 val color : t -> color
 val check_color : t -> color -> unit
+val color_to_string : color -> string
