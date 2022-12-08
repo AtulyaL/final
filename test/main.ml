@@ -19,14 +19,37 @@ let valid_move_test (name : string) (board : board) (move : int * int)
     (color : color) (expected_output : bool) : test =
   name >:: fun _ -> assert_equal expected_output (valid_move board move color)
 
-(* (** [update_board_test name] constructs an OUnit test in [board_tests] that
-   asserts the quality of [expected_output] with [update_board move piece].
-   Requires that move must be valid.*) let update_board_test (name : string)
-   (board : board) (move : int * int) (piece : Pieces.t) : test = let old_loc =
-   Pieces.(location piece) in let updated_board = update_board board move piece
-   in name >:: fun _ -> assert_equal (is_empty updated_board old_loc) true;
-   assert_equal (is_empty updated_board move) false; assert_equal (find_piece
-   move updated_board) piece *)
+let tp_piece board (r, c) piece : board =
+  let removed =
+    List.filter
+      (fun a ->
+        match a with
+        | Full (r', c', _) | Empty (r', c') ->
+            if r = r' && c = c' then false else true)
+      board
+  in
+  Full (r, c, piece) :: removed
+
+let rec print_helper = function
+  | [] -> print_string ""
+  | u1 :: u2 ->
+      print_string (u1 ^ " ");
+      print_helper u2
+
+let rec print_board = function
+  | [] -> print_endline ""
+  | u1 :: u2 ->
+      print_endline "";
+      print_helper u1;
+      print_board u2
+
+(** [update_board_test name] constructs an OUnit test in [board_tests] that
+    asserts the quality of [expected_output] with [update_board move piece]. .*)
+let update_board_test (name : string) (board : board) (move : int * int)
+    (piece : Pieces.t) : test =
+  let updated_board = update_board board move piece in
+
+  name >:: fun _ -> assert_equal (is_empty updated_board move) false
 
 (** [find_piece_test name] constructs an OUnit test in [board_tests] that
     asserts the quality of [expected_output] with [find_piece coord board]. *)
@@ -38,19 +61,20 @@ let find_piece_test (name : string) (coord : int * int) (board : board)
    asserts the quality of [expected_output] with [to_string board]. *) let
    to_string_test (name : string) (board : board) (expected_output : string) :
    test = name >:: fun _ -> assert_equal expected_output (to_string board)
+   ~printer:(fun a -> a) *)
 
-   (** [to_lst_test name] constructs an OUnit test in [board_tests] that asserts
+(* (** [to_lst_test name] constructs an OUnit test in [board_tests] that asserts
    the quality of [expected_output] with [to_list board]. *) let to_lst_test
    (name : string) (board : board) (expected_output : string list list) : test =
    name >:: fun _ -> assert_equal expected_output (to_lst board)
 
-   (** [is_empty_test name] constructs an OUnit test in [board_tests] that
-   asserts the quality of [expected_output] with [is_empty board coord]. *) let
-   is_empty_test (name : string) (board : board) (coord : int * int)
-   (expected_output : bool) : test = name >:: fun _ -> assert_equal
-   expected_output (is_empty board coord)
+   [is_empty_test name] constructs an OUnit test in [board_tests] that asserts
+   the quality of [expected_output] with [is_empty board coord]. *)
+let is_empty_test (name : string) (board : board) (coord : int * int)
+    (expected_output : bool) : test =
+  name >:: fun _ -> assert_equal expected_output (is_empty board coord)
 
-   (** [isolate_black_test name] constructs an OUnit test in [board_tests] that
+(* (** [isolate_black_test name] constructs an OUnit test in [board_tests] that
    asserts the quality of [expected_output] with [isolate_black board]. *) let
    isolate_black_test (name : string) (board : board) (expected_output : board)
    : test = name >:: fun _ -> assert_equal expected_output (isolate_black board)
@@ -70,10 +94,77 @@ let find_piece_test (name : string) (coord : int * int) (board : board)
 let check_mate_two_rooks : board =
   let res = ref [] in
   empty_board res;
-  let k1 = update_board !res (1, 4) (Pieces.init King White (1, 4)) in
-  let r1 = update_board k1 (2, 1) (Pieces.init Rook Black (2, 1)) in
-  let k2 = update_board r1 (8, 1) (Pieces.init King Black (8, 1)) in
-  update_board k2 (1, 1) (Pieces.init Rook Black (1, 1))
+  (* White king at D1*)
+  let k1 = tp_piece !res (1, 4) (Pieces.init King White (1, 4)) in
+  (* Black rook at A2*)
+  let r1 = tp_piece k1 (2, 1) (Pieces.init Rook Black (2, 1)) in
+  (* Black King at F5 *)
+  let k2 = tp_piece r1 (5, 6) (Pieces.init King Black (5, 6)) in
+  (* 2nd Black Rook rook at A1. CHECKMATE *)
+  tp_piece k2 (1, 1) (Pieces.init Rook Black (1, 1))
+
+let check_mate_queen_king : board =
+  let res = ref [] in
+  empty_board res;
+  (*White queen at E8*)
+  let wq = tp_piece !res (8, 5) (Pieces.init Queen White (8, 5)) in
+  (*Black King at G8*)
+  let bk = tp_piece wq (8, 7) (Pieces.init King Black (8, 7)) in
+  (*White King at G6 CHECKMATE*)
+  tp_piece bk (6, 7) (Pieces.init King White (6, 7))
+
+let check_mate_rook_king : board =
+  let res = ref [] in
+  empty_board res;
+  (*Black king at B8*)
+  let bk = tp_piece !res (8, 2) (Pieces.init King Black (8, 2)) in
+  (*White Rook at E8*)
+  let wr = tp_piece bk (8, 5) (Pieces.init Rook White (8, 5)) in
+  (*White King at B6 CHECKMATE*)
+  tp_piece wr (6, 2) (Pieces.init King White (6, 2))
+
+let fools_checkmate : board =
+  let start = init in
+  let white_pawn_1 =
+    (*White pawn from F2 to F3*)
+    update_board start (3, 6) (Pieces.init Pawn White (2, 6))
+  in
+  (*Black pawn from E7 to E5*)
+  let black_pawn =
+    update_board white_pawn_1 (5, 5) (Pieces.init Pawn Black (7, 5))
+  in
+  (*White pawn from G2 to G4*)
+  let white_pawn_2 =
+    update_board black_pawn (4, 7) (Pieces.init Pawn White (2, 7))
+  in
+  (*Black Queen from D8 to H4 CHECKMATE*)
+  update_board white_pawn_2 (4, 8) (Pieces.init Queen Black (8, 4))
+
+let smothered_checkmate : board =
+  let res = ref [] in
+  empty_board res;
+  let br = tp_piece !res (8, 7) (Pieces.init Rook Black (8, 7)) in
+  let bk = tp_piece br (8, 8) (Pieces.init King Black (8, 8)) in
+  let bp1 = tp_piece bk (7, 7) (Pieces.init Pawn Black (7, 7)) in
+  let bp2 = tp_piece bp1 (7, 8) (Pieces.init Pawn Black (7, 8)) in
+  let wk = tp_piece bp2 (1, 7) (Pieces.init King White (1, 7)) in
+  tp_piece wk (7, 6) (Pieces.init Knight White (7, 6))
+
+let bishop_knight_checkmate : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (1, 1) (Pieces.init King Black (1, 1)) in
+  let wb = tp_piece bk (3, 2) (Pieces.init Bishop White (3, 2)) in
+  let wk = tp_piece wb (3, 3) (Pieces.init King White (3, 3)) in
+  tp_piece wk (2, 3) (Pieces.init Knight White (2, 3))
+
+let pawn_bishop_checkmate : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 7) (Pieces.init King White (1, 7)) in
+  let bk = tp_piece wk (2, 5) (Pieces.init King Black (2, 5)) in
+  let bb = tp_piece bk (4, 5) (Pieces.init Bishop Black (4, 5)) in
+  tp_piece bb (1, 6) (Pieces.init Pawn Black (1, 6))
 
 (*****************************************************************)
 
@@ -95,6 +186,7 @@ let check_move_test (name : string) (move : int * int) (info : Pieces.t)
     asserts the quality of [expected_output] with [check_mate board color]. *)
 let check_mate_test (name : string) (board : board) (color : Pieces.color)
     (expected_output : bool) : test =
+  print_board (to_lst board);
   name >:: fun _ -> assert_equal expected_output (check_mate board color)
 
 (* (** [update_status_test name] constructs an OUnit test in [logic_tests] that
@@ -177,6 +269,9 @@ let board_tests =
     find_piece_test "Black rook 2 should be at (8,8) " (8, 8) init
       (Pieces.init Rook Black (8, 8))
     (*-------------------------------------------------------*);
+    is_empty_test "(1,1) is initally occupied" init (1, 1) false;
+    update_board_test "moving pawn at (2,1) to (3,1)" init (3, 1)
+      (Pieces.init Pawn White (2, 1));
   ]
   (*Check pawns are initialized at the right places*)
   @ pawn_init_check
@@ -488,6 +583,18 @@ let logic_tests =
        (Pieces.init Queen White (4, 4))
        free_queen White true);
     check_mate_test "checkmate with two rooks" check_mate_two_rooks White true;
+    check_mate_test "checkmate with queen and king" check_mate_queen_king Black
+      true;
+    check_mate_test "checkmate with rook and king" check_mate_rook_king Black
+      true;
+    check_mate_test "fool's checkmate. Black checkmates white" fools_checkmate
+      White true;
+    check_mate_test "smothered checkmate. White checkmates black"
+      smothered_checkmate Black true;
+    check_mate_test "knight bishop checkmate. Black loses"
+      bishop_knight_checkmate Black true;
+    check_mate_test "pawn bishop king checkmate. White loses"
+      pawn_bishop_checkmate White true;
   ]
 
 let pieces_tests = []
