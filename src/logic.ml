@@ -17,24 +17,22 @@ let pawn_move (move : int * int) info board color =
   let loc = location info in
   if color = White then
     match (move, loc) with
-    | (u1, u2), (t1, t2) ->
-        if u2 = t2 then
-          if u1 = t1 + 1 then valid_move board move color
-          else if u1 = t1 + 2 then
-            valid_move board move color && not (moved info)
+    | (u2, u1), (t2, t1) ->
+        if u1 = t1 then
+          if u2 = t2 + 1 then is_empty board move
+          else if u2 = t2 + 2 then is_empty board move && not (moved info)
           else false
-        else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 + 1 then
+        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 + 1 then
           valid_move board move color
         else false
   else
     match (move, loc) with
-    | (u1, u2), (t1, t2) ->
-        if u2 = t2 then
-          if u1 = t1 - 1 then valid_move board move color
-          else if u1 = t1 - 2 then
-            valid_move board move color && not (moved info)
+    | (u2, u1), (t2, t1) ->
+        if u1 = t1 then
+          if u2 = t2 - 1 then is_empty board move
+          else if u2 = t2 - 2 then is_empty board move && not (moved info)
           else false
-        else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 - 1 then
+        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 - 1 then
           valid_move board move color
         else false
 
