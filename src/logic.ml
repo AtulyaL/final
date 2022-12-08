@@ -269,5 +269,3 @@ let check_mate board color =
 
 (* let update_status = raise (Failure "Unimplemented, Atulya are you doing
    any\n\n work?") *)
-(* let check_jumps = raise (Failure "Unimplemented, Atulya are you doing any\n\n
-   work?") *)
