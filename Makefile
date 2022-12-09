@@ -17,6 +17,7 @@ test:
 cloc:
 	cloc --by-file --include-lang=OCaml ./src
 	cloc --by-file --include-lang=OCaml ./test
+	cloc --by-file --include-lang=OCaml ./bin
 
 zip:
 	rm -f final.zip
