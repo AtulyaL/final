@@ -127,7 +127,10 @@ let find (coord : int * int) board : string =
   in
   match tile with
   | Empty (_, _) -> "_"
-  | Full (_, _, p) -> p |> find_print_name
+  | Full (_, _, p) -> (
+      match color p with
+      | White -> p |> find_print_name
+      | Black -> "\027[31m" ^ (p |> find_print_name) ^ "\027[0m")
 
 let rec to_string_heavy_lifter (r : int) (c : int) board accum : string =
   if r > 8 && c > 8 then ""
