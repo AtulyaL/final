@@ -140,12 +140,242 @@ let fools_checkmate : board =
   (*Black Queen from D8 to H4 CHECKMATE*)
   update_board white_pawn_2 (4, 8) (Pieces.init Queen Black (8, 4))
 
-let knight_check : board =
+let knight_check_1 : board =
   let res = ref [] in
   empty_board res;
   let k1 = tp_piece !res (8, 4) (Pieces.init King Black (8, 4)) in
   let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
   tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let knight_check_2 : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (7, 5)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let knight_check_3 : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (5, 5)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let knight_check_4 : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (4, 2)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let knight_check_5 : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (5, 1)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let knight_check_6 : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (7, 1)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let knight_check_7 : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (8, 2)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let knight_check_8 : board =
+  let res = ref [] in
+  empty_board res;
+  let k1 = tp_piece !res (8, 4) (Pieces.init King Black (4, 4)) in
+  let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
+  tp_piece kn (1, 4) (Pieces.init King White (1, 4))
+
+let rook_check_1 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (7, 4)) in
+  tp_piece bk (5, 4) (Pieces.init Rook White (5, 4))
+
+let rook_check_2 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (5, 7) (Pieces.init King Black (5, 7)) in
+  tp_piece bk (5, 4) (Pieces.init Rook White (5, 4))
+
+let rook_check_3 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (5, 1) (Pieces.init King Black (5, 1)) in
+  tp_piece bk (5, 4) (Pieces.init Rook White (5, 4))
+
+let rook_check_4 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (3, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 4) (Pieces.init Rook White (5, 4))
+
+let bishop_check_1 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 6) (Pieces.init Bishop White (5, 6))
+
+let bishop_check_2 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (1, 6) (Pieces.init Bishop White (1, 6))
+
+let bishop_check_3 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (1, 2) (Pieces.init Bishop White (1, 2))
+
+let bishop_check_4 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 2) (Pieces.init Bishop White (5, 2))
+
+let queen_check_1 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 6) (Pieces.init Queen White (5, 6))
+
+let queen_check_2 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (3, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (3, 6) (Pieces.init Queen White (3, 6))
+
+let queen_check_3 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (1, 2) (Pieces.init Queen White (1, 2))
+
+let queen_check_4 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (3, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 2) (Pieces.init Queen White (5, 2))
+
+let queen_check_5 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (7, 4)) in
+  tp_piece bk (5, 4) (Pieces.init Queen White (5, 4))
+
+let queen_check_6 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (5, 7) (Pieces.init King Black (5, 7)) in
+  tp_piece bk (5, 4) (Pieces.init Queen White (5, 4))
+
+let queen_check_7 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (5, 1) (Pieces.init King Black (5, 1)) in
+  tp_piece bk (5, 4) (Pieces.init Queen White (5, 4))
+
+let queen_check_8 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (3, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 4) (Pieces.init Queen White (5, 4))
+
+let pawn_check_1 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 4) (Pieces.init Pawn White (2, 3))
+
+let pawn_check_2 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 4) (Pieces.init Pawn White (2, 5))
+
+let pawn_check_3 : board =
+  let res = ref [] in
+  empty_board res;
+  let wk = tp_piece !res (1, 1) (Pieces.init King White (1, 1)) in
+  let bk = tp_piece wk (7, 4) (Pieces.init King Black (3, 4)) in
+  tp_piece bk (5, 4) (Pieces.init Pawn White (2, 4))
+
+let king_check_1 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (2, 3) (Pieces.init King White (2, 3))
+
+let king_check_2 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (2, 2) (Pieces.init King White (2, 2))
+
+let king_check_3 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (3, 2) (Pieces.init King White (3, 2))
+
+let king_check_4 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (4, 2) (Pieces.init King White (4, 2))
+
+let king_check_5 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (4, 3) (Pieces.init King White (4, 3))
+
+let king_check_6 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (4, 4) (Pieces.init King White (4, 4))
+
+let king_check_7 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (3, 4) (Pieces.init King White (3, 4))
+
+let king_check_8 : board =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (3, 3) (Pieces.init King Black (3, 3)) in
+  tp_piece bk (2, 4) (Pieces.init King White (2, 4))
 
 let smothered_checkmate : board =
   let res = ref [] in
@@ -643,7 +873,78 @@ let logic_tests =
       bishop_knight_checkmate Black true;
     check_mate_test "pawn bishop king checkmate. White loses"
       pawn_bishop_checkmate White true;
-    check_test "White knight checking black king" knight_check Black true;
+    check_test "White knight checking black king variation 1" knight_check_1
+      Black true;
+    check_test "White knight checking black king variation 2" knight_check_2
+      Black true;
+    check_test "White knight checking black king variation 3" knight_check_3
+      Black true;
+    check_test "White knight checking black king variation 4" knight_check_4
+      Black true;
+    check_test "White knight checking black king variation 5" knight_check_5
+      Black true;
+    check_test "White knight checking black king variation 6" knight_check_6
+      Black true;
+    check_test "White knight checking black king variation 7" knight_check_7
+      Black true;
+    check_test "White knight checking black king variation 8" knight_check_8
+      Black true;
+    check_test "initial board shouldn't have check for Black" init Black false;
+    check_test "initial board shouldn't have check for white" init White false;
+    check_test "White Rook checking black king variation 1" rook_check_1 Black
+      true;
+    check_test "White Rook checking black king variation 2" rook_check_2 Black
+      true;
+    check_test "White Rook checking black king variation 3" rook_check_3 Black
+      true;
+    check_test "White Rook checking black king variation 4" rook_check_4 Black
+      true;
+    check_test "White Bishop checking black king variation 1" bishop_check_1
+      Black true;
+    check_test "White Bishop checking black king variation 2" bishop_check_2
+      Black true;
+    check_test "White Bishop checking black king variation 3" bishop_check_3
+      Black true;
+    check_test "White Bishop checking black king variation 4" bishop_check_4
+      Black true;
+    check_test "White Queen checking black king variation 1" queen_check_1 Black
+      true;
+    check_test "White Queen checking black king variation 2" queen_check_2 Black
+      true;
+    check_test "White Queen checking black king variation 3" queen_check_3 Black
+      true;
+    check_test "White Queen checking black king variation 4" queen_check_4 Black
+      true;
+    check_test "White Queen checking black king variation 5" queen_check_5 Black
+      true;
+    check_test "White Queen checking black king variation 6" queen_check_6 Black
+      true;
+    check_test "White Queen checking black king variation 7" queen_check_7 Black
+      true;
+    check_test "White Queen checking black king variation 8" queen_check_8 Black
+      true;
+    check_test "White pawn checking black king variation 1" pawn_check_1 Black
+      true;
+    check_test "White pawn checking black king variation 2" pawn_check_2 Black
+      true;
+    check_test "White pawn cannot check king if it is in front" pawn_check_3
+      Black false;
+    check_test "White King checking Black king variation 1" king_check_1 Black
+      true;
+    check_test "White King checking Black king variation 2" king_check_2 Black
+      true;
+    check_test "White King checking Black king variation 3" king_check_3 Black
+      true;
+    check_test "White King checking Black king variation 4" king_check_4 Black
+      true;
+    check_test "White King checking Black king variation 5" king_check_5 Black
+      true;
+    check_test "White King checking Black king variation 6" king_check_6 Black
+      true;
+    check_test "White King checking Black king variation 7" king_check_7 Black
+      true;
+    check_test "White King checking Black king variation 8" king_check_8 Black
+      true;
   ]
 
 let pieces_tests =

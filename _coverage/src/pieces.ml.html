@@ -151,13 +151,13 @@ type t = {
 
 exception Color
 
-let init name color loc : t = <span data-count="642">{</span> name; loc; color; moved = false }
+let init name color loc : t = <span data-count="924">{</span> name; loc; color; moved = false }
 
 let update_location (t : t) (new_loc : int * int) =
   <span data-count="147">{</span> t with loc = new_loc; moved = true }
 
-let location t = <span data-count="243">t</span>.loc
-let name t = <span data-count="356">t</span>.name
+let location t = <span data-count="353">t</span>.loc
+let name t = <span data-count="561">t</span>.name
 
 let to_string t =
   <span data-count="177">m</span>atch name t with
@@ -174,7 +174,7 @@ let color_to_string color =
   | <span data-count="3">W</span>hite -&gt; "White"
 
 let moved t = <span data-count="2">t</span>.moved
-let color t = <span data-count="78">t</span>.color
+let color t = <span data-count="288">t</span>.color
 let check_color t color = <span data-count="1">i</span>f t.color &lt;&gt; color then <span data-count="0">r</span>aise Color
 
 (* let update_status t = { t with captured = true } *)

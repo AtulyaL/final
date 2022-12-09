@@ -401,9 +401,9 @@ type tile =
 type board = tile list
 
 let empty_board lst =
-  <span data-count="21">f</span>or r = 1 to 8 do
-    <span data-count="168">f</span>or c = 1 to 8 do
-      <span data-count="1344">l</span>st := Empty (r, c) :: !lst
+  <span data-count="123">f</span>or r = 1 to 8 do
+    <span data-count="984">f</span>or c = 1 to 8 do
+      <span data-count="7872">l</span>st := Empty (r, c) :: !lst
     done
   done
 
@@ -495,8 +495,8 @@ let find_piece (coord : int * int) board : t =
   <span data-count="36">l</span>et tile =
     List.find
       (fun a -&gt;
-        <span data-count="588">m</span>atch (a, coord) with
-        | <span data-count="0">E</span>mpty (x1, x2), (c1, c2) | <span data-count="588">F</span>ull (x1, x2, _), (c1, c2) -&gt;
+        <span data-count="580">m</span>atch (a, coord) with
+        | <span data-count="0">E</span>mpty (x1, x2), (c1, c2) | <span data-count="580">F</span>ull (x1, x2, _), (c1, c2) -&gt;
             x1 = c1 &amp;&amp; <span data-count="148">x</span>2 = c2)
       board
   in
@@ -545,27 +545,27 @@ let is_empty board coord =
   <span data-count="28">i</span>f output = "_" then <span data-count="19">t</span>rue else <span data-count="9">f</span>alse
 
 let isolate_black (brd : board) : board =
-  <span data-count="1">L</span>ist.filter
+  <span data-count="2">L</span>ist.filter
     (fun ti -&gt;
-      <span data-count="76">m</span>atch ti with
-      | <span data-count="36">F</span>ull (_, _, z) -&gt; begin
+      <span data-count="148">m</span>atch ti with
+      | <span data-count="68">F</span>ull (_, _, z) -&gt; begin
           match color z with
-          | <span data-count="18">B</span>lack -&gt; true
-          | <span data-count="18">W</span>hite -&gt; false
+          | <span data-count="34">B</span>lack -&gt; true
+          | <span data-count="34">W</span>hite -&gt; false
         end
-      | <span data-count="40">_</span> -&gt; false)
+      | <span data-count="80">_</span> -&gt; false)
     brd
 
 let isolate_white brd : board =
-  <span data-count="1">L</span>ist.filter
+  <span data-count="36">L</span>ist.filter
     (fun ti -&gt;
-      <span data-count="64">m</span>atch ti with
-      | <span data-count="3">F</span>ull (_, _, z) -&gt; begin
+      <span data-count="2312">m</span>atch ti with
+      | <span data-count="129">F</span>ull (_, _, z) -&gt; begin
           match color z with
-          | <span data-count="1">B</span>lack -&gt; false
-          | <span data-count="2">W</span>hite -&gt; true
+          | <span data-count="51">B</span>lack -&gt; false
+          | <span data-count="78">W</span>hite -&gt; true
         end
-      | <span data-count="61">_</span> -&gt; false)
+      | <span data-count="2183">_</span> -&gt; false)
     brd
 </code></pre>
       </div>
