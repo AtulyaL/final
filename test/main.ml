@@ -403,6 +403,16 @@ let pawn_bishop_checkmate : board =
   let bb = tp_piece bk (4, 5) (Pieces.init Bishop Black (4, 5)) in
   tp_piece bb (1, 6) (Pieces.init Pawn Black (1, 6))
 
+let invalid_move_into_valid_move : test =
+  let res = ref [] in
+  empty_board res;
+  let bk = tp_piece !res (8, 5) (Pieces.init King Black (8, 5)) in
+  let wk = tp_piece bk (1, 5) (Pieces.init King White (1, 5)) in
+  let blocking_pawn = tp_piece wk (3, 1) (Pieces.init Pawn White (3, 1)) in
+  let wr = tp_piece blocking_pawn (1, 1) (Pieces.init Rook White (1, 1)) in
+  ignore (check_move (5, 1) (Pieces.init Rook White (1, 1)) wr White);
+  "Moving valid after invalid move" >:: fun _ ->
+  assert_equal (check_move (2, 1) (Pieces.init Rook White (1, 1)) wr White) true
 (*****************************************************************)
 
 (* * [check_move_test name] constructs an OUnit test in [logic_tests] that
@@ -945,6 +955,7 @@ let logic_tests =
       true;
     check_test "White King checking Black king variation 8" king_check_8 Black
       true;
+    invalid_move_into_valid_move;
   ]
 
 let pieces_tests =
