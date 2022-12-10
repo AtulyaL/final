@@ -29,11 +29,11 @@ let rec print_helper = function
 let rec print_board i = function
   | [] ->
       print_endline "";
-      print_endline "  1 2 3 4 5 6 7 8";
+      print_endline ("\027[34m  1 2 3 4 5 6 7 8" ^ "\027[0m");
       print_endline ""
   | u1 :: u2 ->
       print_endline "";
-      print_string (string_of_int i ^ " ");
+      print_string ("\027[34m" ^ string_of_int i ^ " " ^ "\027[0m");
       print_helper u1;
       print_board (i - 1) u2
 
@@ -178,8 +178,9 @@ let main () =
     "\n\n\
      Welcome to our chess command line interface!\n\
     \ This is a multiplayer game.";
-  print_endline "";
-  print_endline "Please enter player one's name (they will start as white).\n";
+  print_endline " ";
+  print_endline " ";
+  print_endline "Please enter player one's name (they will start as white).";
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
