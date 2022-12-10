@@ -6,31 +6,40 @@ type name =
   | Queen
   | King
 
+(** Represents the type of pieces that exist on a chess board.*)
+
 type zcolor =
   | Black
   | White
 
+(** Represents the possible colors a piece can have on a chess board.*)
+
 type t
-(** Type t is the abstract type that represents a piece. A piece should have a
-    name, value, current location, information on whether it's captured, a list
-    of possible moves, color, and whether it has moved or not *)
+(** The abstract type that represents a piece. A piece should have a name,
+    value, current location, color, and whether it has moved or not *)
 
 val init : name -> zcolor -> int * int -> t
-(** init initializes a piece given its name, color, and location *)
-
-exception Color
+(** [init name color loc] initializes a piece given its [name], [color], and
+    [loc]. It is assumed that the piece has not been moved.*)
 
 val update_location : t -> int * int -> t
-(** updates the location of the piece after making a move*)
+(** [update_location t new_loc] updates the location of [t] after making a move
+    to [new_loc].*)
 
 val location : t -> int * int
-(** returns the current location of the piece*)
+(** [location t] returns the current location of [t].*)
 
 val name : t -> name
-(**returns name*)
+(** [name t] returns the name of [t]. *)
 
 val to_string : t -> string
+(** [to_string t] converts a piece to its string format. *)
+
 val moved : t -> bool
+(** [moved t] is whether or not [t] has been previously moved yet. *)
+
 val color : t -> zcolor
-val check_color : t -> zcolor -> unit
+(** [color t] is the color of [t].*)
+
 val color_to_string : zcolor -> string
+(** [color_to_string] returns the color of [t] in string formatting.*)

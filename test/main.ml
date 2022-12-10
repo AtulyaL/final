@@ -445,8 +445,6 @@ let check_mate_test (name : string) (board : board) (color : Pieces.zcolor)
 (*****************************************************************)
 (* Helper Functions for Pieces *)
 (*****************************************************************)
-let color_check_test (name : string) piece expected_color : test =
-  name >:: fun _ -> Pieces.check_color piece expected_color
 
 let rec pawn_army_check color =
   let res = ref [] in
@@ -958,13 +956,8 @@ let logic_tests =
     invalid_move_into_valid_move;
   ]
 
-let pieces_tests =
-  [
-    color_check_test "Black pawn is black" (Pieces.init Pawn Black (7, 1)) Black;
-  ]
-
 let suite =
   "test suite for Chess Game"
-  >::: List.flatten [ board_tests; command_tests; logic_tests; pieces_tests ]
+  >::: List.flatten [ board_tests; command_tests; logic_tests ]
 
 let _ = run_test_tt_main suite

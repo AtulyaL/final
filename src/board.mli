@@ -2,9 +2,11 @@ type tile =
   | Empty of int * int
   | Full of int * int * Pieces.t
 
-exception MissingPiece
 (** The type of a singular tile of the board, which is either empty or a tuple
     of two integers *)
+
+exception MissingPiece
+(** Raised to signal that a tile does not have a piece on it*)
 
 type board = tile list
 (** The type of the board, which is represented a list of tiles *)
