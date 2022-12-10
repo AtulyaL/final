@@ -26,14 +26,18 @@ let rec print_helper = function
       print_string (u1 ^ " ");
       print_helper u2
 
-let rec print_board = function
-  | [] -> print_endline ""
+let rec print_board i = function
+  | [] ->
+      print_endline "";
+      print_endline "  1 2 3 4 5 6 7 8";
+      print_endline ""
   | u1 :: u2 ->
       print_endline "";
+      print_string (string_of_int i ^ " ");
       print_helper u1;
-      print_board u2
+      print_board (i - 1) u2
 
-let print board = print_board (to_lst board)
+let print board = print_board 8 (to_lst board)
 
 let rec game_calc outcome name =
   match outcome with
@@ -161,6 +165,7 @@ and proc_move board names (col : Pieces.zcolor) : unit =
 
 and multiplayer board names =
   Printf.printf "Here is your current board. It is %s's move." names.p1;
+  print_endline "";
   print board;
   print_endline
     {|To make a move, type the location of the piece and where you want to move it, with row first then column, such as "2 2 3 2"|};
