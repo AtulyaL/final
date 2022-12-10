@@ -6,7 +6,7 @@ type name =
   | Queen
   | King
 
-type color =
+type zcolor =
   | Black
   | White
 
@@ -15,7 +15,7 @@ type t = {
   loc : int * int;
   (* captured : bool; *)
   (* moves : (int * int) list; *)
-  color : color;
+  color : zcolor;
   moved : bool;
 }
 

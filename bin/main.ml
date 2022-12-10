@@ -7,15 +7,15 @@ open Pieces
 type outcome =
   | Black
   | White
-(* | Draw *)
+  | Draw
 
 type name = {
   p1 : string;
   p2 : string;
   p1score : int;
   p2score : int;
-  p1color : Pieces.color;
-  p2color : Pieces.color;
+  p1color : Pieces.zcolor;
+  p2color : Pieces.zcolor;
 }
 
 exception GameOver of outcome * name
@@ -45,8 +45,9 @@ let rec game_calc outcome name =
       print_endline "Good game!";
       if name.p1color = White then { name with p1score = name.p1score + 1 }
       else { name with p2score = name.p2score + 1 }
-(* | Draw -> print_endline "Good game!"; { name with p1score = name.p1score + 1;
-   p2score = name.p2score + 1 } *)
+  | Draw ->
+      print_endline "Good game!";
+      { name with p1score = name.p1score + 1; p2score = name.p2score + 1 }
 
 and game_over outcome name =
   let name = game_calc outcome name in
@@ -90,7 +91,7 @@ and game_over outcome name =
           multiplayer Board.init { name with p2color = White; p1color = Black }
         else raise Invalid)
 
-and check_msg names (color : Pieces.color) =
+and check_msg names (color : Pieces.zcolor) =
   if color = Black then
     match names.p1color with
     | White -> Printf.printf "%s, you are in check" names.p2
@@ -112,29 +113,42 @@ and process move board names color : unit =
         update_board board (Command.move new_move) (piece new_move)
       in
       print new_board;
-      if color = White then move new_board names Black
-      else move new_board names White)
+      if color = White then proc_move new_board names (Black : Pieces.zcolor)
+      else proc_move new_board names White)
     else raise Invalid
-  with Invalid -> (
-    print_endline "Please enter a valid command";
-    print_string "> ";
-    match read_line () with
-    | exception End_of_file -> ()
-    | "quit" ->
-        print_endline "Goodbye! Thanks for playing!";
-        exit 0
-    | move -> process move board names color)
+  with
+  | Invalid -> (
+      print_endline "Please enter a valid command";
+      print_string "> ";
+      match read_line () with
+      | exception End_of_file -> ()
+      | "quit" ->
+          print_endline "Goodbye! Thanks for playing!";
+          exit 0
+      | move -> process move board names color)
+  | MissingPiece -> (
+      print_endline "There is no piece in the first set of coordinates";
+      print_endline
+        "Double check your coordinates; remember to start with row first then \
+         column";
+      print_string "> ";
+      match read_line () with
+      | exception End_of_file -> ()
+      | "quit" ->
+          print_endline "Goodbye! Thanks for playing!";
+          exit 0
+      | move -> process move board names color)
 
 (*checks if color is in check / checkmate, if not prompts a response*)
-and move board names color : unit =
+and proc_move board names (col : Pieces.zcolor) : unit =
   try
-    if check_mate board color then
-      if color = White then raise (GameOver (Black, names))
+    if check_mate board col then
+      if col = White then raise (GameOver (Black, names))
       else raise (GameOver (White, names));
-    if stalemate board color then raise (GameOver (Draw, names));
-    if check board color then check_msg names color;
-    if names.p1color = color then Printf.printf "It's %s's turn." names.p2
-    else Printf.printf "It's %s's turn." names.p1;
+    if stalemate board then raise (GameOver (Draw, names));
+    if check board col then check_msg names col;
+    if names.p1color = col then Printf.printf "It's %s's turn." names.p1
+    else Printf.printf "It's %s's turn." names.p2;
     print_endline "";
     print_string "> ";
     match read_line () with
@@ -142,7 +156,7 @@ and move board names color : unit =
     | "quit" ->
         print_endline "Goodbye! Thanks for playing!";
         exit 0
-    | move -> process move board names color
+    | move -> process move board names col
   with GameOver (o, n) -> game_over o n
 
 and multiplayer board names =

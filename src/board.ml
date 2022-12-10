@@ -1,5 +1,6 @@
 open Pieces
 
+exception MissingPiece
 (** Initiates the chess board and maintains it as the two players play*)
 
 type tile =
@@ -35,7 +36,7 @@ let rec pawn_init_black (x : int) : board =
   | false -> []
   | true -> Full (7, x, Pieces.init Pawn Black (7, x)) :: pawn_init_black (x + 1)
 
-let pieces (color : color) : board =
+let pieces (color : zcolor) : board =
   if color = White then
     [
       Full (1, 1, Pieces.init Rook White (1, 1));
@@ -63,7 +64,7 @@ let init =
   pawn_init_black 1 @ pawn_init_white 1 @ pieces Black @ pieces White
   @ empty_init_row 2
 
-let valid_move board (move : int * int) (color : color) =
+let valid_move board (move : int * int) (color : zcolor) =
   let occupied =
     List.filter
       (fun x ->
@@ -109,7 +110,7 @@ let find_piece (coord : int * int) board : t =
       board
   in
   match tile with
-  | Empty (_, _) -> raise (Failure "No, but this can't be...")
+  | Empty (_, _) -> raise MissingPiece
   | Full (_, _, p) -> p
 
 let find_print_name p =

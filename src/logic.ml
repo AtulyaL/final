@@ -97,7 +97,7 @@ let rec check_king_moves move_lst info board color =
   | h :: t ->
       not (check_move h info board color || check_king_moves t info board color)
 
-let check_mate board color =
+and check_mate board color =
   let king_info =
     match List.find (find_king color) board with
     | Full (_, _, info) -> info
@@ -124,7 +124,7 @@ let check_mate board color =
 (*Psuedocode: store the position of the king in a variable named king_position.
   Then, using king_position as a parameter call*)
 
-let pawn_move (move : int * int) info board color =
+and pawn_move (move : int * int) info board color =
   let loc = location info in
   if color = White then
     match (move, loc) with
@@ -147,7 +147,7 @@ let pawn_move (move : int * int) info board color =
           valid_move board move color
         else false
 
-let knight_move move info board color =
+and knight_move move info board color =
   let loc = location info in
   match (move, loc) with
   | (u1, u2), (t1, t2) ->
@@ -159,7 +159,7 @@ let knight_move move info board color =
         else false
       else false
 
-let rook_move move info board color =
+and rook_move move info board color =
   let loc = location info in
   let output = ref (valid_move board move color) in
   match (move, loc) with
@@ -189,7 +189,7 @@ let rook_move move info board color =
       else output := false;
       !output
 
-let bishop_move move info board color =
+and bishop_move move info board color =
   let loc = location info in
   let output = ref (valid_move board move color) in
   match (move, loc) with
@@ -226,7 +226,7 @@ let bishop_move move info board color =
       else output := false;
       !output
 
-let queen_move move info board color =
+and queen_move move info board color =
   let loc = location info in
   match (move, loc) with
   | (u1, u2), (t1, t2) ->
@@ -236,33 +236,36 @@ let queen_move move info board color =
         valid_move board move color && rook_move move info board color
       else false
 
-let check_castle move info board color dir =
-  if dir = Right then
-    if
+and check_castle info board color dir =
+  try
+    let t1, t2 = location info in
+    if dir = Right then
+      if
+        (not (moved info))
+        && is_empty board (t1, t2 + 1)
+        && is_empty board (t1, t2 + 2)
+        && check (update_board board (t1, t2 + 1) info) color
+        && check (update_board board (t1, t2 + 2) info) color
+      then raise (Castle (Right, info))
+      else false
+    else if
       (not (moved info))
-      && is_empty board (t1, t2 + 1)
-      && is_empty board (t1, t2 + 2)
-      && check (update_board board (t1, t2 + 1) info) color
-      && check (update_board board (t1, t2 + 2) info) color
-    then raise (Castle (Right, info))
+      && is_empty board (t1, t2 - 1)
+      && is_empty board (t1, t2 - 2)
+      && check (update_board board (t1, t2 - 1) info) color
+      && check (update_board board (t1, t2 - 2) info) color
+    then raise (Castle (Left, info))
     else false
-  else if
-    (not (moved info))
-    && is_empty board (t1, t2 - 1)
-    && is_empty board (t1, t2 - 2)
-    && check (update_board board (t1, t2 - 1) info) color
-    && check (update_board board (t1, t2 - 2) info) color
-  then raise (Castle (Left, info))
-  else false
+  with MissingPiece -> false
 
-let king_move move info board color =
+and king_move move info board color =
   let loc = location info in
   match (move, loc) with
   | (u1, u2), (t1, t2) ->
       if u1 = t1 then
         if u2 = t2 + 1 || u2 = t2 - 1 then valid_move board move color
-        else if t2 = u2 - 2 then check_castle move info board color Right
-        else if t2 = u2 + 2 then check_castle move info board color Left
+        else if t2 = u2 - 2 then check_castle info board color Right
+        else if t2 = u2 + 2 then check_castle info board color Left
         else false
       else if u2 = t2 then
         if u1 = t1 + 1 || u1 = t1 - 1 then valid_move board move color
@@ -272,7 +275,7 @@ let king_move move info board color =
         else false
       else false
 
-let check_move move info board color =
+and check_move move info board color =
   match name info with
   | Pawn -> pawn_move move info board color
   | Knight -> knight_move move info board color
@@ -280,3 +283,13 @@ let check_move move info board color =
   | Bishop -> bishop_move move info board color
   | Queen -> queen_move move info board color
   | King -> king_move move info board color
+
+let stalemate board =
+  let pieces = ref 0 in
+  for x = 1 to 8 do
+    for y = 1 to 8 do
+      try if name (find_piece (x, y) board) <> King then pieces := 1
+      with MissingPiece -> pieces := !pieces
+    done
+  done;
+  if !pieces = 0 then true else false

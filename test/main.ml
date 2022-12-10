@@ -16,7 +16,7 @@ open Logic
 (** [valid_move_test name] constructs an OUnit test in [board_tests] that
     asserts the quality of [expected_output] with [valid_move board move color]. *)
 let valid_move_test (name : string) (board : board) (move : int * int)
-    (color : color) (expected_output : bool) : test =
+    (color : zcolor) (expected_output : bool) : test =
   name >:: fun _ -> assert_equal expected_output (valid_move board move color)
 
 let tp_piece board (r, c) piece : board =
@@ -419,19 +419,19 @@ let invalid_move_into_valid_move : test =
    asserts the quality of [expected_output] with [check_move move info board
    color]. *)
 let check_move_test (name : string) (move : int * int) (info : Pieces.t)
-    (board : board) (color : Pieces.color) (expected_output : bool) : test =
+    (board : board) (color : Pieces.zcolor) (expected_output : bool) : test =
   name >:: fun _ ->
   assert_equal expected_output (check_move move info board color)
 
 (** [check_test name] constructs an OUnit test in [logic_tests] that asserts the
     quality of [expected_output] with [check board color]. *)
-let check_test (name : string) (board : board) (color : Pieces.color)
+let check_test (name : string) (board : board) (color : Pieces.zcolor)
     (expected_output : bool) : test =
   name >:: fun _ -> assert_equal expected_output (check board color)
 
 (** [check_mate_test name] constructs an OUnit test in [logic_tests] that
     asserts the quality of [expected_output] with [check_mate board color]. *)
-let check_mate_test (name : string) (board : board) (color : Pieces.color)
+let check_mate_test (name : string) (board : board) (color : Pieces.zcolor)
     (expected_output : bool) : test =
   print_board (to_lst board);
   name >:: fun _ -> assert_equal expected_output (check_mate board color)

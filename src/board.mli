@@ -2,6 +2,7 @@ type tile =
   | Empty of int * int
   | Full of int * int * Pieces.t
 
+exception MissingPiece
 (** The type of a singular tile of the board, which is either empty or a tuple
     of two integers *)
 
@@ -14,7 +15,7 @@ val empty_board : tile list ref -> unit
 val init : board
 (** Creates a starting board*)
 
-val valid_move : board -> int * int -> Pieces.color -> bool
+val valid_move : board -> int * int -> Pieces.zcolor -> bool
 (** Determines if a space is occupied or not based off of the given board and
     current tile*)
 

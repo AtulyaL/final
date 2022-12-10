@@ -6,7 +6,7 @@ type name =
   | Queen
   | King
 
-type color =
+type zcolor =
   | Black
   | White
 
@@ -15,7 +15,7 @@ type t
     name, value, current location, information on whether it's captured, a list
     of possible moves, color, and whether it has moved or not *)
 
-val init : name -> color -> int * int -> t
+val init : name -> zcolor -> int * int -> t
 (** init initializes a piece given its name, color, and location *)
 
 exception Color
@@ -31,6 +31,6 @@ val name : t -> name
 
 val to_string : t -> string
 val moved : t -> bool
-val color : t -> color
-val check_color : t -> color -> unit
-val color_to_string : color -> string
+val color : t -> zcolor
+val check_color : t -> zcolor -> unit
+val color_to_string : zcolor -> string

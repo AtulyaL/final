@@ -12,19 +12,15 @@ type direction =
 
 exception Castle of direction * Pieces.t
 
-val check_move : int * int -> Pieces.t -> Board.board -> Pieces.color -> bool
+val check_move : int * int -> Pieces.t -> Board.board -> Pieces.zcolor -> bool
 (* check_move takes in a move, a piece, a board, and a color and then returns a
    bool called status which checks if the piece can move *)
 
-val check : Board.board -> Pieces.color -> bool
+val check : Board.board -> Pieces.zcolor -> bool
 (* check takes in a board and returns whether or not any side is in check *)
 
-val check_mate : Board.board -> Pieces.color -> bool
+val check_mate : Board.board -> Pieces.zcolor -> bool
 (* checkmate takes in a board and returns whether or not any side is in
    checkmate *)
 
-(* val update_status : status -> status *)
-(* update_status takes in the status of the game and returns the new status of
-   the game *)
-
-val stalemate : Board.board -> Pieces.color -> bool
+val stalemate : Board.board -> bool
