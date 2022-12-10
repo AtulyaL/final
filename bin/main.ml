@@ -90,7 +90,7 @@ and game_over outcome name =
           multiplayer Board.init { name with p2color = White; p1color = Black }
         else raise Invalid)
 
-and check_msg names color =
+and check_msg names (color : Pieces.color) =
   if color = Black then
     match names.p1color with
     | White -> Printf.printf "%s, you are in check" names.p2
@@ -100,75 +100,50 @@ and check_msg names color =
     | White -> Printf.printf "%s, you are in check" names.p1
     | Black -> Printf.printf "%s, you are in check" names.p2
 
-and white_move move board names =
+(*parses the move color makes and checks if it's a valid move, if not start
+  process again*)
+and process move board names color : unit =
   try
     let new_move = parse move board in
-    if check (update_board board (Command.move new_move) (piece new_move)) White
+    if check (update_board board (Command.move new_move) (piece new_move)) color
     then raise Invalid
-    else if check_move new_move.move new_move.piece board White then (
+    else if check_move new_move.move new_move.piece board color then (
       let new_board =
         update_board board (Command.move new_move) (piece new_move)
       in
       print new_board;
-      if check_mate board White then raise (GameOver (White, names));
-      if check board White then check_msg names White;
-      if names.p1color = White then Printf.printf "It's %s's turn." names.p2
-      else Printf.printf "It's %s's turn." names.p1;
-      print_endline "";
-      print_string "> ";
-      match read_line () with
-      | exception End_of_file -> ()
-      | "quit" ->
-          print_endline "Goodbye! Thanks for playing!";
-          exit 0
-      | move -> black_move move new_board names)
+      if color = White then move new_board names Black
+      else move new_board names White)
     else raise Invalid
-  with
-  | Invalid -> (
-      print_endline "Please enter a valid command";
-      print_string "> ";
-      match read_line () with
-      | exception End_of_file -> ()
-      | "quit" ->
-          print_endline "Goodbye! Thanks for playing!";
-          exit 0
-      | move -> white_move move board names)
-  | GameOver (o, n) -> game_over o n
+  with Invalid -> (
+    print_endline "Please enter a valid command";
+    print_string "> ";
+    match read_line () with
+    | exception End_of_file -> ()
+    | "quit" ->
+        print_endline "Goodbye! Thanks for playing!";
+        exit 0
+    | move -> process move board names color)
 
-and black_move move board names =
+(*checks if color is in check / checkmate, if not prompts a response*)
+and move board names color : unit =
   try
-    let new_move = parse move board in
-    if check (update_board board (Command.move new_move) (piece new_move)) White
-    then raise Invalid
-    else if check_move new_move.move new_move.piece board Black then (
-      let new_board =
-        update_board board (Command.move new_move) (piece new_move)
-      in
-      print new_board;
-      if check_mate board Black then raise (GameOver (Black, names));
-      if check board Black then check_msg names Black;
-      if names.p1color = Black then Printf.printf "It's %s's turn." names.p2
-      else Printf.printf "It's %s's turn." names.p1;
-      print_endline "";
-      print_string "> ";
-      match read_line () with
-      | exception End_of_file -> ()
-      | "quit" ->
-          print_endline "Goodbye! Thanks for playing!";
-          exit 0
-      | move -> white_move move new_board names)
-    else raise Invalid
-  with
-  | Invalid -> (
-      print_endline "Please enter a valid command";
-      print_string "> ";
-      match read_line () with
-      | exception End_of_file -> ()
-      | "quit" ->
-          print_endline "Goodbye! Thanks for playing!";
-          exit 0
-      | move -> white_move move board names)
-  | GameOver (o, n) -> game_over o n
+    if check_mate board color then
+      if color = White then raise (GameOver (Black, names))
+      else raise (GameOver (White, names));
+    if stalemate board color then raise (GameOver (Draw, names));
+    if check board color then check_msg names color;
+    if names.p1color = color then Printf.printf "It's %s's turn." names.p2
+    else Printf.printf "It's %s's turn." names.p1;
+    print_endline "";
+    print_string "> ";
+    match read_line () with
+    | exception End_of_file -> ()
+    | "quit" ->
+        print_endline "Goodbye! Thanks for playing!";
+        exit 0
+    | move -> process move board names color
+  with GameOver (o, n) -> game_over o n
 
 and multiplayer board names =
   Printf.printf "Here is your current board. It is %s's move." names.p1;
@@ -182,7 +157,7 @@ and multiplayer board names =
   | "quit" ->
       print_endline "Goodbye! Thanks for playing!";
       exit 0
-  | move -> white_move move board names
+  | move -> process move board names White
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =

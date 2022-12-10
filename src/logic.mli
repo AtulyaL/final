@@ -6,6 +6,12 @@
 (* val beg : status *)
 (* beg is the current status of the game*)
 
+type direction =
+  | Left
+  | Right
+
+exception Castle of direction * Pieces.t
+
 val check_move : int * int -> Pieces.t -> Board.board -> Pieces.color -> bool
 (* check_move takes in a move, a piece, a board, and a color and then returns a
    bool called status which checks if the piece can move *)
@@ -21,6 +27,4 @@ val check_mate : Board.board -> Pieces.color -> bool
 (* update_status takes in the status of the game and returns the new status of
    the game *)
 
-(* val check_jumps : Board.board -> Pieces.t -> bool *)
-(* check_jumps sees if a piece can jump over another piece based on the current
-   board*)
+val stalemate : Board.board -> Pieces.color -> bool

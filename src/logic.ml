@@ -1,154 +1,11 @@
 open Pieces
 open Board
 
-(* exception Invalid *)
-(* note that pieces can not jump over other pieces, except for knights*)
+type direction =
+  | Left
+  | Right
 
-(* first horizontal, then vertical for moves
-
-   checks if pawn move is valid; returns a bool *)
-
-(* type status = { white : bool; black : bool; turn : color; } *)
-
-(* let beg = { white = false; black = false; turn = White } *)
-(* let check_turn stat = stat.turn *)
-
-let pawn_move (move : int * int) info board color =
-  let loc = location info in
-  if color = White then
-    match (move, loc) with
-    | (u2, u1), (t2, t1) ->
-        if u1 = t1 then
-          if u2 = t2 + 1 then is_empty board move
-          else if u2 = t2 + 2 then is_empty board move && not (moved info)
-          else false
-        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 + 1 then
-          valid_move board move color
-        else false
-  else
-    match (move, loc) with
-    | (u2, u1), (t2, t1) ->
-        if u1 = t1 then
-          if u2 = t2 - 1 then is_empty board move
-          else if u2 = t2 - 2 then is_empty board move && not (moved info)
-          else false
-        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 - 1 then
-          valid_move board move color
-        else false
-
-let knight_move move info board color =
-  let loc = location info in
-  match (move, loc) with
-  | (u1, u2), (t1, t2) ->
-      if u2 = t2 + 1 || u2 = t2 - 1 then
-        if u1 = t1 + 2 || u1 = t1 - 2 then valid_move board move color
-        else false
-      else if u2 = t2 + 2 || u2 = t2 - 2 then
-        if u1 = t1 + 1 || u1 = t1 - 1 then valid_move board move color
-        else false
-      else false
-
-(*if u2 = t2 then if u1 < t1 loop from u1 to t1 and check that it's empty*)
-let rook_move move info board color =
-  let loc = location info in
-  let output = ref (valid_move board move color) in
-  match (move, loc) with
-  | (u1, u2), (t1, t2) ->
-      if u2 = t2 then
-        if u1 < t1 then
-          for x = u1 + 1 to t1 - 1 do
-            if !output && is_empty board (x, u2) then output := true
-            else output := false
-          done
-        else
-          for x = t1 + 1 to u1 - 1 do
-            if !output && is_empty board (x, u2) then output := true
-            else output := false
-          done
-      else if u1 = t1 then
-        if u2 < t2 then
-          for x = u2 + 1 to t2 - 1 do
-            if !output && is_empty board (u1, x) then output := true
-            else output := false
-          done
-        else
-          for x = t2 + 1 to u2 - 1 do
-            if !output && is_empty board (u1, x) then output := true
-            else output := false
-          done
-      else output := false;
-      !output
-
-let bishop_move move info board color =
-  let loc = location info in
-  let output = ref (valid_move board move color) in
-  match (move, loc) with
-  | (u1, u2), (t1, t2) ->
-      let x1 = ref u1 in
-      let x2 = ref t1 in
-      (*positive slope diagonal*)
-      if t2 - u2 = t1 - u1 then
-        if t2 > u2 then (
-          x1 := !x1 + 1;
-          for x = u2 + 1 to t2 - 1 do
-            if not (is_empty board (!x1, x)) then output := false;
-            x1 := !x1 + 1
-          done)
-        else (
-          x2 := !x2 + 1;
-          for x = t2 + 1 to u2 - 1 do
-            if not (is_empty board (!x2, x)) then output := false;
-            x2 := !x2 + 1
-          done)
-      else if t2 - u2 = u1 - t1 then
-        if t2 > u2 then (
-          x1 := !x1 - 1;
-          for x = u2 + 1 to t2 - 1 do
-            if not (is_empty board (!x1, x)) then output := false;
-            x1 := !x1 - 1
-          done)
-        else (
-          x2 := !x2 - 1;
-          for x = t2 + 1 to u2 - 1 do
-            if not (is_empty board (!x2, x)) then output := false;
-            x2 := !x2 - 1
-          done)
-      else output := false;
-      !output
-
-let queen_move move info board color =
-  let loc = location info in
-  match (move, loc) with
-  | (u1, u2), (t1, t2) ->
-      if t2 - u2 = t1 - u1 || t2 - u2 = u1 - t1 then
-        valid_move board move color && bishop_move move info board color
-      else if u1 = t1 || u2 = t2 then
-        valid_move board move color && rook_move move info board color
-      else false
-
-let king_move move info board color =
-  let loc = location info in
-  match (move, loc) with
-  | (u1, u2), (t1, t2) ->
-      if u1 = t1 then
-        if u2 = t2 + 1 || u2 = t2 - 1 then valid_move board move color
-        else false
-      else if u2 = t2 then
-        if u1 = t1 + 1 || u1 = t1 - 1 then valid_move board move color
-        else false
-      else if u2 = t2 + 1 || u2 = t2 - 1 then
-        if u1 = t1 + 1 || u1 = t1 - 1 then valid_move board move color
-        else false
-      else false
-
-let check_move move info board color =
-  match name info with
-  | Pawn -> pawn_move move info board color
-  | Knight -> knight_move move info board color
-  | Rook -> rook_move move info board color
-  | Bishop -> bishop_move move info board color
-  | Queen -> queen_move move info board color
-  | King -> king_move move info board color
+exception Castle of direction * Pieces.t
 
 let pawn_reachable pos tile =
   let loc = location tile in
@@ -267,5 +124,159 @@ let check_mate board color =
 (*Psuedocode: store the position of the king in a variable named king_position.
   Then, using king_position as a parameter call*)
 
-(* let update_status = raise (Failure "Unimplemented, Atulya are you doing
-   any\n\n work?") *)
+let pawn_move (move : int * int) info board color =
+  let loc = location info in
+  if color = White then
+    match (move, loc) with
+    | (u2, u1), (t2, t1) ->
+        if u1 = t1 then
+          if u2 = t2 + 1 then is_empty board move
+          else if u2 = t2 + 2 then is_empty board move && not (moved info)
+          else false
+        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 + 1 then
+          valid_move board move color
+        else false
+  else
+    match (move, loc) with
+    | (u2, u1), (t2, t1) ->
+        if u1 = t1 then
+          if u2 = t2 - 1 then is_empty board move
+          else if u2 = t2 - 2 then is_empty board move && not (moved info)
+          else false
+        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 - 1 then
+          valid_move board move color
+        else false
+
+let knight_move move info board color =
+  let loc = location info in
+  match (move, loc) with
+  | (u1, u2), (t1, t2) ->
+      if u2 = t2 + 1 || u2 = t2 - 1 then
+        if u1 = t1 + 2 || u1 = t1 - 2 then valid_move board move color
+        else false
+      else if u2 = t2 + 2 || u2 = t2 - 2 then
+        if u1 = t1 + 1 || u1 = t1 - 1 then valid_move board move color
+        else false
+      else false
+
+let rook_move move info board color =
+  let loc = location info in
+  let output = ref (valid_move board move color) in
+  match (move, loc) with
+  | (u1, u2), (t1, t2) ->
+      if u2 = t2 then
+        if u1 < t1 then
+          for x = u1 + 1 to t1 - 1 do
+            if !output && is_empty board (x, u2) then output := true
+            else output := false
+          done
+        else
+          for x = t1 + 1 to u1 - 1 do
+            if !output && is_empty board (x, u2) then output := true
+            else output := false
+          done
+      else if u1 = t1 then
+        if u2 < t2 then
+          for x = u2 + 1 to t2 - 1 do
+            if !output && is_empty board (u1, x) then output := true
+            else output := false
+          done
+        else
+          for x = t2 + 1 to u2 - 1 do
+            if !output && is_empty board (u1, x) then output := true
+            else output := false
+          done
+      else output := false;
+      !output
+
+let bishop_move move info board color =
+  let loc = location info in
+  let output = ref (valid_move board move color) in
+  match (move, loc) with
+  | (u1, u2), (t1, t2) ->
+      let x1 = ref u1 in
+      let x2 = ref t1 in
+      (*positive slope diagonal*)
+      if t2 - u2 = t1 - u1 then
+        if t2 > u2 then (
+          x1 := !x1 + 1;
+          for x = u2 + 1 to t2 - 1 do
+            if not (is_empty board (!x1, x)) then output := false;
+            x1 := !x1 + 1
+          done)
+        else (
+          x2 := !x2 + 1;
+          for x = t2 + 1 to u2 - 1 do
+            if not (is_empty board (!x2, x)) then output := false;
+            x2 := !x2 + 1
+          done)
+      else if t2 - u2 = u1 - t1 then
+        if t2 > u2 then (
+          x1 := !x1 - 1;
+          for x = u2 + 1 to t2 - 1 do
+            if not (is_empty board (!x1, x)) then output := false;
+            x1 := !x1 - 1
+          done)
+        else (
+          x2 := !x2 - 1;
+          for x = t2 + 1 to u2 - 1 do
+            if not (is_empty board (!x2, x)) then output := false;
+            x2 := !x2 - 1
+          done)
+      else output := false;
+      !output
+
+let queen_move move info board color =
+  let loc = location info in
+  match (move, loc) with
+  | (u1, u2), (t1, t2) ->
+      if t2 - u2 = t1 - u1 || t2 - u2 = u1 - t1 then
+        valid_move board move color && bishop_move move info board color
+      else if u1 = t1 || u2 = t2 then
+        valid_move board move color && rook_move move info board color
+      else false
+
+let check_castle move info board color dir =
+  if dir = Right then
+    if
+      (not (moved info))
+      && is_empty board (t1, t2 + 1)
+      && is_empty board (t1, t2 + 2)
+      && check (update_board board (t1, t2 + 1) info) color
+      && check (update_board board (t1, t2 + 2) info) color
+    then raise (Castle (Right, info))
+    else false
+  else if
+    (not (moved info))
+    && is_empty board (t1, t2 - 1)
+    && is_empty board (t1, t2 - 2)
+    && check (update_board board (t1, t2 - 1) info) color
+    && check (update_board board (t1, t2 - 2) info) color
+  then raise (Castle (Left, info))
+  else false
+
+let king_move move info board color =
+  let loc = location info in
+  match (move, loc) with
+  | (u1, u2), (t1, t2) ->
+      if u1 = t1 then
+        if u2 = t2 + 1 || u2 = t2 - 1 then valid_move board move color
+        else if t2 = u2 - 2 then check_castle move info board color Right
+        else if t2 = u2 + 2 then check_castle move info board color Left
+        else false
+      else if u2 = t2 then
+        if u1 = t1 + 1 || u1 = t1 - 1 then valid_move board move color
+        else false
+      else if u2 = t2 + 1 || u2 = t2 - 1 then
+        if u1 = t1 + 1 || u1 = t1 - 1 then valid_move board move color
+        else false
+      else false
+
+let check_move move info board color =
+  match name info with
+  | Pawn -> pawn_move move info board color
+  | Knight -> knight_move move info board color
+  | Rook -> rook_move move info board color
+  | Bishop -> bishop_move move info board color
+  | Queen -> queen_move move info board color
+  | King -> king_move move info board color
