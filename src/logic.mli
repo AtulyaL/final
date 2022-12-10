@@ -1,5 +1,8 @@
-(** Checks for valid moves and game status, including check, checkmate, and
-    stalemate. *)
+(** Checks that moves are valid and evaluates the status of the game.contents
+
+    This module processes whether or not moves are valid based on the type of
+    the piece. It processes normal moves and castles. It also checks if any of
+    the players are in check, checkmate, or if the game is at a stalemate. *)
 
 type direction =
   | Left

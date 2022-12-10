@@ -1,3 +1,9 @@
+(** Representation of pieces
+
+    This module represents the pieces that appear on a chess board, specifically
+    its color, piece type, current position on the board, and whether or not it
+    has been moved yet.*)
+
 type name =
   | Pawn
   | Knight
