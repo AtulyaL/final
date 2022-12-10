@@ -8,6 +8,9 @@ code:
 	code .
 	! dune build --watch
 
+doc: 
+	dune build @doc
+
 play:
 	OCAMLRUNPARAM=b dune exec bin/main.exe
 

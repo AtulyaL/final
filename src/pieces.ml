@@ -13,8 +13,6 @@ type zcolor =
 type t = {
   name : name;
   loc : int * int;
-  (* captured : bool; *)
-  (* moves : (int * int) list; *)
   color : zcolor;
   moved : bool;
 }

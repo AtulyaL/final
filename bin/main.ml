@@ -61,6 +61,7 @@ and game_over outcome name =
     print_endline
       "To play again, type the name of player who wishes to play as white. If \
        you want to quit, you can just type quit";
+    print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
     | "quit" ->
@@ -107,6 +108,18 @@ and check_msg names (color : Pieces.zcolor) =
 
 (*parses the move color makes and checks if it's a valid move, if not start
   process again*)
+and process_helper board names (color : Pieces.zcolor) =
+  print_string "> ";
+  match read_line () with
+  | exception End_of_file -> ()
+  | "quit" ->
+      print_endline "Goodbye! Thanks for playing!";
+      exit 0
+  | "forfeit" ->
+      if color = White then game_over Black names else game_over White names
+  | "stalemate" -> game_over Draw names
+  | move -> process move board names color
+
 and process move board names color : unit =
   try
     let new_move = parse move board in
@@ -121,46 +134,29 @@ and process move board names color : unit =
       else proc_move new_board names White)
     else raise Invalid
   with
-  | Invalid -> (
+  | Invalid ->
       print_endline "Please enter a valid command";
-      print_string "> ";
-      match read_line () with
-      | exception End_of_file -> ()
-      | "quit" ->
-          print_endline "Goodbye! Thanks for playing!";
-          exit 0
-      | move -> process move board names color)
-  | MissingPiece -> (
+      process_helper board names color
+  | MissingPiece ->
       print_endline "There is no piece in the first set of coordinates";
       print_endline
         "Double check your coordinates; remember to start with row first then \
          column";
-      print_string "> ";
-      match read_line () with
-      | exception End_of_file -> ()
-      | "quit" ->
-          print_endline "Goodbye! Thanks for playing!";
-          exit 0
-      | move -> process move board names color)
+      process_helper board names color
+(* | Castle (d, info) -> let king_move = *)
 
 (*checks if color is in check / checkmate, if not prompts a response*)
-and proc_move board names (col : Pieces.zcolor) : unit =
+and proc_move board names (color : Pieces.zcolor) : unit =
   try
-    if check_mate board col then
-      if col = White then raise (GameOver (Black, names))
+    if check_mate board color then
+      if color = White then raise (GameOver (Black, names))
       else raise (GameOver (White, names));
     if stalemate board then raise (GameOver (Draw, names));
-    if check board col then check_msg names col;
-    if names.p1color = col then Printf.printf "It's %s's turn." names.p1
+    if check board color then check_msg names color;
+    if names.p1color = color then Printf.printf "It's %s's turn." names.p1
     else Printf.printf "It's %s's turn." names.p2;
     print_endline "";
-    print_string "> ";
-    match read_line () with
-    | exception End_of_file -> ()
-    | "quit" ->
-        print_endline "Goodbye! Thanks for playing!";
-        exit 0
-    | move -> process move board names col
+    process_helper board names color
   with GameOver (o, n) -> game_over o n
 
 and multiplayer board names =
@@ -170,13 +166,11 @@ and multiplayer board names =
   print_endline
     {|To make a move, type the location of the piece and where you want to move it, with row first then column, such as "2 2 3 2"|};
   print_endline "To quit during any part of the game, type quit";
-  print_string "> ";
-  match read_line () with
-  | exception End_of_file -> ()
-  | "quit" ->
-      print_endline "Goodbye! Thanks for playing!";
-      exit 0
-  | move -> process move board names White
+  print_endline
+    {|The game will automatically assume stalemate when there are only two kings left, but if at any point before that there is a draw please type "stalemate" to end the game.|};
+  print_endline
+    {|If you would like to resign, type "forfeit" during your turn |};
+  process_helper board names White
 
 (** [main ()] prompts for the game to play, then starts it. *)
 let main () =
