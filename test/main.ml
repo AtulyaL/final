@@ -1,16 +1,27 @@
+(* Testing summary. We employed both blackbox and glassbox testing. We also did
+   both modular and unit testing. Blackbox tests were constructed for functions
+   that implemented chess logic. These tests were based on how the game of chess
+   works rather than the implementation of the functions. An example for this is
+   that when testing update_location, which moves a piece and updates the
+   board's and the piece's information, we check the old location is empty, the
+   new location has the piece we moved, and the location of the piece is the new
+   location. Then modular tests were made to make sure that each component of
+   the chess game was working as intended. Unit tests were developed as
+   functions were implemented to ensure that they worked correctly. We also used
+   bisect to make sure that our code reached high coverage. Our game was fully
+   manually tested. There was no use of QCheck or randomized testing. Our tests
+   show correctness of the program because our tests were construcuted to test
+   how our game's behavior aligns with a real chess game. We check the game is
+   initialized correctly, all possible moves that a piece can make, and
+   checkmates.*)
+
 open OUnit2
 open Game
 open Pieces
 open Board
 open Logic
-(* open Command *)
-
 (*****************************************************************)
 (* Test suite *)
-(*****************************************************************)
-
-(*****************************************************************)
-(* Helper Functions for Board *)
 (*****************************************************************)
 
 (** [valid_move_test name] constructs an OUnit test in [board_tests] that
@@ -63,40 +74,12 @@ let find_piece_test (name : string) (coord : int * int) (board : board)
     (expected_output : Pieces.t) : test =
   name >:: fun _ -> assert_equal expected_output (find_piece coord board)
 
-(* (** [to_string_test name] constructs an OUnit test in [board_tests] that
-   asserts the quality of [expected_output] with [to_string board]. *) let
-   to_string_test (name : string) (board : board) (expected_output : string) :
-   test = name >:: fun _ -> assert_equal expected_output (to_string board)
-   ~printer:(fun a -> a) *)
-
-(* (** [to_lst_test name] constructs an OUnit test in [board_tests] that asserts
-   the quality of [expected_output] with [to_list board]. *) let to_lst_test
-   (name : string) (board : board) (expected_output : string list list) : test =
-   name >:: fun _ -> assert_equal expected_output (to_lst board)
-
-   [is_empty_test name] constructs an OUnit test in [board_tests] that asserts
-   the quality of [expected_output] with [is_empty board coord]. *)
+(** [is_empty_test name] constructs an OUnit test in [board_tests] that asserts
+    the quality of [expected_output] with [is_empty board coord]. *)
 let is_empty_test (name : string) (board : board) (coord : int * int)
     (expected_output : bool) : test =
   name >:: fun _ -> assert_equal expected_output (is_empty board coord)
 
-(* (** [isolate_black_test name] constructs an OUnit test in [board_tests] that
-   asserts the quality of [expected_output] with [isolate_black board]. *) let
-   isolate_black_test (name : string) (board : board) (expected_output : board)
-   : test = name >:: fun _ -> assert_equal expected_output (isolate_black board)
-
-   (** [isolate_white_test name] constructs an OUnit test in [board_tests] that
-   asserts the quality of [expected_output] with [isolate_white board]. *) let
-   isolate_white_test (name : string) (board : board) (expected_output : board)
-   : test = name >:: fun _ -> assert_equal expected_output (isolate_white
-   board) *)
-
-(*****************************************************************)
-(* Helper Functions for Command *)
-(*****************************************************************)
-
-(*****************************************************************)
-(* Helper Functions for Logic *)
 let check_mate_two_rooks : board =
   let res = ref [] in
   empty_board res;
@@ -439,18 +422,7 @@ let check_test (name : string) (board : board) (color : Pieces.zcolor)
     asserts the quality of [expected_output] with [check_mate board color]. *)
 let check_mate_test (name : string) (board : board) (color : Pieces.zcolor)
     (expected_output : bool) : test =
-  (* print_board (to_lst board); *)
   name >:: fun _ -> assert_equal expected_output (check_mate board color)
-
-(* (** [update_status_test name] constructs an OUnit test in [logic_tests] that
-   asserts the quality of [expected_output] with [update_status status]. *) let
-   update_status_test (name : string) (status : status) (expected_output :
-   status) : test = name >:: fun _ -> assert_equal expected_output
-   (update_status status) *)
-
-(*****************************************************************)
-(* Helper Functions for Pieces *)
-(*****************************************************************)
 
 let rec pawn_army_check color =
   let res = ref [] in
