@@ -219,6 +219,7 @@ and proc_move board names (color : Pieces.zcolor) : unit =
       else raise (GameOver (White, names));
     if stalemate board then raise (GameOver (Draw, names));
     if check board color then check_msg names color;
+    print_endline " ";
     if names.p1color = color then Printf.printf "It's %s's turn." names.p1
     else Printf.printf "It's %s's turn." names.p2;
     print_endline "";
