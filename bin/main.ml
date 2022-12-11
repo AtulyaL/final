@@ -380,7 +380,7 @@ and status_checking names =
   print_endline "Pick a scenario you want to demo";
   print_endline "1. Checkmate with two Rooks";
   print_endline "2. Checkmate with a Queen and a King";
-  print_endline "3. White is in check";
+  print_endline "3. Black is in check";
   print_endline "4. Stalemate";
   print_string "> ";
   match read_line () with
