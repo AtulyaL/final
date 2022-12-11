@@ -78,7 +78,7 @@ and game_over outcome name =
           multiplayer Board.init { name with p2color = White; p1color = Black }
         else raise Invalid
   with Invalid -> (
-    print_endline "Please enter a valid command";
+    print_endline "Please enter a valid command.";
     print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
@@ -106,8 +106,6 @@ and check_msg names (color : Pieces.zcolor) =
     | White -> Printf.printf "%s, you are in check" names.p1
     | Black -> Printf.printf "%s, you are in check" names.p2
 
-(*parses the move color makes and checks if it's a valid move, if not start
-  process again*)
 and process_helper board names (color : Pieces.zcolor) =
   print_string "> ";
   match read_line () with
@@ -118,24 +116,42 @@ and process_helper board names (color : Pieces.zcolor) =
   | "forfeit" ->
       if color = White then game_over Black names else game_over White names
   | "stalemate" -> game_over Draw names
+  | "board" ->
+      print board;
+      process_helper board names color
   | move -> process move board names color
+
+and castle_helper d king rook move board names =
+  let king_board = update_board board move king in
+  match (d, move) with
+  | Left, (t1, t2) ->
+      let new_board = update_board king_board (t1, t2 - 4) rook in
+      print new_board;
+      if color king = White then
+        proc_move new_board names (Black : Pieces.zcolor)
+      else proc_move new_board names White
+  | Right, (t1, t2) ->
+      let new_board = update_board king_board (t1, t2 + 3) rook in
+      print new_board;
+      if color king = White then
+        proc_move new_board names (Black : Pieces.zcolor)
+      else proc_move new_board names White
 
 and process move board names color : unit =
   try
     let new_move = parse move board in
-    if check (update_board board (Command.move new_move) (piece new_move)) color
-    then raise Invalid
+    let new_board =
+      update_board board (Command.move new_move) (piece new_move)
+    in
+    if check new_board color then raise Invalid
     else if check_move new_move.move new_move.piece board color then (
-      let new_board =
-        update_board board (Command.move new_move) (piece new_move)
-      in
       print new_board;
       if color = White then proc_move new_board names (Black : Pieces.zcolor)
       else proc_move new_board names White)
     else raise Invalid
   with
   | Invalid ->
-      print_endline "Please enter a valid command";
+      print_endline "Please enter a valid command.";
       process_helper board names color
   | MissingPiece ->
       print_endline "There is no piece in the first set of coordinates";
@@ -143,9 +159,9 @@ and process move board names color : unit =
         "Double check your coordinates; remember to start with row first then \
          column";
       process_helper board names color
-(* | Castle (d, info) -> let king_move = *)
+  | Castle (d, king, rook) ->
+      castle_helper d king rook (Command.move (parse move board)) board names
 
-(*checks if color is in check / checkmate, if not prompts a response*)
 and proc_move board names (color : Pieces.zcolor) : unit =
   try
     if check_mate board color then
@@ -165,11 +181,12 @@ and multiplayer board names =
   print board;
   print_endline
     {|To make a move, type the location of the piece and where you want to move it, with row first then column, such as "2 2 3 2"|};
-  print_endline "To quit during any part of the game, type quit";
+  print_endline {|To quit during any part of the game, type "quit".|};
   print_endline
     {|The game will automatically assume stalemate when there are only two kings left, but if at any point before that there is a draw please type "stalemate" to end the game.|};
   print_endline
-    {|If you would like to resign, type "forfeit" during your turn |};
+    {|If you would like to resign, type "forfeit" during your turn.|};
+  print_endline {|To see the board again, type "board".|};
   process_helper board names White
 
 (** [main ()] prompts for the game to play, then starts it. *)

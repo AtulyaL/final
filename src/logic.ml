@@ -5,7 +5,7 @@ type direction =
   | Left
   | Right
 
-exception Castle of direction * Pieces.t
+exception Castle of direction * Pieces.t * Pieces.t
 
 let pawn_reachable pos tile =
   let loc = location tile in
@@ -240,22 +240,29 @@ and check_castle info board color dir =
   try
     let t1, t2 = location info in
     if dir = Right then
+      let rook = find_piece (t1, t2 + 3) board in
       if
         (not (moved info))
         && is_empty board (t1, t2 + 1)
         && is_empty board (t1, t2 + 2)
         && check (update_board board (t1, t2 + 1) info) color
         && check (update_board board (t1, t2 + 2) info) color
-      then raise (Castle (Right, info))
+        && name rook = Rook
+        && not (moved rook)
+      then raise (Castle (Right, info, rook))
       else false
-    else if
-      (not (moved info))
-      && is_empty board (t1, t2 - 1)
-      && is_empty board (t1, t2 - 2)
-      && check (update_board board (t1, t2 - 1) info) color
-      && check (update_board board (t1, t2 - 2) info) color
-    then raise (Castle (Left, info))
-    else false
+    else
+      let rook = find_piece (t1, t2 - 4) board in
+      if
+        (not (moved info))
+        && is_empty board (t1, t2 - 1)
+        && is_empty board (t1, t2 - 2)
+        && check (update_board board (t1, t2 - 1) info) color
+        && check (update_board board (t1, t2 - 2) info) color
+        && name rook = Rook
+        && not (moved rook)
+      then raise (Castle (Left, info, rook))
+      else false
   with MissingPiece -> false
 
 and king_move move info board color =

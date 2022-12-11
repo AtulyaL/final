@@ -78,8 +78,8 @@ let valid_move board (move : int * int) (color : zcolor) =
       List.find
         (fun x ->
           match (x, move) with
-          | Full (u1, u2, _), (v1, v2) -> u1 = v1 && u2 = v2
-          | _ -> false)
+          | Full (u1, u2, _), (v2, v1) -> u1 = v1 && u2 = v2
+          | Empty _, _ -> false)
         occupied
     in
     match found with

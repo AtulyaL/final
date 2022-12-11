@@ -10,7 +10,7 @@ type direction =
 
 (** [direction] is the direction in which the king is castling*)
 
-exception Castle of direction * Pieces.t
+exception Castle of direction * Pieces.t * Pieces.t
 (** Raised to indicate that a king is castling*)
 
 val check_move : int * int -> Pieces.t -> Board.board -> Pieces.zcolor -> bool
