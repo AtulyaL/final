@@ -179,17 +179,18 @@ and process move board names color : unit =
     in
     if check new_board color then raise Invalid
     else if check_move new_move.move new_move.piece board color then (
-      if name (piece new_move) = Pawn then (
+      if name (piece new_move) = Pawn then
         match new_move.move with
         | u1, _ ->
-            if u1 = 8 then
+            if u1 = 8 then (
               print_endline
                 "Your pawn is being promoted! What do you want your new piece \
                  to be?";
-            let new_board =
-              promotion new_move.move board color new_move.piece
-            in
-            print new_board)
+              let new_board =
+                promotion new_move.move board color new_move.piece
+              in
+              print new_board)
+            else print new_board
       else print new_board;
       if color = White then proc_move new_board names (Black : Pieces.zcolor)
       else proc_move new_board names White)
@@ -227,7 +228,8 @@ and proc_move board names (color : Pieces.zcolor) : unit =
 (** [multiplayer board names] starts the game on a given [board] and given
     [names]*)
 and multiplayer board names =
-  Printf.printf "Here is your current board. It is %s's move." names.p1;
+  let n = if names.p1color = White then names.p1 else names.p2 in
+  Printf.printf "Here is your current board. It is %s's move." n;
   print_endline "";
   print board;
   print_endline
@@ -249,7 +251,7 @@ and single_player board names =
   match read_line () with
   | exception End_of_file -> ()
   | "reset" -> solo_moves names
-  | "demo" -> demo names
+  | "demo menu" -> demo names
   | "quit" -> exit 0
   | move -> (
       try
@@ -268,6 +270,8 @@ and solo_moves names =
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
+  | "demo menu" -> demo names
+  | "quit" -> exit 0
   | name -> (
       try
         single_player
