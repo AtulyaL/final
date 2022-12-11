@@ -153,15 +153,21 @@ and castle_helper d king rook move board names =
         proc_move new_board names (Black : Pieces.zcolor)
       else proc_move new_board names White
 
-and promotion move board color : board =
+and promotion move board color p : board =
   print_string "> ";
   match read_line () with
-  | exception End_of_file -> promotion move board color
+  | exception End_of_file -> promotion move board color p
+  | "king" ->
+      print_endline "Sorry, you can't promote to a king";
+      print_endline "Please enter another piece.";
+      promotion move board color p
   | piece -> (
-      try tp_piece board move (Pieces.init (from_string piece) color move)
+      try
+        update_board board move
+          (Pieces.init (from_string piece) color (location p))
       with Wrong ->
         print_endline "Please enter a valid piece.";
-        promotion move board color)
+        promotion move board color p)
 
 (**[process move board names color] parses [move] and checks if it is a valid
    command. If not, it prompts the user for new input.*)
@@ -180,7 +186,9 @@ and process move board names color : unit =
               print_endline
                 "Your pawn is being promoted! What do you want your new piece \
                  to be?";
-            let new_board = promotion new_move.move board color in
+            let new_board =
+              promotion new_move.move board color new_move.piece
+            in
             print new_board)
       else print new_board;
       if color = White then proc_move new_board names (Black : Pieces.zcolor)
@@ -286,18 +294,28 @@ and castle_moves names =
   let new_board = ref [] in
   empty_board new_board;
   let king_board = tp_piece !new_board (1, 5) (Pieces.init King White (1, 5)) in
-  let rook_board =
-    update_board king_board (1, 8) (Pieces.init Rook White (1, 8))
-  in
+  let rook_board = tp_piece king_board (1, 8) (Pieces.init Rook White (1, 8)) in
   let extra_piece =
-    update_board rook_board (2, 1) (Pieces.init Pawn White (2, 1))
+    tp_piece rook_board (2, 1) (Pieces.init Pawn White (2, 1))
   in
   let black_rook =
-    update_board extra_piece (8, 6) (Pieces.init Rook Black (8, 6))
+    tp_piece extra_piece (8, 6) (Pieces.init Rook Black (8, 6))
+  in
+  let black_king = tp_piece black_rook (8, 1) (Pieces.init King Black (8, 1)) in
+  print black_king;
+  process_helper black_king names White
+
+and promotion_demo names =
+  let new_board = ref [] in
+  empty_board new_board;
+  let king_board = tp_piece !new_board (1, 5) (Pieces.init King White (1, 5)) in
+  let promoting_pawn =
+    tp_piece king_board (7, 1) (Pieces.init Pawn White (7, 1))
   in
   let black_king =
-    update_board black_rook (8, 1) (Pieces.init King Black (8, 1))
+    tp_piece promoting_pawn (8, 5) (Pieces.init King Black (8, 5))
   in
+  print black_king;
   process_helper black_king names White
 
 (** [checkmate_rook names] creates the scenario where checkmate is about to
@@ -313,6 +331,7 @@ and checkmate_rook names =
   let k2 = tp_piece r1 (5, 6) (Pieces.init King Black (5, 6)) in
   (* 2nd Black Rook rook at A8 *)
   let r2 = tp_piece k2 (8, 1) (Pieces.init Rook Black (8, 1)) in
+  print r2;
   process_helper r2 names Black
 
 (** [checkmate_queen names] creates the scenario where checkmate is about to
@@ -326,6 +345,7 @@ and checkmate_queen names =
   let wk = tp_piece bk (6, 7) (Pieces.init King White (6, 7)) in
   (*White queen at E1*)
   let wq = tp_piece wk (1, 5) (Pieces.init Queen White (1, 5)) in
+  print wq;
   process_helper wq names White
 
 (** [checkmate_rook names] creates the scenario where Black is currently in
@@ -336,6 +356,7 @@ and black_check names =
   let k1 = tp_piece !res (8, 4) (Pieces.init King Black (8, 4)) in
   let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
   let board = tp_piece kn (1, 4) (Pieces.init King White (1, 4)) in
+  print board;
   process_helper board names Black
 
 (** [stalemate_demo names] creates the scenario where stalemate is about to
@@ -346,6 +367,7 @@ and stalemate_demo names =
   let k1 = tp_piece !res (8, 4) (Pieces.init King Black (8, 4)) in
   let p1 = tp_piece k1 (7, 4) (Pieces.init Knight White (7, 4)) in
   let board = tp_piece p1 (1, 4) (Pieces.init King White (1, 4)) in
+  print board;
   process_helper board names Black
 
 (**[status_checking names] is a multiplayer freeplay version demonstrating
@@ -370,13 +392,15 @@ and demo names =
   print_endline "Please enter the number you want to demo";
   print_endline "1. Solo moves";
   print_endline "2. Castling";
-  print_endline "3. Status checking";
+  print_endline "3. Promotion";
+  print_endline "4. Status checking";
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
   | "1" -> solo_moves names
   | "2" -> castle_moves names
-  | "3" -> status_checking names
+  | "3" -> promotion_demo names
+  | "4" -> status_checking names
   | _ -> demo names
 
 (** [main ()] prompts for the game to play, then starts it. *)
@@ -388,6 +412,7 @@ let main () =
   print_endline " ";
   print_endline " ";
   print_endline "Please enter player one's name (they will start as white).";
+  print_endline {|Alternatively, you can enter "demo" to enter the demo mode.|};
   print_string "> ";
   match read_line () with
   | exception End_of_file -> ()
