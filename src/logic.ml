@@ -283,13 +283,15 @@ and king_move move info board color =
       else false
 
 and check_move move info board color =
-  match name info with
-  | Pawn -> pawn_move move info board color
-  | Knight -> knight_move move info board color
-  | Rook -> rook_move move info board color
-  | Bishop -> bishop_move move info board color
-  | Queen -> queen_move move info board color
-  | King -> king_move move info board color
+  if move = location info then false
+  else
+    match name info with
+    | Pawn -> pawn_move move info board color
+    | Knight -> knight_move move info board color
+    | Rook -> rook_move move info board color
+    | Bishop -> bishop_move move info board color
+    | Queen -> queen_move move info board color
+    | King -> king_move move info board color
 
 let stalemate board =
   let pieces = ref 0 in

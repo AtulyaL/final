@@ -83,9 +83,7 @@ let valid_move board (move : int * int) (color : zcolor) =
         occupied
     in
     match found with
-    | Full (_, _, t) ->
-        (* let b = to_string t in print_string b; *)
-        Pieces.color t <> color
+    | Full (_, _, t) -> Pieces.color t <> color
     | _ -> false
   with Not_found -> true
 
@@ -93,9 +91,11 @@ let update_board board move piece =
   let others =
     List.filter
       (fun x ->
-        match (x, move) with
-        | Empty (x1, y1), (x2, y2) -> x1 <> x2 || y1 <> y2
-        | Full (x1, y1, _), (x2, y2) -> x1 <> x2 || y1 <> y2)
+        match (x, move, location piece) with
+        | Empty (x1, y1), (x2, y2), (x3, y3) ->
+            (not (x1 = x2 && y1 = y2)) && not (x1 = x3 && y1 = y3)
+        | Full (x1, y1, _), (x2, y2), (x3, y3) ->
+            (not (x1 = x2 && y1 = y2)) && not (x1 = x3 && y1 = y3))
       board
   in
   match (location piece, move) with

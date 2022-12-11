@@ -152,6 +152,8 @@ and process move board names color : unit =
   with
   | Invalid ->
       print_endline "Please enter a valid command.";
+      let x = string_of_int (List.length board) in
+      print_string x;
       process_helper board names color
   | MissingPiece ->
       print_endline "There is no piece in the first set of coordinates";
