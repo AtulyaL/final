@@ -74,6 +74,7 @@ and game_over_help name =
     | "quit" ->
         print_endline "Goodbye! Thanks for playing!";
         exit 0
+    | "demo menu" -> demo name
     | white ->
         if
           (white = name.p1 && name.p1color = White)
@@ -131,6 +132,7 @@ and process_helper board names (color : Pieces.zcolor) =
   | "score" ->
       Printf.printf "The score is %s: %i pts; %s: %i pts." names.p1
         names.p1score names.p2 names.p2score
+  | "demo menu" -> demo names
   | move -> process move board names color
 
 (**[castle_helper d king rook move board names] processes castles based on its
