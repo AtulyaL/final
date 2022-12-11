@@ -181,7 +181,10 @@ and process move board names color : unit =
     let new_board =
       update_board board (Command.move new_move) (piece new_move)
     in
-    if check new_board color then raise Invalid
+    if check new_board color then (
+      let s = "check" in
+      print_string s;
+      raise Invalid)
     else if check_move new_move.move new_move.piece board color then (
       if name (piece new_move) = Pawn then
         match new_move.move with
@@ -198,7 +201,10 @@ and process move board names color : unit =
       else print new_board;
       if color = White then proc_move new_board names (Black : Pieces.zcolor)
       else proc_move new_board names White)
-    else raise Invalid
+    else
+      let s = "not a proper piece move" in
+      print_string s;
+      raise Invalid
   with
   | Invalid ->
       print_endline "Please enter a valid command.";
