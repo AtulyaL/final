@@ -360,7 +360,8 @@ and black_check names =
   empty_board res;
   let k1 = tp_piece !res (8, 4) (Pieces.init King Black (8, 4)) in
   let kn = tp_piece k1 (6, 3) (Pieces.init Knight White (6, 3)) in
-  let board = tp_piece kn (1, 4) (Pieces.init King White (1, 4)) in
+  let p1 = tp_piece kn (7, 1) (Pieces.init Pawn Black (7, 1)) in
+  let board = tp_piece p1 (1, 4) (Pieces.init King White (1, 4)) in
   print board;
   process_helper board names Black
 
