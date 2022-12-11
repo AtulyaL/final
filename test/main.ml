@@ -48,8 +48,14 @@ let rec print_board = function
 let update_board_test (name : string) (board : board) (move : int * int)
     (piece : Pieces.t) : test =
   let updated_board = update_board board move piece in
+  let old_loc = location piece in
 
-  name >:: fun _ -> assert_equal (is_empty updated_board move) false
+  name >:: fun _ ->
+  assert_equal (is_empty updated_board move) false;
+  assert_equal (is_empty updated_board old_loc) true;
+  assert_equal
+    (find_piece move updated_board)
+    (Pieces.update_location piece move)
 
 (** [find_piece_test name] constructs an OUnit test in [board_tests] that
     asserts the quality of [expected_output] with [find_piece coord board]. *)
