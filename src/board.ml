@@ -78,12 +78,14 @@ let valid_move board (move : int * int) (color : zcolor) =
       List.find
         (fun x ->
           match (x, move) with
-          | Full (u1, u2, _), (v2, v1) -> u1 = v1 && u2 = v2
+          | Full (u1, u2, _), (v1, v2) -> u1 = v1 && u2 = v2
           | Empty _, _ -> false)
         occupied
     in
     match found with
-    | Full (_, _, t) -> Pieces.color t <> color
+    | Full (_, _, t) ->
+        (* let b = to_string t in print_string b; *)
+        Pieces.color t <> color
     | _ -> false
   with Not_found -> true
 

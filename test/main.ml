@@ -433,7 +433,7 @@ let check_test (name : string) (board : board) (color : Pieces.zcolor)
     asserts the quality of [expected_output] with [check_mate board color]. *)
 let check_mate_test (name : string) (board : board) (color : Pieces.zcolor)
     (expected_output : bool) : test =
-  print_board (to_lst board);
+  (* print_board (to_lst board); *)
   name >:: fun _ -> assert_equal expected_output (check_mate board color)
 
 (* (** [update_status_test name] constructs an OUnit test in [logic_tests] that
@@ -794,9 +794,11 @@ let logic_tests =
     check_move_test "king cant move 2 left" (1, 1)
       (Pieces.init King White (1, 5))
       init White false;
-    check_move_test "king cant move 2 left" (1, 6)
-      (Pieces.init King White (1, 5))
-      init White false;
+    (let board = init in
+     print_board (to_lst board);
+     check_move_test "king cant move 2 left" (1, 6)
+       (Pieces.init King White (1, 5))
+       board White false);
     check_move_test "king cant move 2 diagonal left" (3, 6)
       (Pieces.init King White (1, 5))
       init White false;

@@ -128,22 +128,22 @@ and pawn_move (move : int * int) info board color =
   let loc = location info in
   if color = White then
     match (move, loc) with
-    | (u2, u1), (t2, t1) ->
-        if u1 = t1 then
-          if u2 = t2 + 1 then is_empty board move
-          else if u2 = t2 + 2 then is_empty board move && not (moved info)
+    | (u1, u2), (t1, t2) ->
+        if u2 = t2 then
+          if u1 = t1 + 1 then is_empty board move
+          else if u1 = t1 + 2 then is_empty board move && not (moved info)
           else false
-        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 + 1 then
+        else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 + 1 then
           valid_move board move color
         else false
   else
     match (move, loc) with
-    | (u2, u1), (t2, t1) ->
-        if u1 = t1 then
-          if u2 = t2 - 1 then is_empty board move
-          else if u2 = t2 - 2 then is_empty board move && not (moved info)
+    | (u1, u2), (t1, t2) ->
+        if u2 = t2 then
+          if u1 = t1 - 1 then is_empty board move
+          else if u1 = t1 - 2 then is_empty board move && not (moved info)
           else false
-        else if (u1 = t1 + 1 || u1 = t1 - 1) && u2 = t2 - 1 then
+        else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 - 1 then
           valid_move board move color
         else false
 
@@ -245,8 +245,8 @@ and check_castle info board color dir =
         (not (moved info))
         && is_empty board (t1, t2 + 1)
         && is_empty board (t1, t2 + 2)
-        && check (update_board board (t1, t2 + 1) info) color
-        && check (update_board board (t1, t2 + 2) info) color
+        && (not (check (update_board board (t1, t2 + 1) info) color))
+        && (not (check (update_board board (t1, t2 + 2) info) color))
         && name rook = Rook
         && not (moved rook)
       then raise (Castle (Right, info, rook))
@@ -257,8 +257,8 @@ and check_castle info board color dir =
         (not (moved info))
         && is_empty board (t1, t2 - 1)
         && is_empty board (t1, t2 - 2)
-        && check (update_board board (t1, t2 - 1) info) color
-        && check (update_board board (t1, t2 - 2) info) color
+        && (not (check (update_board board (t1, t2 - 1) info) color))
+        && (not (check (update_board board (t1, t2 - 2) info) color))
         && name rook = Rook
         && not (moved rook)
       then raise (Castle (Left, info, rook))
