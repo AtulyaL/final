@@ -4,6 +4,9 @@
     its color, piece type, current position on the board, and whether or not it
     has been moved yet.*)
 
+exception Wrong
+(** Raised when a string can't correspond to a name*)
+
 type name =
   | Pawn
   | Knight
@@ -39,7 +42,10 @@ val name : t -> name
 (** [name t] returns the name of [t]. *)
 
 val to_string : t -> string
-(** [to_string t] converts a piece to its string format. *)
+(** [to_string t] converts [t] to its string format. *)
+
+val from_string : string -> name
+(**[from_string str] convers [str] to its name format. *)
 
 val moved : t -> bool
 (** [moved t] is whether or not [t] has been previously moved yet. *)

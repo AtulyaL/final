@@ -17,6 +17,8 @@ type t = {
   moved : bool;
 }
 
+exception Wrong
+
 let init name color loc : t = { name; loc; color; moved = false }
 
 let update_location (t : t) (new_loc : int * int) =
@@ -33,6 +35,16 @@ let to_string t =
   | Rook -> "rook"
   | Queen -> "queen"
   | King -> "king"
+
+let from_string str =
+  match str with
+  | "pawn" -> Pawn
+  | "knight" -> Knight
+  | "bishop" -> Bishop
+  | "rook" -> Rook
+  | "queen" -> Queen
+  | "king" -> King
+  | _ -> raise Wrong
 
 let color_to_string color =
   match color with
