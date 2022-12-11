@@ -161,6 +161,10 @@ and promotion move board color p : board =
       print_endline "Sorry, you can't promote to a king";
       print_endline "Please enter another piece.";
       promotion move board color p
+  | "pawn" ->
+      print_endline "Sorry, you can't promote to a pawn";
+      print_endline "Please enter another piece.";
+      promotion move board color p
   | piece -> (
       try
         update_board board move
@@ -182,7 +186,7 @@ and process move board names color : unit =
       if name (piece new_move) = Pawn then
         match new_move.move with
         | u1, _ ->
-            if u1 = 8 then (
+            if u1 = 8 || u1 = 1 then (
               print_endline
                 "Your pawn is being promoted! What do you want your new piece \
                  to be?";
