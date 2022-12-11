@@ -134,7 +134,7 @@ and pawn_move (move : int * int) info board color =
           else if u1 = t1 + 2 then is_empty board move && not (moved info)
           else false
         else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 + 1 then
-          valid_move board move color
+          valid_move board move color && not (is_empty board move)
         else false
   else
     match (move, loc) with
@@ -144,7 +144,7 @@ and pawn_move (move : int * int) info board color =
           else if u1 = t1 - 2 then is_empty board move && not (moved info)
           else false
         else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 - 1 then
-          valid_move board move color
+          valid_move board move color && not (is_empty board move)
         else false
 
 and knight_move move info board color =
