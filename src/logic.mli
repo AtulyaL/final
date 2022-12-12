@@ -20,11 +20,11 @@ val check_move : int * int -> Pieces.t -> Board.board -> Pieces.zcolor -> bool
     final point is if castling causes the king to be in check at any point.*)
 
 val check : Board.board -> Pieces.zcolor -> bool
-(** check takes in a board and returns whether or not any side is in check *)
+(** [check board color] returns whether or not the [color] player is in check. *)
 
 val check_mate : Board.board -> Pieces.zcolor -> bool
-(** checkmate takes in a board and returns whether or not any side is in
-    checkmate *)
+(** [check_mate board color] returns whether or not the [color] player is in
+    checkmate. *)
 
 val stalemate : Board.board -> bool
 (** [stalemate board] is if the [board] represents a game that only has two
