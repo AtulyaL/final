@@ -93,8 +93,8 @@ let check (board : tile list) color =
 (*returns true iff the king is in check*)
 let rec check_king_moves move_lst board color =
   match move_lst with
-  | [] -> true
-  | h :: t -> valid_move board h color && check_king_moves t board color
+  | [] -> false
+  | h :: t -> valid_move board h color || check_king_moves t board color
 
 and check_mate board color =
   let king_info =
