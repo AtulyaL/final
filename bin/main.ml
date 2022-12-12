@@ -60,7 +60,7 @@ let rec game_calc outcome name =
       else { name with p2score = name.p2score + 1 }
   | Draw ->
       print_endline "Good game!";
-      { name with p1score = name.p1score + 1; p2score = name.p2score + 1 }
+      name
 
 (**[game_over_help name] processes the new command and acts accordingly. It only
    accepts two commands. If the user has typed in the name of the player, this
@@ -131,7 +131,9 @@ and process_helper board names (color : Pieces.zcolor) =
       process_helper board names color
   | "score" ->
       Printf.printf "The score is %s: %i pts; %s: %i pts." names.p1
-        names.p1score names.p2 names.p2score
+        names.p1score names.p2 names.p2score;
+      print_endline "";
+      process_helper board names color
   | "demo menu" -> demo names
   | move -> process move board names color
 
