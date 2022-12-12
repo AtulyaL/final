@@ -9,14 +9,20 @@ exception Castle of direction * Pieces.t * Pieces.t
 
 let pawn_reachable pos tile =
   let loc = location tile in
-  match (pos, loc) with
-  | (u1, u2), (t1, t2) ->
-      if u2 = t2 then
-        if u1 = t1 + 1 then true
-        else if u1 = t1 + 2 then true && not (moved tile)
+  let color = color tile in
+  if color = White then
+    match (pos, loc) with
+    | (u1, u2), (t1, t2) ->
+        if u2 = t2 then false
+        else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 + 1 then true
         else false
-      else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 + 1 then true
-      else false
+  else
+    match (pos, loc) with
+    | (u1, u2), (t1, t2) ->
+        if u2 = t2 then
+          if u1 = t1 - 1 then true else if u1 = t1 - 2 then true else false
+        else if (u2 = t2 + 1 || u2 = t2 - 1) && u1 = t1 - 1 then true
+        else false
 
 let knight_reachable pos tile =
   let loc = location tile in
@@ -91,14 +97,16 @@ let check (board : tile list) color =
   | _ -> raise Not_found
 
 (*returns true iff the king is in check*)
-let rec check_king_moves move_lst board color =
+let rec check_king_moves move_lst info board color =
   match move_lst with
-  | [] -> false
-  | h :: t -> valid_move board h color || check_king_moves t board color
+  | [] -> true
+  | h :: t ->
+      check_move h info board color && check_king_moves t info board color
 
 and check_mate board color =
+  let king = List.find (find_king color) board in
   let king_info =
-    match List.find (find_king color) board with
+    match king with
     | Full (_, _, info) -> info
     | Empty (_, _) -> raise Not_found
   in
@@ -117,7 +125,8 @@ and check_mate board color =
           (x - 1, y + 1);
         ]
   in
-  check_king_moves possible_king_position board color && check board color
+  check_king_moves possible_king_position king_info board color
+  && check board color
 
 (*Psuedocode: store the position of the king in a variable named king_position.
   Then, using king_position as a parameter call*)
