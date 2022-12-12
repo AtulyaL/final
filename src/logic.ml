@@ -91,11 +91,10 @@ let check (board : tile list) color =
   | _ -> raise Not_found
 
 (*returns true iff the king is in check*)
-let rec check_king_moves move_lst info board color =
+let rec check_king_moves move_lst board color =
   match move_lst with
-  | [] -> false
-  | h :: t ->
-      not (check_move h info board color || check_king_moves t info board color)
+  | [] -> true
+  | h :: t -> valid_move board h color && check_king_moves t board color
 
 and check_mate board color =
   let king_info =
@@ -118,8 +117,7 @@ and check_mate board color =
           (x - 1, y + 1);
         ]
   in
-  check_king_moves possible_king_position king_info board color
-  && check board color
+  check_king_moves possible_king_position board color && check board color
 
 (*Psuedocode: store the position of the king in a variable named king_position.
   Then, using king_position as a parameter call*)
