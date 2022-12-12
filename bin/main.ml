@@ -141,13 +141,13 @@ and castle_helper d king rook move board names =
   let king_board = update_board board move king in
   match (d, move) with
   | Left, (t1, t2) ->
-      let new_board = update_board king_board (t1, t2 - 4) rook in
+      let new_board = update_board king_board (t1, t2 + 1) rook in
       print new_board;
       if color king = White then
         proc_move new_board names (Black : Pieces.zcolor)
       else proc_move new_board names White
   | Right, (t1, t2) ->
-      let new_board = update_board king_board (t1, t2 + 3) rook in
+      let new_board = update_board king_board (t1, t2 - 1) rook in
       print new_board;
       if color king = White then
         proc_move new_board names (Black : Pieces.zcolor)
@@ -181,10 +181,7 @@ and process move board names color : unit =
     let new_board =
       update_board board (Command.move new_move) (piece new_move)
     in
-    if check new_board color then (
-      let s = "check" in
-      print_string s;
-      raise Invalid)
+    if check new_board color then raise Invalid
     else if check_move new_move.move new_move.piece board color then (
       if name (piece new_move) = Pawn then
         match new_move.move with
@@ -201,10 +198,7 @@ and process move board names color : unit =
       else print new_board;
       if color = White then proc_move new_board names (Black : Pieces.zcolor)
       else proc_move new_board names White)
-    else
-      let s = "not a proper piece move" in
-      print_string s;
-      raise Invalid
+    else raise Invalid
   with
   | Invalid ->
       print_endline "Please enter a valid command.";
