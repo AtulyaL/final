@@ -43,13 +43,15 @@ let bishop_reachable pos tile =
   let loc = location tile in
   match (pos, loc) with
   | (u1, u2), (t1, t2) ->
-      if t2 - u2 = t1 - u1 || t2 - u2 = u1 - t1 then true else false
+      if Int.abs (t2 - u2) = Int.abs (t1 - u1) || t2 - u2 = u1 - t1 then true
+      else false
 
 let queen_reachable pos tile =
   let loc = location tile in
   match (pos, loc) with
   | (u1, u2), (t1, t2) ->
-      if t2 - u2 = t1 - u1 || u1 = t1 || u2 = t2 then true else false
+      if Int.abs (t2 - u2) = Int.abs (t1 - u1) || u1 = t1 || u2 = t2 then true
+      else false
 
 let king_reachable pos tile =
   let loc = location tile in
@@ -96,12 +98,19 @@ let check (board : tile list) color =
       else check_helper (isolate_black board) king_position
   | _ -> raise Not_found
 
-(*returns true iff the king is in check*)
+(*returns true iff the king can move*)
 let rec check_king_moves move_lst info board color =
   match move_lst with
-  | [] -> true
+  | [] -> false
   | h :: t ->
-      check_move h info board color && check_king_moves t info board color
+      let can_move =
+        if
+          check_move h info board color
+          && not (check (update_board board h info) color)
+        then true
+        else false
+      in
+      can_move || check_king_moves t info board color
 
 and check_mate board color =
   let king = List.find (find_king color) board in
@@ -111,7 +120,7 @@ and check_mate board color =
     | Empty (_, _) -> raise Not_found
   in
   let king_postion = location king_info in
-  let possible_king_position =
+  let possible_king_position_total =
     match king_postion with
     | x, y ->
         [
@@ -125,7 +134,15 @@ and check_mate board color =
           (x - 1, y + 1);
         ]
   in
-  check_king_moves possible_king_position king_info board color
+  let possible_king_position =
+    List.filter
+      (fun (x1, y2) ->
+        if x1 > 8 || x1 < 1 then false
+        else if y2 > 8 || y2 < 1 then false
+        else true)
+      possible_king_position_total
+  in
+  (not (check_king_moves possible_king_position king_info board color))
   && check board color
 
 (*Psuedocode: store the position of the king in a variable named king_position.
@@ -289,11 +306,9 @@ and king_move move info board color =
         else false
       else false
 
-and check_move (u1, u2) info board color =
-  if (u1, u2) = location info || u1 <= 0 || u1 > 8 || u2 <= 0 || u2 > 8 then
-    false
+and check_move move info board color =
+  if move = location info then false
   else
-    let move = (u1, u2) in
     match name info with
     | Pawn -> pawn_move move info board color
     | Knight -> knight_move move info board color

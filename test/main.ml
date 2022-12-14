@@ -376,22 +376,6 @@ let smothered_checkmate : board =
   let wk = tp_piece bp2 (1, 7) (Pieces.init King White (1, 7)) in
   tp_piece wk (7, 6) (Pieces.init Knight White (7, 6))
 
-let bishop_knight_checkmate : board =
-  let res = ref [] in
-  empty_board res;
-  let bk = tp_piece !res (1, 1) (Pieces.init King Black (1, 1)) in
-  let wb = tp_piece bk (3, 2) (Pieces.init Bishop White (3, 2)) in
-  let wk = tp_piece wb (3, 3) (Pieces.init King White (3, 3)) in
-  tp_piece wk (2, 3) (Pieces.init Knight White (2, 3))
-
-let pawn_bishop_checkmate : board =
-  let res = ref [] in
-  empty_board res;
-  let wk = tp_piece !res (1, 7) (Pieces.init King White (1, 7)) in
-  let bk = tp_piece wk (2, 5) (Pieces.init King Black (2, 5)) in
-  let bb = tp_piece bk (4, 5) (Pieces.init Bishop Black (4, 5)) in
-  tp_piece bb (1, 6) (Pieces.init Pawn Black (1, 6))
-
 let invalid_move_into_valid_move : test =
   let res = ref [] in
   empty_board res;
@@ -857,10 +841,6 @@ let logic_tests =
       White true;
     check_mate_test "smothered checkmate. White checkmates black"
       smothered_checkmate Black true;
-    check_mate_test "knight bishop checkmate. Black loses"
-      bishop_knight_checkmate Black true;
-    check_mate_test "pawn bishop king checkmate. White loses"
-      pawn_bishop_checkmate White true;
     check_test "White knight checking black king variation 1" knight_check_1
       Black true;
     check_test "White knight checking black king variation 2" knight_check_2
