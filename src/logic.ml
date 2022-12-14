@@ -289,9 +289,11 @@ and king_move move info board color =
         else false
       else false
 
-and check_move move info board color =
-  if move = location info then false
+and check_move (u1, u2) info board color =
+  if (u1, u2) = location info || u1 <= 0 || u1 > 8 || u2 <= 0 || u2 > 8 then
+    false
   else
+    let move = (u1, u2) in
     match name info with
     | Pawn -> pawn_move move info board color
     | Knight -> knight_move move info board color
