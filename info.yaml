@@ -23,5 +23,4 @@ git-repo: "https://github.coecis.cornell.edu/eyw23/final"
 demo-video-url: ""
 # Write a short, attention-grabbing description of your project.
 desc: >
-  Our project is an OCaml implementation of chess. Users can choose between
-  singleplayer or multiplayer.
+  Our project is a fully functional OCaml implementation of local multiplayer chess.
